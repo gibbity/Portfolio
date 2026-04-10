@@ -34,16 +34,12 @@ const experiences = [
 
 const technicalStack = [
     {
-        category: "Strategic Design",
-        skills: ["UX Research & Discovery", "Product Design", "Rapid-Prototyping", "Design systems", "AI-assisted Design Workflow"]
+        category: "Skills",
+        skills: ["UX Research & Discovery", "Product Design", "Rapid-Prototyping", "Design systems", "AI-assisted Design Workflow", "Problem Identification", "AI assisted development", "Interaction Design & Motion", "Design thinking", "User Testing", "Prompt Architecture", "Generative UI", "Model-Aware Prototyping", "Machine Experience (MX) Optimization", "Systems Architecture & Token Governance", "Technical Accessibility (WCAG 2.2)"]
     },
     {
-        category: "Technical Logic",
-        skills: ["Problem Identification", "AI assisted development", "Interaction Design & Motion", "Design thinking", "User Testing"]
-    },
-    {
-        category: "System Stack",
-        skills: ["Figma", "Antigravity", "Claude Code", "Adobe Photoshop", "Adobe Illustrator", "Sketchbook", "Notebook LLM", "Notion", "Jira", "Fusion 360"]
+        category: "Tools",
+        skills: ["Figma", "Antigravity", "Claude Code", "Adobe Suite", "Vercel", "Supabase", "Google Labs", "Notion", "Jira", "Figma MCP"]
     }
 ];
 
@@ -262,7 +258,7 @@ export default function AboutSection() {
 
                   <div className="pt-8 space-y-4">
                      <a 
-                       href="https://drive.google.com/file/d/12yxubV9TZUaNdU9fbIsAK6GM5n7r_E2c/view?usp=sharing"
+                       href="https://drive.google.com/file/d/1M-Vv8jiUz4WKqM2yksYqWPbD6Lb_2Br4/view?usp=sharing"
                        target="_blank"
                        rel="noopener noreferrer"
                        className="group w-full py-5 bg-black text-white text-[12px] font-black uppercase tracking-[0.4em] hover:bg-[#64172d] transition-all flex items-center justify-center gap-4"

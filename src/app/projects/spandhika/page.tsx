@@ -102,7 +102,7 @@ export default function SpandhikaProfessionalUX() {
       </div>
 
       {/* 2. OVERVIEW */}
-      <section className="reveal-section opacity-0 translate-y-10 py-20 md:py-32 px-6 md:px-24 bg-[#080808]">
+      <section className="reveal-section opacity-0 translate-y-10 py-10 md:py-32 px-6 md:px-24 bg-[#080808]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20">
            <div className="lg:col-span-4 space-y-12">
               <span className="text-[11px] font-bold tracking-[0.5em] text-[#006D77] uppercase block">Diagnostics Context</span>
@@ -133,7 +133,7 @@ export default function SpandhikaProfessionalUX() {
       </section>
 
       {/* 3. LEGACY AUDIT */}
-      <section className="reveal-section opacity-0 translate-y-10 py-20 md:py-32 px-6 md:px-24">
+      <section className="reveal-section opacity-0 translate-y-10 py-10 md:py-32 px-6 md:px-24">
          <div className="max-w-7xl mx-auto">
             <h2 className="text-[32px] md:text-[50px] font-bold mb-16 tracking-tighter">The Systemic Debt.</h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-20">
@@ -155,7 +155,7 @@ export default function SpandhikaProfessionalUX() {
       </section>
 
       {/* 4. CLINICAL HUD - SHARP REDESIGN */}
-      <section id="diagnostic-hub" className="reveal-section opacity-0 translate-y-10 py-20 md:py-32 px-6 md:px-24 bg-white text-black rounded-t-[40px] md:rounded-t-[80px]">
+      <section id="diagnostic-hub" className="reveal-section opacity-0 translate-y-10 py-10 md:py-32 px-6 md:px-24 bg-white text-black rounded-t-[40px] md:rounded-t-[80px]">
          <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 md:mb-24 max-w-3xl mx-auto">
                <span className="text-[12px] font-black tracking-[0.4em] text-[#006D77] uppercase mb-4 block">The Redesign Strategy</span>
@@ -185,7 +185,7 @@ export default function SpandhikaProfessionalUX() {
       {/* FULL PAGE SHOWCASE - ADDED AFTER DIAGNOSTIC HUB */}
       <section className="relative w-full space-y-0 overflow-hidden">
          {/* Dark Full Screen */}
-         <div className="relative h-screen w-full overflow-hidden">
+         <div className="relative h-[60vh] md:h-screen w-full overflow-hidden">
             <div className="parallax-full absolute inset-0 h-[120%] w-full">
                <Image 
                   src="/projects/spandhika/Mockup dark- full screen.png" 
@@ -201,7 +201,7 @@ export default function SpandhikaProfessionalUX() {
          </div>
 
          {/* Light Full Screen */}
-         <div className="relative h-screen w-full overflow-hidden bg-white">
+         <div className="relative h-[60vh] md:h-screen w-full overflow-hidden bg-white">
             <div className="parallax-full absolute inset-0 h-[120%] w-full">
                <Image 
                   src="/projects/spandhika/Mockup light- full screen.png" 
@@ -218,7 +218,7 @@ export default function SpandhikaProfessionalUX() {
       </section>
 
       {/* 5. METRICS ANALYSIS */}
-      <section className="reveal-section opacity-0 translate-y-10 py-40 px-6 md:px-24 bg-[#FAFAFA] text-black border-t border-black/5">
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-40 px-6 md:px-24 bg-[#FAFAFA] text-black border-t border-black/5">
          <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
                <h2 className="text-[40px] md:text-[60px] font-bold tracking-tighter mb-4 italic font-helvetica uppercase">Biometric <br/> Telemetry.</h2>
@@ -244,7 +244,7 @@ export default function SpandhikaProfessionalUX() {
       </section>
 
       {/* 6. TACTICAL FEEDBACK */}
-      <section className="reveal-section opacity-0 translate-y-10 py-32 px-6 md:px-24 bg-[#050505]">
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-32 px-6 md:px-24 bg-[#050505]">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
              <div className="order-2 md:order-1 flex justify-center gap-8">
                 <div className="parallax-slow relative w-[180px] md:w-[240px] aspect-[1/2.1] drop-shadow-[0_20px_40px_rgba(0,109,119,0.3)]">

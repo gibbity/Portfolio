@@ -132,7 +132,7 @@ export default function CaseStudyHero({
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className={`hero-image-container relative w-full ${fullMedia ? 'aspect-auto min-h-[50vh] md:min-h-[70vh]' : 'aspect-video md:aspect-[21/9] lg:aspect-[21/8]'} overflow-hidden rounded-sm shadow-2xl border ${isDark ? 'bg-neutral-900 border-white/5' : 'bg-[#E8E8E8] border-gray-100'}`}
+        className={`hero-image-container relative w-full ${fullMedia ? 'aspect-auto md:min-h-[70vh]' : 'aspect-video md:aspect-[21/9] lg:aspect-[21/8]'} overflow-hidden rounded-sm shadow-2xl border ${isDark ? 'bg-neutral-900 border-white/5' : 'bg-[#E8E8E8] border-gray-100'}`}
       >
         {media.type === "video" ? (
           <video

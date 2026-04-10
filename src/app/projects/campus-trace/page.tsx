@@ -127,7 +127,7 @@ export default function CampusTraceOverhaul() {
       />
 
       {/* 2. THE PROBLEM (KEPT AS IS) */}
-      <section className="video-section relative h-[100vh] w-full flex items-center overflow-hidden border-y border-white/10">
+      <section className="video-section relative aspect-video md:h-screen w-full flex items-center overflow-hidden border-y border-white/10">
          <video 
             ref={videoRef}
             autoPlay 
@@ -163,7 +163,7 @@ export default function CampusTraceOverhaul() {
       </section>
 
       {/* 3. PHASE 1: DISCOVERY - CLINICAL TABLE */}
-      <section className="reveal-section opacity-0 translate-y-10 py-32 md:py-48 px-6 md:px-24 bg-[#050505]">
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24 bg-[#050505]">
         <div className="max-w-7xl mx-auto">
            <div className="mb-24">
               <span className="char-reveal text-[12px] font-black tracking-[0.5em] text-[#00B4D8] uppercase block mb-10">01. Discovery Phase</span>
@@ -175,7 +175,7 @@ export default function CampusTraceOverhaul() {
               </p>
            </div>
 
-           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-32">
+           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-16 md:mb-32">
               <div className="lg:col-span-2 overflow-x-auto">
                  <table className="w-full text-left border-collapse">
                     <thead>
@@ -214,9 +214,9 @@ export default function CampusTraceOverhaul() {
       </section>
 
       {/* 4. PHASE 3: LOGIC & FLOW - VISUAL COMPONENT */}
-      <section className="reveal-section opacity-0 translate-y-10 py-32 md:py-48 px-6 md:px-24 border-y border-white/10">
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24 border-y border-white/10">
          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-20 items-end mb-32">
+            <div className="flex flex-col md:flex-row gap-20 items-end mb-16 md:mb-32">
                <div className="flex-1">
                   <span className="text-[12px] font-black tracking-[0.5em] text-[#00B4D8] uppercase block mb-10">03. Logic & Flow</span>
                   <h3 className="text-[36px] md:text-[64px] font-bold italic leading-none tracking-tighter uppercase max-w-4xl font-helvetica">
@@ -231,7 +231,7 @@ export default function CampusTraceOverhaul() {
             </div>
 
             {/* IDENTITY FLOW DIAGRAM */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center mb-32">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center mb-16 md:mb-32">
                {[
                  { step: "Public Access", icon: "○", desc: "Unauthenticated entry point" },
                  { step: "Identity Anchor", icon: "◈", desc: "Google OAuth Verification" },
@@ -271,7 +271,7 @@ export default function CampusTraceOverhaul() {
       </section>
 
       {/* 5. PHASE 4: VISUAL CONTRAST - DUAL UI */}
-      <section className="reveal-section opacity-0 translate-y-10 py-32 md:py-48 px-6 md:px-24 bg-white text-black">
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24 bg-white text-black">
          <div className="max-w-7xl mx-auto">
             <div className="mb-24 flex flex-col md:flex-row items-baseline justify-between border-b border-black/10 pb-16">
                <h2 className="text-[42px] md:text-[80px] font-bold italic tracking-tighter leading-none uppercase font-helvetica font-bold">
@@ -285,7 +285,7 @@ export default function CampusTraceOverhaul() {
                </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 mb-40">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 mb-20 md:mb-40">
                <div className="space-y-12">
                   <div className="space-y-6">
                      <h4 className="text-[28px] font-bold italic uppercase leading-none">The User HUD.</h4>
@@ -315,7 +315,7 @@ export default function CampusTraceOverhaul() {
       </section>
 
       {/* 6. AI SYNTHESIS: THEMATIC ANALYST */}
-      <section className="reveal-section opacity-0 translate-y-10 py-32 md:py-60 px-6 md:px-24 bg-[#050505] relative">
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-60 px-6 md:px-24 bg-[#050505] relative">
          <div className="absolute inset-0 z-0 opacity-10 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
          
          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-32 items-center relative z-10">
@@ -351,18 +351,24 @@ export default function CampusTraceOverhaul() {
       </section>
 
       {/* 7. PHASE 5: VALIDATION - CLINICAL AUDIT */}
-      <section className="reveal-section opacity-0 translate-y-10 py-40 px-6 md:px-24 bg-[#FAFAFA] text-black border-t border-black/10">
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-40 px-6 md:px-24 bg-[#FAFAFA] text-black border-t border-black/10">
          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-32 border-b border-black/10 pb-20">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-16 md:mb-32 border-b border-black/10 pb-20">
                 <div className="max-w-2xl">
                    <h2 className="text-[48px] md:text-[90px] font-bold tracking-tighter mb-8 italic font-helvetica uppercase leading-none">Diagnostic <br/> Validation.</h2>
                    <p className="text-black/40 text-[20px] italic leading-relaxed font-medium">
                       A rigorous audit of interaction performance against administrative credibility and the SUS Projection.
                    </p>
                 </div>
-                <div className="text-right">
-                    <span className="text-[100px] md:text-[160px] font-bold leading-[0.7] tracking-tighter text-[#00B4D8]">87<span className="text-[60px] md:text-[80px]">.5</span></span>
-                    <span className="block text-[11px] font-black tracking-[0.6em] uppercase text-black/20 mt-4 italic">UX SUS SCORE (FORENSIC)</span>
+                <div className="text-right flex flex-col md:flex-row gap-8 md:gap-20 items-end">
+                    <div className="flex flex-col items-end">
+                        <span className="text-[70px] md:text-[100px] font-bold leading-[0.7] tracking-tighter text-[#00B4D8]">200+</span>
+                        <span className="block text-[9px] md:text-[11px] font-black tracking-[0.4em] md:tracking-[0.6em] uppercase text-black/20 mt-4 italic">Problems Reported</span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                        <span className="text-[70px] md:text-[100px] font-bold leading-[0.7] tracking-tighter text-[#00B4D8]">25+</span>
+                        <span className="block text-[9px] md:text-[11px] font-black tracking-[0.4em] md:tracking-[0.6em] uppercase text-black/20 mt-4 italic">Heat Zones Identified</span>
+                    </div>
                 </div>
             </div>
             

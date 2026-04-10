@@ -87,12 +87,12 @@ export default function ScribePage() {
       {/* Section 00: Systemic Friction (Storytelling) */}
       <section className="relative z-10 py-24 md:py-64 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
          <div className="flex flex-col items-center justify-center text-center">
-            <motion.div
-               initial={{ opacity: 0 }}
-               whileInView={{ opacity: 1 }}
-               transition={{ duration: 2 }}
-               className="relative w-full max-w-2xl aspect-square flex items-center justify-center mb-20"
-            >
+               <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 2 }}
+                  className="relative w-full max-w-2xl aspect-[3/2] md:aspect-square flex items-center justify-center mb-12 md:mb-20"
+               >
                {/* Minimalist Chaos Illustration: Tangled Nodes with Central Decision Point */}
                <svg viewBox="0 0 400 400" className="w-full h-full stroke-black">
                   <motion.path
@@ -135,9 +135,9 @@ export default function ScribePage() {
                  initial={{ opacity: 0, scale: 0.8 }}
                  whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.2 }}
-                 className="absolute top-[0%] left-[0%] bg-white/90 backdrop-blur-md p-4 border border-black/5 rounded-sm shadow-xl max-w-[240px] z-20"
+                 className="absolute -top-4 -left-4 md:top-[0%] md:left-[0%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[140px] md:max-w-[240px] z-20"
                >
-                 <p className="text-[13px] font-helvetica italic text-gray-600 leading-snug">
+                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
                     "50 pages of research, yet the strategy remains invisible behind a wall of noise."
                  </p>
                </motion.div>
@@ -146,9 +146,9 @@ export default function ScribePage() {
                  initial={{ opacity: 0, scale: 0.8 }}
                  whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4 }}
-                 className="absolute top-[25%] right-[0%] bg-white/90 backdrop-blur-md p-4 border border-black/5 rounded-sm shadow-xl max-w-[260px] z-20"
+                 className="absolute top-[15%] -right-4 md:top-[25%] md:right-[0%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[150px] md:max-w-[260px] z-20"
                >
-                 <p className="text-[13px] font-helvetica italic text-gray-600 leading-snug">
+                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
                     "Important logic is buried in Slack threads and scattered docs. I'm losing the plot."
                  </p>
                </motion.div>
@@ -157,9 +157,9 @@ export default function ScribePage() {
                  initial={{ opacity: 0, scale: 0.8 }}
                  whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.6 }}
-                 className="absolute bottom-[5%] left-[5%] bg-white/90 backdrop-blur-md p-4 border border-black/5 rounded-sm shadow-xl max-w-[220px] z-20"
+                 className="absolute -bottom-4 left-0 md:bottom-[5%] md:left-[5%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[130px] md:max-w-[220px] z-20"
                >
-                 <p className="text-[13px] font-helvetica italic text-gray-600 leading-snug">
+                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
                     "Making high-stakes decisions shouldn't feel like guessing. I need a skeleton for my logic."
                  </p>
                </motion.div>
@@ -168,9 +168,9 @@ export default function ScribePage() {
                  initial={{ opacity: 0, scale: 0.8 }}
                  whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.8 }}
-                 className="absolute bottom-[20%] right-[5%] bg-white/90 backdrop-blur-md p-4 border border-black/5 rounded-sm shadow-xl max-w-[240px] z-20"
+                 className="absolute bottom-[10%] -right-4 md:bottom-[20%] md:right-[5%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[140px] md:max-w-[240px] z-20"
                >
-                 <p className="text-[13px] font-helvetica italic text-gray-600 leading-snug">
+                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
                     "Spending more time documenting the work than actually doing it. Context collapse is real."
                  </p>
                </motion.div>
@@ -179,9 +179,9 @@ export default function ScribePage() {
                  initial={{ opacity: 0, scale: 0.8 }}
                  whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.0 }}
-                 className="absolute top-[15%] left-[20%] bg-white/90 backdrop-blur-md p-4 border border-black/5 rounded-sm shadow-xl max-w-[240px] z-20"
+                 className="absolute top-[5%] left-[15%] md:top-[15%] md:left-[20%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[140px] md:max-w-[240px] z-20"
                >
-                 <p className="text-[13px] font-helvetica italic text-gray-600 leading-snug">
+                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
                     "I can't find the 'Why' behind this feature anymore. It was here yesterday. Now it's buried."
                  </p>
                </motion.div>
@@ -274,7 +274,7 @@ export default function ScribePage() {
       </section>
 
       {/* Section 02: The Logic Engine (Oatsen Lens) */}
-      <section className="relative z-10 py-64 bg-black text-white overflow-hidden">
+      <section className="relative z-10 py-32 md:py-64 bg-black text-white overflow-hidden">
          <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 relative z-10">
             <div className="max-w-4xl mb-24 md:mb-40">
                <span className="text-[12px] md:text-[14px] font-bold text-gray-600 uppercase tracking-[0.5em] block mb-8 md:mb-12">02 / LOGIC ENGINE</span>
@@ -331,7 +331,7 @@ export default function ScribePage() {
          </div>
 
          {/* Cinematic Full Width Image */}
-         <div className="mt-64 relative w-full h-[80vh] bg-neutral-900 border-y border-white/5 overflow-hidden flex items-center">
+         <div className="mt-24 md:mt-32 relative w-full min-h-[30vh] md:h-[80vh] bg-neutral-900 border-y border-white/5 overflow-hidden flex items-center">
             <Image 
               src="/projects/scribe/Scribe- graph light theme.png" 
               alt="GigaMap Interface" 
@@ -348,9 +348,9 @@ export default function ScribePage() {
       </section>
 
       {/* NEW: Walkthrough Video Section */}
-      <section className="relative z-10 py-32 md:py-64 bg-[#F8F8F8] px-6 md:px-12 lg:px-20 -mx-6 md:-mx-12 lg:-mx-20">
+      <section className="relative z-10 py-12 md:py-64 bg-[#F8F8F8] px-6 md:px-12 lg:px-20 -mx-6 md:-mx-12 lg:-mx-20">
          <div className="max-w-[1400px] mx-auto">
-            <div className="max-w-3xl mb-16 md:mb-24">
+            <div className="max-w-3xl mb-12 md:mb-24">
                <span className="text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-8 md:mb-12">DYNAMICS / WALKTHROUGH</span>
                <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">System Dynamics in Motion</h2>
                <p className="text-[20px] md:text-[22px] text-gray-700 leading-relaxed font-light">
@@ -369,7 +369,7 @@ export default function ScribePage() {
       </section>
 
       {/* Section 03: Strategic Protocols */}
-      <section className="relative z-10 py-40 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
+      <section className="relative z-10 py-24 md:py-40 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
          <div className="mb-24 md:mb-32">
             <span className="text-[12px] md:text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-8 md:mb-12">03 / ADVERSARIAL RIGOR & PROTOCOLS</span>
             <h2 className="font-helvetica font-bold text-[42px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Strategist Blueprint</h2>
@@ -481,9 +481,9 @@ export default function ScribePage() {
       </section>
 
       {/* Section 04: The Tactical HUD (Design System) */}
-      <section className="relative z-10 py-40 mb-32 bg-[#fafafa] border-y border-gray-200/50">
+      <section className="relative z-10 py-24 md:py-40 mb-16 md:mb-32 bg-[#fafafa] border-y border-gray-200/50">
          <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-end mb-40">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 items-end mb-24 md:mb-40">
                <div>
                   <span className="text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-12">04 / DESIGN SYSTEM</span>
                   <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] tracking-tight">Tactical Glassmorphism</h2>
@@ -506,7 +506,7 @@ export default function ScribePage() {
                </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mt-32">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mt-16 md:mt-32">
                <div>
                   <h4 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-8">Typography</h4>
                   <div className="space-y-6">
@@ -548,44 +548,90 @@ export default function ScribePage() {
          </div>
       </section>
 
-      {/* Section 05: Validation & Verdict */}
-      <section className="relative z-10 py-40 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20">
-         <div className="grid grid-cols-1 gap-32">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-32 items-center">
-                <div>
-                   <span className="text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-12">05 / VALIDATION</span>
-                   <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] mb-12 tracking-tight">The Clinical Verdict</h2>
-                   <p className="text-[22px] text-gray-700 leading-relaxed font-light mb-12">
-                      Validation was performed through a 12-week longitudinal study with academic design and engineering student, proffessors and proffesionals.
-                   </p>
-                   
-                   <div className="space-y-12 mt-20">
-                      <div className="flex items-end gap-6 border-b border-gray-100 pb-8">
-                         <span className="text-[64px] font-helvetica font-bold leading-none tracking-tighter">78.5</span>
-                         <p className="text-[11px] font-black uppercase tracking-widest text-gray-400 pb-2">SUS Score (Top 10%)</p>
-                      </div>
-                      <div className="flex items-end gap-6 border-b border-gray-100 pb-8">
-                         <span className="text-[64px] font-helvetica font-bold leading-none tracking-tighter">92%</span>
-                         <p className="text-[11px] font-black uppercase tracking-widest text-gray-400 pb-2">Context Retention</p>
-                      </div>
-                   </div>
-                </div>
+      {/* Section 05: Technical Validation */}
+      <section className="relative z-10 py-12 md:py-40 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 border-t border-gray-100">
+         <div className="mb-24 md:mb-32">
+            <span className="text-[12px] md:text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-8 md:mb-12">05 / TECHNICAL VALIDATION</span>
+            <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">Systemic Impact &<br/>Infrastructure</h2>
+            <p className="text-[18px] md:text-[22px] text-gray-700 leading-relaxed font-light max-w-3xl italic">
+               Validation was conducted via iterative testing with a focus on system usability and cognitive efficiency. The primary objective was to verify the efficacy of the spatial UI in reducing information retrieval latency compared to conventional linear structures.
+            </p>
+         </div>
 
-                <div className="relative shadow-2xl border border-gray-100 overflow-hidden bg-white p-2">
-                    <Image 
-                      src="/projects/scribe/Scribe - Graph dark theme node selectedd.png" 
-                      alt="Final Product Visual" 
-                      width={2400} 
-                      height={1400} 
-                      className="w-full h-auto object-contain rounded-md"
-                    />
-                </div>
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24 mb-16 md:mb-32">
+            {/* 1. Systemic Impact */}
+            <div className="space-y-8">
+               <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
+                  <span className="w-8 h-px bg-black"></span> Systemic Impact
+               </h3>
+               <div className="space-y-6">
+                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Logical Shift</p>
+                     <p className="text-[15px] text-gray-600 leading-relaxed">
+                        Moving from linear data structures to non-linear spatial architectures to align with human associative memory.
+                     </p>
+                  </div>
+                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Operational Outcome</p>
+                     <p className="text-[15px] text-gray-600 leading-relaxed">
+                        Successful offloading of memory requirements to a visual canvas, measurable by a reduction in time-to-retrieval for complex data sets.
+                     </p>
+                  </div>
+               </div>
+            </div>
+
+            {/* 2. Technical Constraints */}
+            <div className="space-y-8">
+               <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
+                  <span className="w-8 h-px bg-black"></span> Constraints & Compromises
+               </h3>
+               <div className="space-y-6">
+                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Performance vs. Accuracy</p>
+                     <p className="text-[15px] text-gray-600 leading-relaxed">
+                        Acknowledge the trade-off between real-time data processing and the computational cost of live-graph generation.
+                     </p>
+                  </div>
+                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Latency Management</p>
+                     <p className="text-[15px] text-gray-600 leading-relaxed">
+                        Discuss how the interface handles data-syncing or AI-inference delays to maintain "calm" user focus.
+                     </p>
+                  </div>
+               </div>
+            </div>
+
+            {/* 3. Future Roadmap */}
+            <div className="space-y-8">
+               <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
+                  <span className="w-8 h-px bg-black"></span> Future Roadmap
+               </h3>
+               <div className="space-y-6">
+                  <div className="p-6 bg-black text-white italic shadow-xl">
+                     <p className="text-[10px] font-black uppercase text-gray-500 mb-2 tracking-widest">Iteration 02</p>
+                     <p className="text-[14px] leading-relaxed">
+                        Implementation of real-time graph-pruning algorithms to prevent visual noise as the data set scales.
+                     </p>
+                  </div>
+                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Automated Contextual Linking</p>
+                     <p className="text-[15px] text-gray-600 leading-relaxed">
+                        Integration of LLM-based semantic analysis to suggest connections between disparate nodes without manual user intervention.
+                     </p>
+                  </div>
+                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Cross-Platform Parity</p>
+                     <p className="text-[15px] text-gray-600 leading-relaxed">
+                        Transitioning spatial logic from desktop environments to responsive mobile-viewports without losing information density.
+                     </p>
+                  </div>
+               </div>
             </div>
          </div>
       </section>
 
       {/* Final UI Collage */}
-      <section className="relative z-10 py-64 bg-black text-white px-6 md:px-12 lg:px-20 rounded-t-[4rem]">
+      <section className="relative z-10 py-32 md:py-64 bg-black text-white px-6 md:px-12 lg:px-20 rounded-t-[4rem]">
          <div className="max-w-[1600px] mx-auto">
             <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
                <div>

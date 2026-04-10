@@ -98,7 +98,8 @@ export default function ContextPage() {
         meta={{
           "Role": "Product Designer",
           "Timeline": "Open Source",
-          "Context": "Research Utility"
+          "Context": "Research Utility",
+          "Repository": "https://github.com/shresthkushwaha/Context-extension.git"
         }}
         media={{
           type: "video",
@@ -136,9 +137,9 @@ export default function ContextPage() {
               </div>
            </div>
            
-           <div className="reveal sticky top-40 h-fit bg-gray-50 border border-gray-100 p-12 overflow-hidden flex items-center justify-center">
+           <div className="reveal sticky top-40 h-fit bg-gray-50 border border-gray-100 p-4 md:p-12 overflow-hidden flex items-center justify-center">
               <div className="relative w-full aspect-video rounded overflow-hidden border border-black/5 bg-white scale-105 shadow-2xl">
-                 <Image src="/projects/context/Initial page without any shelvedd extension.png" alt="My Open Source Prototype" fill className="object-contain p-8" />
+                 <Image src="/projects/context/Initial page without any shelvedd extension.png" alt="My Open Source Prototype" fill className="object-contain p-4 md:p-8" />
               </div>
            </div>
         </div>
@@ -240,10 +241,10 @@ export default function ContextPage() {
       </section>
 
       {/* 04 / DATA PORTABILITY */}
-      <section className="py-64 px-6 md:px-24 border-b border-gray-100 bg-[#fafafa] relative overflow-hidden">
+      <section className="py-24 md:py-64 px-6 md:px-24 border-b border-gray-100 bg-[#fafafa] relative overflow-hidden">
          <span className="parallax-index absolute top-40 left-20 text-[200px] font-black opacity-5 pointer-events-none select-none">04</span>
          <div className="max-w-[1400px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-end mb-40 reveal">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 items-end mb-24 md:mb-40 reveal">
                <div>
                   <span className="text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-12">04 / DATA PORTABILITY</span>
                   <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] tracking-tight italic">Logical <br/> Sharing.</h2>
@@ -289,10 +290,10 @@ export default function ContextPage() {
       </section>
 
       {/* 05 / DESIGN ORCHESTRATION */}
-      <section className="py-64 px-6 md:px-24 relative overflow-hidden">
+      <section className="py-24 md:py-64 px-6 md:px-24 relative overflow-hidden">
          <span className="parallax-index absolute top-40 right-20 text-[200px] font-black opacity-5 pointer-events-none select-none">05</span>
          <div className="max-w-[1400px] mx-auto">
-            <div className="max-w-3xl mb-40 reveal">
+            <div className="max-w-3xl mb-24 md:mb-40 reveal">
                <span className="text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-12">05 / DESIGN ORCHESTRATION</span>
                <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] tracking-tight italic text-black/90 lowercase">High-density <br/> retrieval.</h2>
             </div>
@@ -322,7 +323,7 @@ export default function ContextPage() {
       </section>
 
       {/* 06 / THE VERDICT */}
-      <section className="py-64 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 border-t border-gray-50 relative overflow-hidden">
+      <section className="py-24 md:py-64 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 border-t border-gray-50 relative overflow-hidden">
          <span className="parallax-index absolute top-40 left-10 text-[200px] font-black opacity-5 pointer-events-none select-none">06</span>
          <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-32 items-center">
             <div className="reveal relative aspect-video rounded-sm overflow-hidden border border-gray-100 p-6 md:p-12 bg-[#F9FAFB] flex items-center justify-center shadow-[0_40px_80px_rgba(0,0,0,0.1)]">
@@ -368,27 +369,27 @@ export default function ContextPage() {
                 <span className="text-[11px] font-black tracking-[0.4em] text-white/10 uppercase border-l border-white/10 pl-12 h-24 flex items-center italic text-right">UNFILTERED <br/> VISUAL RECORD</span>
              </div>
 
-             <div className="space-y-40">
+             <div className="space-y-20 md:space-y-40">
                 {/* LARGE FEATURE SHOT */}
-                <div className="gallery-stage relative w-full min-h-[60vh] md:min-h-[85vh] bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-8 md:p-24 shadow-2xl group">
+                <div className="gallery-stage relative w-full aspect-video md:aspect-auto md:min-h-[85vh] bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-4 md:p-24 shadow-2xl group">
                    <div className="absolute inset-0 bg-[#E8EFFF]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-[2s]" />
-                   <div className="relative w-full h-full min-h-[400px]">
+                   <div className="relative w-full h-full min-h-[30vh] md:min-h-[400px]">
                       <Image src="/projects/context/Extension active.png" alt="My Open Source Creation" fill className="object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)]" />
                    </div>
                 </div>
 
                 {/* TWO COLUMN GRID FOR SECONDARY */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                   <div className="gallery-stage relative aspect-square md:aspect-video lg:aspect-square bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-12 group shadow-inner">
+                   <div className="gallery-stage relative aspect-video md:aspect-square bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-4 md:p-12 group shadow-inner">
                       <Image src="/projects/context/Extension- first time.png" alt="My User Journey" fill className="object-contain p-4 transition-transform duration-[3s]" />
                    </div>
-                   <div className="gallery-stage relative aspect-square md:aspect-video lg:aspect-square bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-12 group shadow-inner">
+                   <div className="gallery-stage relative aspect-video md:aspect-square bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-4 md:p-12 group shadow-inner">
                       <Image src="/projects/context/Import context.png" alt="My Logic Stack" fill className="object-contain p-4 transition-transform duration-[3s]" />
                    </div>
                 </div>
 
                 {/* ULTRAWIDE FULL WIDTH SHOT */}
-                <div className="gallery-stage relative w-full aspect-video md:aspect-[21/9] bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-12 md:p-32 group shadow-inner">
+                <div className="gallery-stage relative w-full aspect-video md:aspect-[21/9] bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-4 md:p-32 group shadow-inner">
                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-[0.02] transition-opacity duration-[2s]" />
                    <div className="relative w-full h-full">
                       <Image src="/projects/context/Shelved extensions page.png" alt="My Interface Index" fill className="object-contain transition-all duration-[3s]" />
@@ -396,7 +397,7 @@ export default function ContextPage() {
                 </div>
              </div>
              
-             <div className="mt-48 text-center max-w-3xl mx-auto border-t border-white/5 pt-32 reveal">
+             <div className="mt-24 md:mt-48 text-center max-w-3xl mx-auto border-t border-white/5 pt-16 md:pt-32 reveal">
                 <h3 className="text-[11px] font-black uppercase tracking-[0.6em] text-white/20 mb-12 italic">End of MY Open Source Narrative</h3>
                 <p className="text-[24px] md:text-[40px] font-helvetica font-bold leading-[1.1] italic text-white/80">
                    "AI-assisted development isn't about laziness; it's about the speed of intent. Released as an Open Source utility, Context is my commitment to bridging the gap between imagination and execution."
