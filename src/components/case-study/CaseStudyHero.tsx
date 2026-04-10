@@ -148,6 +148,7 @@ export default function CaseStudyHero({
             src={media.src}
             alt={title}
             fill
+            sizes="(max-width: 1024px) 100vw, 80vw"
             unoptimized={media.src.endsWith(".gif")}
             className={`${fullMedia ? 'object-contain p-0' : 'object-contain p-4 md:p-12'} opacity-95 transition-all duration-700`}
             priority

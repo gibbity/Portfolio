@@ -77,8 +77,8 @@ export default function ScribePage() {
           "Repository": "https://github.com/shresthkushwaha/Scribe"
         }}
         media={{
-          type: "gif",
-          src: "/projects/scribe/Scribe.gif"
+          type: "video",
+          src: "/projects/scribe/scribe.mp4"
         }}
         theme="light"
         fullMedia={true}

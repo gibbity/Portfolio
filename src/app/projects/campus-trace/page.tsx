@@ -249,7 +249,7 @@ export default function CampusTraceOverhaul() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                <div className="relative aspect-[4/3] bg-white/[0.03] border border-white/10 group overflow-hidden transition-all duration-1000 shadow-2xl">
-                  <Image src="/projects/campus-trace/personal-view.png" alt="Mobile Entry Flow" fill className="object-contain p-4 md:p-8 transition-transform duration-[2s] group-hover:scale-105" />
+                  <Image src="/projects/campus-trace/personal-view.png" alt="Mobile Entry Flow" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-4 md:p-8 transition-transform duration-[2s] group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors pointer-events-none" />
                   <div className="absolute bottom-6 left-6 flex items-center gap-3">
                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
@@ -294,13 +294,13 @@ export default function CampusTraceOverhaul() {
                      </p>
                   </div>
                   <div className="relative aspect-[16/10] bg-gray-50 border-[1px] border-black/10 shadow-2xl overflow-hidden group">
-                     <Image src="/projects/campus-trace/global-view.png" alt="User Interface" fill className="object-contain p-4 md:p-8 transition-all duration-1000" />
+                     <Image src="/projects/campus-trace/global-view.png" alt="User Interface" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-4 md:p-8 transition-all duration-1000" />
                      <div className="absolute inset-0 border-[1px] border-black/5 pointer-events-none" />
                   </div>
                </div>
                <div className="space-y-12 lg:pt-32">
                   <div className="relative aspect-[16/10] bg-gray-50 border-[1px] border-black/10 shadow-2xl overflow-hidden group">
-                     <Image src="/projects/campus-trace/admin-page.png" alt="Admin Dashboard" fill className="object-contain p-4 md:p-8 transition-all duration-1000" />
+                     <Image src="/projects/campus-trace/admin-page.png" alt="Admin Dashboard" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-4 md:p-8 transition-all duration-1000" />
                      <div className="absolute inset-0 border-[1px] border-black/5 pointer-events-none" />
                   </div>
                   <div className="space-y-6">
@@ -335,10 +335,10 @@ export default function CampusTraceOverhaul() {
             </div>
             <div className="relative aspect-[4/5] md:aspect-square flex items-center justify-center">
                <div className="parallax-img relative w-[85%] aspect-[4/3] border border-white/10 shadow-[0_0_100px_rgba(0,180,216,0.15)] overflow-hidden z-10 translate-x-[-10%] translate-y-[-10%] bg-white/5">
-                  <Image src="/projects/campus-trace/ai-heatmap-1.png" alt="Report Cluster Analysis 01" fill className="object-contain p-4" />
+                  <Image src="/projects/campus-trace/ai-heatmap-1.png" alt="Report Cluster Analysis 01" fill sizes="(max-width: 1024px) 80vw, 40vw" className="object-contain p-4" />
                </div>
                <div className="parallax-img absolute w-[85%] aspect-[4/3] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden z-20 translate-x-[10%] translate-y-[10%] bg-white/5 group">
-                  <Image src="/projects/campus-trace/ai-heatmap-2.png" alt="Report Cluster Analysis 02" fill className="object-contain p-4 transition-transform duration-[3s] group-hover:scale-110" />
+                  <Image src="/projects/campus-trace/ai-heatmap-2.png" alt="Report Cluster Analysis 02" fill sizes="(max-width: 1024px) 80vw, 40vw" className="object-contain p-4 transition-transform duration-[3s] group-hover:scale-110" />
                   <div className="absolute inset-0 border-[1px] border-[#00B4D8]/30 pointer-events-none" />
                </div>
                

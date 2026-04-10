@@ -52,6 +52,7 @@ export const viewport = {
 };
 
 import SmoothScroll from "@/components/SmoothScroll";
+import Preloader from "@/components/Preloader";
 
 export default function RootLayout({
   children,
@@ -64,6 +65,7 @@ export default function RootLayout({
         className={`${helvetica.variable} ${dmSans.variable} antialiased bg-white text-gray-900 font-helvetica`}
         suppressHydrationWarning={true}
       >
+        <Preloader />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

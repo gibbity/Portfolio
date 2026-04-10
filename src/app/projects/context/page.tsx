@@ -101,8 +101,8 @@ export default function ContextPage() {
           "Context": "Research Utility"
         }}
         media={{
-          type: "gif",
-          src: "/projects/context/Context.gif"
+          type: "video",
+          src: "/projects/context/context.mp4"
         }}
         theme="light"
         fullMedia={true}

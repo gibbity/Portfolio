@@ -1,18 +1,19 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 
 import HeroBackground from "./HeroBackground";
 import Lottie from "lottie-react";
 import spandhikaData from "../app/projects/spandhika/spandhika.json";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
 const projects = [
@@ -23,7 +24,7 @@ const projects = [
     tags: ["Figma", "Local AI"],
     description: "Node-based knowledge management tool designed to move away from folder hierarchies.",
     color: "#D9D9D9",
-    thumbnail: "/projects/scribe/Scribe.gif"
+    thumbnail: "/projects/scribe/scribe.mp4"
   },
   {
     id: "spandhika",
@@ -41,7 +42,7 @@ const projects = [
     tags: ["React", "MapLibre", "Supabase"],
     description: "A modern campus issue reporting system for VIT Vellore with real-time geospatial archival.",
     color: "#000000",
-    thumbnail: "/projects/campus-trace/camp-finale.mp4"
+    thumbnail: "/projects/campus-trace/campus-trace.mp4"
   },
   {
     id: "context",
@@ -50,7 +51,7 @@ const projects = [
     tags: ["Chrome API", "LocalPersistence"],
     description: "Eliminating context-collapse through intentional capture and logical session offloading.",
     color: "#E5E5E5",
-    thumbnail: "/projects/context/Context.gif"
+    thumbnail: "/projects/context/context.mp4"
   },
 ];
 
@@ -59,6 +60,39 @@ export default function SelectedWork() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const activeProjectRef = useRef(0);
+  const scrollTriggerRef = useRef<any>(null);
+  const touchStartX = useRef<number | null>(null);
+  const swipeRotationRef = useRef(0);
+
+  const navigateTo = useCallback((direction: "prev" | "next") => {
+    const numProjects = projects.length;
+    let nextIndex = activeProjectRef.current + (direction === "next" ? 1 : -1);
+    
+    // Clamp or loop? User said "change the case", looping might be better but linear scroll is easier to sync.
+    // I will clamp it to match existing scroll behavior.
+    nextIndex = Math.min(Math.max(nextIndex, 0), numProjects - 1);
+    
+    if (nextIndex === activeProjectRef.current || !scrollTriggerRef.current) return;
+
+    const st = scrollTriggerRef.current;
+    const progress = nextIndex / (numProjects - 1);
+    const scrollPos = st.start + (st.end - st.start) * progress;
+
+    gsap.to(window, {
+      scrollTo: scrollPos,
+      duration: 1,
+      ease: "power3.inOut"
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") navigateTo("prev");
+      if (e.key === "ArrowRight") navigateTo("next");
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigateTo]);
 
   useEffect(() => {
     if (!sectionRef.current || !carouselRef.current) return;
@@ -109,6 +143,8 @@ export default function SelectedWork() {
       }
     });
 
+    scrollTriggerRef.current = scrollInstance;
+
     const resizeObserver = new ResizeObserver(update3D);
     resizeObserver.observe(sectionRef.current);
 
@@ -118,11 +154,40 @@ export default function SelectedWork() {
     };
   }, []);
 
+  // Mobile swipe handler — drives the same --rotation var as ScrollTrigger
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const deltaX = touchStartX.current - e.changedTouches[0].clientX;
+    touchStartX.current = null;
+    if (Math.abs(deltaX) < 40) return; // ignore micro-swipes
+
+    const numProjects = projects.length;
+    const angleStep = 360 / numProjects;
+    const direction = deltaX > 0 ? 1 : -1; // swipe left = next, swipe right = prev
+    const nextIndex = Math.min(Math.max(activeProjectRef.current + direction, 0), numProjects - 1);
+
+    if (nextIndex === activeProjectRef.current) return;
+    activeProjectRef.current = nextIndex;
+    setActiveProject(nextIndex);
+
+    // Match exactly what ScrollTrigger sets
+    swipeRotationRef.current = -(nextIndex * angleStep);
+    if (carouselRef.current) {
+      carouselRef.current.style.setProperty("--rotation", `${swipeRotationRef.current}deg`);
+    }
+  }, []);
+
   return (
     <section 
       id="projects"
       ref={sectionRef} 
       className="relative w-full h-screen bg-white overflow-hidden flex flex-col border-t border-[#EDEDED] select-none"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
 
 
@@ -135,6 +200,34 @@ export default function SelectedWork() {
 
       {/* 3D STAGE (Centred) */}
       <div className="flex-1 relative z-10 flex items-center justify-center overflow-visible perspective-[1200px] md:perspective-[2800px]">
+        
+        {/* Navigation Arrows (Desktop) */}
+        <div className="absolute inset-x-4 md:inset-x-[208px] top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-30">
+          <motion.button 
+            whileHover={{ scale: 1.1, x: -5 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => navigateTo("prev")}
+            className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-black/5 shadow-sm transition-all duration-300 pointer-events-auto hover:bg-white hover:border-black/10 group ${activeProject === 0 ? "opacity-20 cursor-not-allowed" : "opacity-100"}`}
+            disabled={activeProject === 0}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-black/30 group-hover:stroke-black transition-colors">
+               <path d="M15 18l-6-6 6-6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </motion.button>
+
+          <motion.button 
+            whileHover={{ scale: 1.1, x: 5 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => navigateTo("next")}
+            className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-black/5 shadow-sm transition-all duration-300 pointer-events-auto hover:bg-white hover:border-black/10 group ${activeProject === projects.length - 1 ? "opacity-20 cursor-not-allowed" : "opacity-100"}`}
+            disabled={activeProject === projects.length - 1}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-black/30 group-hover:stroke-black transition-colors">
+               <path d="M9 18l6-6-6-6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </motion.button>
+        </div>
+
         <div 
           ref={carouselRef} 
           className="carousel-frame relative w-[85vw] md:w-[45vw] max-w-[760px] aspect-video preserve-3d will-change-transform"
@@ -178,7 +271,8 @@ export default function SelectedWork() {
                               src={project.thumbnail} 
                               alt={project.name} 
                               fill 
-                              unoptimized={true}
+                              sizes="(max-width: 768px) 85vw, 45vw"
+                              unoptimized={project.thumbnail.endsWith(".gif")}
                               className="object-contain opacity-100 transition-opacity duration-1000" 
                           />
                         )}
@@ -257,6 +351,8 @@ export default function SelectedWork() {
           --tz: 288px;
           transform-style: preserve-3d;
           transform: translateZ(calc(-1 * var(--tz))) rotateY(var(--rotation));
+          /* Smooth transition for swipe-driven rotation on mobile */
+          transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .preserve-3d {
           transform-style: preserve-3d;
