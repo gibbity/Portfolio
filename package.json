@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@mux/mux-player-react": "^3.11.7",
+    "@serwist/next": "^9.5.7",
+    "@serwist/precaching": "^9.5.7",
+    "@serwist/sw": "^9.5.7",
     "@studio-freight/lenis": "^1.0.42",
     "framer-motion": "^12.34.0",
     "gsap": "^3.14.2",

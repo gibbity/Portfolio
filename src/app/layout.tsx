@@ -42,6 +42,12 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "Shresth Kushwaha - Product Designer",
   description: "Research. Ux. Ui. Prototyping.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Portfolio",
+  },
 };
 
 export const viewport = {
@@ -49,6 +55,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: "#000000",
 };
 
 import SmoothScroll from "@/components/SmoothScroll";
