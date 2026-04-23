@@ -165,7 +165,7 @@ const NodeItem: React.FC<NodeItemProps> = ({
           (isProjectNode && (currentIsMobile || currentIsSelected || isInProjectGallery))
         );
         
-        if (canOpenUrl) {
+        if (canOpenUrl && node.original.url) {
           if (node.original.url.startsWith('http') || node.original.url.startsWith('mailto:') || node.original.url.startsWith('tel:')) {
             if (node.original.url.startsWith('mailto:') || node.original.url.startsWith('tel:')) {
               window.location.href = node.original.url;
