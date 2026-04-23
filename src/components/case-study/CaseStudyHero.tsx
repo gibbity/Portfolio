@@ -48,7 +48,7 @@ export default function CaseStudyHero({
             </h1>
             <div className="flex gap-4 items-center">
               <span className={`w-12 h-px ${isDark ? 'bg-white/20' : 'bg-black/20'}`}></span>
-              <p className={`text-[18px] md:text-[24px] font-light tracking-wide uppercase ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
+              <p className={`text-[18px] md:text-[24px] font-normal tracking-wide uppercase ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
                 {subtitle}
               </p>
             </div>
@@ -60,7 +60,7 @@ export default function CaseStudyHero({
             transition={{ delay: 0.5, duration: 1 }}
             className="grid grid-cols-1 lg:grid-cols-[1.5fr,1fr] gap-12 md:gap-24 items-start border-t border-white/5 pt-12 md:pt-16"
           >
-            <p className={`text-[18px] md:text-[28px] leading-tight font-light ${isItalic ? 'italic' : ''} ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
+            <p className={`text-[18px] md:text-[28px] leading-tight font-normal ${isItalic ? 'italic' : ''} ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
               {description}
             </p>
             <div className={`flex flex-wrap gap-12 md:gap-16 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] ${isDark ? 'text-white/40' : 'text-black/40'}`}>
@@ -93,7 +93,7 @@ export default function CaseStudyHero({
             </h1>
             <div className="flex gap-4 items-center">
               <span className={`w-12 h-px ${isDark ? 'bg-white/20' : 'bg-black/20'}`}></span>
-              <p className={`text-[16px] md:text-[20px] font-light tracking-wide uppercase ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
+              <p className={`text-[16px] md:text-[20px] font-normal tracking-wide uppercase ${isDark ? 'text-white/50' : 'text-gray-400'}`}>
                 {subtitle}
               </p>
             </div>
@@ -105,7 +105,7 @@ export default function CaseStudyHero({
             transition={{ delay: 0.5, duration: 1 }}
             className="flex flex-col gap-8 md:gap-12 pt-4 md:pt-12"
           >
-            <p className={`text-[18px] md:text-[22px] leading-relaxed font-light ${isItalic ? 'italic' : ''} ${isDark ? 'text-white/60' : 'text-gray-700'}`}>
+            <p className={`text-[18px] md:text-[22px] leading-relaxed font-normal ${isItalic ? 'italic' : ''} ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
               {description}
             </p>
             <div className={`flex flex-wrap gap-8 md:gap-16 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] ${isDark ? 'text-white/40' : 'text-black/40'}`}>

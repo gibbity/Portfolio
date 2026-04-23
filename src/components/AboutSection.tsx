@@ -15,9 +15,9 @@ const experiences = [
         role: "UI/UX Design Intern",
         period: "Oct 2025 – Dec 2025",
         achievements: [
-            "Architected a scalable design system with 40+ atomic components to ensure production-wide brand coherence.",
-            "Engineered high-density interface redesigns for complex business intelligence workflows, prioritizing data clarity.",
-            "Facilitated seamless designer-to-developer hand-offs through rigorous documentation and specification."
+            "Architected a scalable design system with 40+ atomic components to ensure production-wide visual coherence.",
+            "Designed high-density interfaces for complex business intelligence workflows, prioritizing data clarity and ease of use.",
+            "Facilitated seamless designer-to-developer hand-offs through detailed documentation and design specifications."
         ]
     },
     {
@@ -25,9 +25,9 @@ const experiences = [
         role: "UI/UX Design Intern",
         period: "Jun 2025 – Aug 2025",
         achievements: [
-            "Synthesized 15+ specialized screens for medical diagnostic instrumentation and real-time data visualization.",
-            "Restructured navigation hierarchy, resulting in a documented 20% increase in operator efficiency.",
-            "Validated interface reliability through iterative clinical usability testing and edge-case modeling."
+            "Designed 15+ specialized screens for health diagnostic tools and real-time data visualization.",
+            "Restructured navigation hierarchy, resulting in a documented 20% increase in user efficiency.",
+            "Validated interface reliability through iterative user testing and edge-case modeling."
         ]
     }
 ];
@@ -35,7 +35,7 @@ const experiences = [
 const technicalStack = [
     {
         category: "Skills",
-        skills: ["UX Research & Discovery", "Product Design", "Rapid-Prototyping", "Design systems", "AI-assisted Design Workflow", "Problem Identification", "AI assisted development", "Interaction Design & Motion", "Design thinking", "User Testing", "Prompt Architecture", "Generative UI", "Model-Aware Prototyping", "Machine Experience (MX) Optimization", "Systems Architecture & Token Governance", "Technical Accessibility (WCAG 2.2)"]
+        skills: ["UX Research & Discovery", "Product Design", "Rapid Prototyping", "Design Systems", "AI-Integrated Design Workflow", "Problem Identification", "AI-Assisted Development", "Interaction Design & Motion", "Design Thinking", "User Testing", "Prompt Design", "Generative UI", "Model-Aware Prototyping", "UX Optimization", "Design Systems & Token Management", "Technical Accessibility (WCAG 2.2)"]
     },
     {
         category: "Tools",
@@ -153,7 +153,7 @@ export default function AboutSection() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-8">
             <div className="max-w-3xl" ref={headerRef}>
               <span className="gsap-reveal-id text-[11px] font-black uppercase tracking-[0.4em] text-black/30 block mb-6">
-                Operational Profile / 01
+                Professional Profile / 01
               </span>
               <h2 className="text-[42px] md:text-[72px] font-helvetica font-bold leading-[0.9] tracking-tighter text-[#222]">
                 <span className="gsap-reveal-title block text-[#64172d] italic font-light">Product Designer</span>
@@ -180,7 +180,7 @@ export default function AboutSection() {
               {/* Experience Log */}
               <div className="space-y-16" ref={experienceRef}>
                 <span className="gsap-reveal-exp-header text-[11px] font-black uppercase tracking-[0.3em] text-black/30 block mb-8">
-                  Operational History
+                  Experience
                 </span>
                 
                 <div className="space-y-12">
@@ -220,7 +220,7 @@ export default function AboutSection() {
               >
                 <div className="space-y-16">
                   <div>
-                    <span className="text-[11px] font-black uppercase tracking-[0.3em] text-black/30 block mb-10">Technical Specifications</span>
+                    <span className="text-[11px] font-black uppercase tracking-[0.3em] text-black/30 block mb-10">Capabilities</span>
                     <div className="space-y-12">
                       {technicalStack.map((group, i) => (
                         <div key={i}>

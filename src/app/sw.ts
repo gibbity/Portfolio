@@ -25,8 +25,16 @@ const serwist = new Serwist({
       }),
     },
     {
-      // Cache-First for project-specific media (videos/images)
-      matcher: ({ url }) => url.pathname.startsWith("/projects/"),
+      // Stale-While-Revalidate for project routes (HTML/JS)
+      // This ensures we always check for updates while showing cached content
+      matcher: ({ url }) => url.pathname.startsWith("/projects/") && !url.pathname.match(/\.(mp4|webm|jpg|jpeg|png|gif|svg|webp)$/),
+      handler: new StaleWhileRevalidate({
+        cacheName: "project-pages",
+      }),
+    },
+    {
+      // Cache-First purely for binary project media
+      matcher: ({ url }) => url.pathname.startsWith("/projects/") && url.pathname.match(/\.(mp4|webm|jpg|jpeg|png|gif|svg|webp)$/),
       handler: new CacheFirst({
         cacheName: "project-media",
       }),

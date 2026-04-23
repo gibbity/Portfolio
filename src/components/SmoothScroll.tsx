@@ -49,6 +49,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
         }
         // Fallback for native scroll behaviors
         window.scrollTo(0, 0);
+
+        // FORCED REFRESH: This ensures all GSAP triggers on the new page
+        // are correctly measured once the DOM has settled.
+        const timer = setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 100);
+
+        return () => clearTimeout(timer);
     }, [pathname]);
 
     return <>{children}</>;

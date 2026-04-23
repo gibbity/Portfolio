@@ -59,7 +59,9 @@ export const viewport = {
 };
 
 import SmoothScroll from "@/components/SmoothScroll";
+import CustomCursor from "@/components/CustomCursor";
 import Preloader from "@/components/Preloader";
+import PageWrapper from "@/components/PageWrapper";
 
 export default function RootLayout({
   children,
@@ -73,7 +75,10 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <Preloader />
-        <SmoothScroll>{children}</SmoothScroll>
+        <CustomCursor />
+        <SmoothScroll>
+          <PageWrapper>{children}</PageWrapper>
+        </SmoothScroll>
       </body>
     </html>
   );

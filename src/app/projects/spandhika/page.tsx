@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,9 +18,6 @@ if (typeof window !== "undefined") {
 
 export default function SpandhikaProfessionalUX() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  // Scroll parallax removed in favor of standardized hero structure or keeping if needed
-  // For Spandhika, we'll keep the Lottie as a background decorative element but use the standard hero structure
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -85,13 +83,13 @@ export default function SpandhikaProfessionalUX() {
 
         <CaseStudyHero
           title="Spandhika"
-          subtitle="Medical-Grade Telemetry"
-          description="Redesigning a clinical diagnostic environment for the next generation of biomechanical researchers."
+          subtitle="Redesigning for Precision"
+          description="Transforming a fragmented medical dashboard into a high-performance tool for health researchers."
           layout="stacked"
           meta={{
-            "Role": "UI/UX Design Intern",
+            "Role": "Product Designer",
             "Timeline": "2024",
-            "Context": "High-Fidelity Research"
+            "Focus": "Information Architecture"
           }}
           media={{
             type: "image",
@@ -101,79 +99,157 @@ export default function SpandhikaProfessionalUX() {
         />
       </div>
 
-      {/* 2. OVERVIEW */}
-      <section className="reveal-section opacity-0 translate-y-10 py-10 md:py-32 px-6 md:px-24 bg-[#080808]">
+      {/* 00. THE HUMAN CONTEXT */}
+      <section className="relative z-10 py-24 md:py-64 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
+         <div className="flex flex-col items-center justify-center text-center">
+               <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 2 }}
+                  className="relative w-full max-w-2xl aspect-square flex items-center justify-center mb-20"
+               >
+               {/* Minimalist Medical Data SVG: Pulse and Nodes */}
+               <svg viewBox="0 0 400 400" className="w-full h-full stroke-[#006D77]/20">
+                  <motion.path
+                    d="M 50 200 Q 100 150 150 200 T 250 200 T 350 200"
+                    fill="none"
+                    strokeWidth="1"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 2, ease: "easeInOut" }}
+                  />
+                  <motion.circle 
+                    cx="200" cy="200" r="100" 
+                    className="fill-none stroke-[#006D77]/10"
+                    strokeDasharray="4 4"
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  />
+                  <motion.circle 
+                    cx="200" cy="200" r="4" 
+                    className="fill-[#006D77]"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ delay: 1 }}
+                  />
+               </svg>
+
+               <motion.div 
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 transition={{ delay: 0.5 }}
+                 className="absolute top-[10%] left-0 bg-white/5 backdrop-blur-md p-4 border border-white/10 rounded-sm shadow-xl max-w-[240px] z-20 text-left"
+               >
+                 <p className="text-[13px] font-helvetica italic text-white/60 leading-snug">
+                    "When data is life-critical, a confusing interface isn't just a nuisance—it's a barrier to insight."
+                 </p>
+               </motion.div>
+
+               <motion.div 
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 transition={{ delay: 0.8 }}
+                 className="absolute bottom-[20%] right-0 bg-white/5 backdrop-blur-md p-4 border border-white/10 rounded-sm shadow-xl max-w-[260px] z-20 text-left"
+               >
+                 <p className="text-[13px] font-helvetica italic text-white/60 leading-snug">
+                    "I spend more time finding the right chart than actually analyzing the patient's recovery."
+                 </p>
+               </motion.div>
+
+               <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.2, duration: 0.8 }}
+                  className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+                >
+                  <h3 className="font-helvetica font-bold text-[32px] md:text-[64px] tracking-tighter text-white uppercase italic">The Barrier to Care</h3>
+                </motion.div>
+            </motion.div>
+
+            <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               transition={{ delay: 1.5 }}
+               className="max-w-3xl"
+            >
+               <p className="text-[22px] text-white/40 font-normal italic leading-relaxed">
+                 Medical dashboards often suffer from "feature creep," burying vital health metrics under layers of technical complexity. I redesigned Spandhika to strip away the noise, ensuring that researchers can focus on what matters most: the human data.
+               </p>
+            </motion.div>
+         </div>
+      </section>
+
+      {/* 01. THE DIGITAL WALL */}
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24 bg-[#080808]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20">
            <div className="lg:col-span-4 space-y-12">
-              <span className="text-[11px] font-bold tracking-[0.5em] text-[#006D77] uppercase block">Diagnostics Context</span>
+               <span className="text-[11px] font-bold tracking-[0.5em] text-[#006D77] uppercase block">The Challenge</span>
               <div className="space-y-6 border-l border-white/10 pl-6">
                  <div>
-                    <span className="block text-[9px] text-white/30 uppercase tracking-widest mb-1">Position</span>
-                    <p className="text-[15px] font-medium">UI/UX Design Intern</p>
+                    <span className="block text-[9px] text-white/30 uppercase tracking-widest mb-1">Observation</span>
+                    <p className="text-[15px] font-medium">Cognitive Overload</p>
                  </div>
-                 <div>
-                    <span className="block text-[9px] text-white/30 uppercase tracking-widest mb-1">Core Focus</span>
-                    <p className="text-[15px] font-medium leading-tight">Architecture & Clinical HUD Systems</p>
-                 </div>
+                  <div>
+                     <span className="block text-[9px] text-white/30 uppercase tracking-widest mb-1">Objective</span>
+                     <p className="text-[15px] font-medium leading-tight">Clarity over Complexity</p>
+                  </div>
               </div>
            </div>
            <div className="lg:col-span-8">
-               <div className="mb-10 px-6 py-4 border-l-2 border-[#006D77] bg-[#006D77]/5 inline-block">
-                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-[#006D77] mb-1">Administrative Notice</p>
-                  <p className="text-[13px] text-white/60 italic">This project is under a non-disclosure agreement (NDA). Detailed systemic logic and internal proprietary workflows have been omitted from this public archival.</p>
-               </div>
-              <h3 className="text-[28px] md:text-[42px] font-helvetica font-bold italic text-white mb-10 leading-tight">
-                Correcting the "Functional Obscurity" of legacy biomechanical telemetry.
-              </h3>
-              <p className="text-[15px] md:text-[16px] text-white/50 leading-relaxed font-light max-w-2xl italic">
-                 The legacy application captured critical medical data, yet the utilitarian interface lacked hierarchical anchoring—rendering the science inaccessible. This case study documents the establishment of a "Medical HUD" system that prioritizes diagnostic clarity under high-stress clinical conditions.
-              </p>
+               <h3 className="text-[28px] md:text-[56px] font-helvetica font-bold italic text-white mb-10 leading-[0.9] tracking-tighter uppercase">
+                 Breaking the <br/> Legacy Loop.
+               </h3>
+               <p className="text-[18px] md:text-[22px] text-white/40 leading-relaxed font-normal max-w-2xl italic">
+                  The original interface was built for engineers, not practitioners. My goal was to translate that technical power into a design that felt intuitive, fast, and human.
+               </p>
            </div>
         </div>
       </section>
 
-      {/* 3. LEGACY AUDIT */}
-      <section className="reveal-section opacity-0 translate-y-10 py-10 md:py-32 px-6 md:px-24">
+
+      {/* 02. FRAGMENTED ROOTS */}
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24">
          <div className="max-w-7xl mx-auto">
-            <h2 className="text-[32px] md:text-[50px] font-bold mb-16 tracking-tighter">The Systemic Debt.</h2>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-20">
+            <h2 className="text-[42px] md:text-[80px] font-bold mb-16 tracking-tighter font-helvetica uppercase italic leading-none">Scattered <br/> Logic.</h2>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-24">
                 {[
                   "register-old.png", "foot-old.png", "bluetooth search-old-1.png", 
                   "graph(angle)-old.png", "profile-old.png"
                 ].map((img, i) => (
-                    <div key={i} className="relative aspect-[9/19] rounded-xl overflow-hidden bg-white/5 border border-white/10 opacity-30">
+                    <div key={i} className="relative aspect-[9/19] rounded-xl overflow-hidden bg-white/5 border border-white/10 opacity-40 hover:opacity-100 transition-opacity">
                         <Image src={`/projects/spandhika/${img}`} alt="Legacy" fill className="object-contain p-2" />
                     </div>
                 ))}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-[14px] text-white/40">
-               <p><span className="text-red-500/60 font-bold block mb-1 uppercase tracking-widest">Cognitive Clutter</span> Dense data presentation without clinical hierarchy.</p>
-               <p><span className="text-red-500/60 font-bold block mb-1 uppercase tracking-widest">Static Telemetry</span> Heatmaps lacked interactive diagnostic affordances.</p>
-               <p><span className="text-red-500/60 font-bold block mb-1 uppercase tracking-widest">User Friction</span> Mission-critical pairing tools were buried within sub-menus.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-[18px] text-white/40 italic leading-relaxed">
+                <p><span className="text-[#006D77] font-bold block mb-4 uppercase tracking-[0.3em] text-[11px] not-italic">Cognitive Friction</span> Dense layers of data with no visual hierarchy made it impossible to scan quickly.</p>
+                <p><span className="text-[#006D77] font-bold block mb-4 uppercase tracking-[0.3em] text-[11px] not-italic">Static Feedback</span> The interface felt disconnected from the real-time nature of medical research.</p>
+                <p><span className="text-[#006D77] font-bold block mb-4 uppercase tracking-[0.3em] text-[11px] not-italic">Hidden Utilities</span> Essential connection tools were buried, causing delays during critical data capture.</p>
             </div>
          </div>
       </section>
 
-      {/* 4. CLINICAL HUD - SHARP REDESIGN */}
-      <section id="diagnostic-hub" className="reveal-section opacity-0 translate-y-10 py-10 md:py-32 px-6 md:px-24 bg-white text-black rounded-t-[40px] md:rounded-t-[80px]">
+      {/* 03. THE REDESIGN: CLINICAL HUD */}
+      <section id="diagnostic-hub" className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24 bg-white text-black rounded-t-[40px] md:rounded-t-[80px]">
          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16 md:mb-24 max-w-3xl mx-auto">
-               <span className="text-[12px] font-black tracking-[0.4em] text-[#006D77] uppercase mb-4 block">The Redesign Strategy</span>
-               <h2 className="text-[36px] md:text-[60px] font-bold tracking-tighter leading-none mb-8 italic font-helvetica uppercase">Diagnostic <br/> HUD Mode.</h2>
-               <p className="text-[16px] md:text-[18px] text-black/50 font-medium leading-relaxed">
-                  Establishing a unified, high-contrast system designed for instantaneous diagnostic interpretation across dual environmental protocols.
-               </p>
+            <div className="mb-24 md:mb-40 max-w-4xl">
+               <span className="text-[11px] font-black tracking-[0.4em] text-[#006D77] uppercase mb-12 block">The Solution</span>
+                <h2 className="text-[48px] md:text-[100px] font-bold tracking-tighter leading-[0.85] mb-12 italic font-helvetica uppercase">Precision <br/> Redefined.</h2>
+                <p className="text-[20px] md:text-[24px] text-black/50 font-normal leading-relaxed italic max-w-2xl">
+                   I developed a unified, high-contrast interface system that adapts to the high-pressure environment of medical clinics.
+                </p>
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-32 pb-12">
                 <div className="flex flex-col items-center gap-8">
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#006D77]">Dark Protocol Index</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#006D77]">Dark Mode</span>
                     <div className="relative w-[200px] md:w-[240px] aspect-[1/2.1] drop-shadow-2xl">
                         <Image src="/projects/spandhika/Home page dark.png" alt="Home" fill className="object-contain" />
                     </div>
                 </div>
                 <div className="flex flex-col items-center gap-8">
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#006D77]">Light Protocol Index</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#006D77]">Light Mode</span>
                     <div className="relative w-[200px] md:w-[240px] aspect-[1/2.1] drop-shadow-2xl md:translate-y-12">
                         <Image src="/projects/spandhika/Home page light.png" alt="Home" fill className="object-contain" />
                     </div>
@@ -195,8 +271,8 @@ export default function SpandhikaProfessionalUX() {
                />
             </div>
             <div className="absolute inset-x-0 bottom-0 py-24 px-6 md:px-24 bg-gradient-to-t from-black via-black/40 to-transparent">
-               <span className="text-[10px] font-black tracking-[0.5em] text-[#006D77] uppercase mb-4 block">System Specification</span>
-               <h3 className="text-[32px] md:text-[56px] font-bold tracking-tighter text-white uppercase italic font-helvetica">High-Intensity Dark Mode.</h3>
+                <span className="text-[10px] font-black tracking-[0.5em] text-[#006D77] uppercase mb-4 block">Design Detail</span>
+                <h3 className="text-[32px] md:text-[56px] font-bold tracking-tighter text-white uppercase italic font-helvetica">High-Contrast Dark Mode.</h3>
             </div>
          </div>
 
@@ -211,19 +287,60 @@ export default function SpandhikaProfessionalUX() {
                />
             </div>
             <div className="absolute inset-x-0 bottom-0 py-24 px-6 md:px-24 bg-gradient-to-t from-white via-white/40 to-transparent">
-               <span className="text-[10px] font-black tracking-[0.5em] text-[#006D77] uppercase mb-4 block">System Specification</span>
-               <h3 className="text-[32px] md:text-[56px] font-bold tracking-tighter text-black uppercase italic font-helvetica">Clinical Daylight Mode.</h3>
+                <span className="text-[10px] font-black tracking-[0.5em] text-[#006D77] uppercase mb-4 block">Adaptive UI</span>
+                <h3 className="text-[32px] md:text-[56px] font-bold tracking-tighter text-black uppercase italic font-helvetica">Daylight Efficiency.</h3>
             </div>
          </div>
       </section>
 
-      {/* 5. METRICS ANALYSIS */}
-      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-40 px-6 md:px-24 bg-[#FAFAFA] text-black border-t border-black/5">
+      {/* 04. THE DESIGN ENGINE */}
+      <section className="reveal-section opacity-0 translate-y-10 py-24 md:py-64 px-6 md:px-24 bg-[#050505] text-white">
+          <div className="max-w-7xl mx-auto">
+             <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
+                <div className="space-y-12">
+                   <span className="text-[11px] font-bold tracking-[0.5em] text-[#006D77] uppercase block">Design Logic</span>
+                   <h2 className="text-[42px] md:text-[72px] font-bold italic tracking-tighter leading-none uppercase font-helvetica">The Logic of <br/> Care.</h2>
+                   <div className="space-y-8 text-white/40 leading-relaxed font-normal italic border-l border-[#006D77] pl-10">
+                      <p className="text-[18px]">
+                         Health data is noisy. My approach focused on **Information Heirarchy**—surfacing the most critical patient metrics first, while keeping deeper diagnostic tools just a tap away.
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 not-italic">
+                         <div className="p-6 bg-white/5 border border-white/10">
+                            <span className="text-[10px] font-black uppercase text-[#006D77] mb-2 block">01. Signal</span>
+                            <p className="text-[13px] text-white/60">Prioritizing gait metrics and real-time pulse.</p>
+                         </div>
+                         <div className="p-6 bg-white/5 border border-white/10">
+                            <span className="text-[10px] font-black uppercase text-[#006D77] mb-2 block">02. Noise</span>
+                            <p className="text-[13px] text-white/60">Secondary settings and logs tucked into side drawers.</p>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <div className="relative aspect-square flex items-center justify-center">
+                   <div className="w-full h-full border border-white/5 rounded-full flex items-center justify-center relative overflow-hidden">
+                      <motion.div 
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                        className="w-[60%] h-[60%] bg-[#006D77]/10 rounded-full blur-3xl absolute"
+                      />
+                      <div className="relative z-10 text-center">
+                         <span className="text-[64px] font-bold italic text-white/10">80/20</span>
+                         <p className="text-[10px] font-black uppercase tracking-widest text-[#006D77] mt-2">Design Ratio</p>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+      </section>
+
+      {/* 05. PRECISION METRICS */}
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24 bg-[#FAFAFA] text-black border-t border-black/5">
          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-               <h2 className="text-[40px] md:text-[60px] font-bold tracking-tighter mb-4 italic font-helvetica uppercase">Biometric <br/> Telemetry.</h2>
+            <div className="mb-24 max-w-3xl">
+                <h2 className="text-[40px] md:text-[80px] font-bold tracking-tighter mb-4 italic font-helvetica uppercase leading-none">Health <br/> Granularity.</h2>
+                <p className="text-[18px] text-black/40 italic font-medium">Individual data modules designed for instant legibility.</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-16">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-12 gap-y-20">
                {[
                   { img: "Plantarflexion dark.png", t: "Plantarflexion" },
                   { img: "Dorsiflexion dark.png", t: "Dorsiflexion" },
@@ -232,21 +349,21 @@ export default function SpandhikaProfessionalUX() {
                   { img: "Dorsiflexion light.png", t: "Light: Dorsi" },
                   { img: "Stride lenght light.png", t: "Light: Gait" }
                ].map((metric, i) => (
-                  <div key={i} className="flex flex-col items-center gap-4">
-                     <div className="relative w-full aspect-[1/2.1] drop-shadow-lg hover:scale-110 transition-transform duration-500">
+                  <div key={i} className="flex flex-col items-center gap-6">
+                     <div className="relative w-full aspect-[1/2.1] drop-shadow-xl hover:scale-105 transition-transform duration-500">
                         <Image src={`/projects/spandhika/${metric.img}`} alt="Metric" fill className="object-contain" />
                      </div>
-                     <p className="text-[9px] font-black tracking-widest uppercase text-black/30 text-center">{metric.t}</p>
+                     <p className="text-[10px] font-black tracking-widest uppercase text-black/20 text-center">{metric.t}</p>
                   </div>
                ))}
             </div>
          </div>
       </section>
 
-      {/* 6. TACTICAL FEEDBACK */}
-      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-32 px-6 md:px-24 bg-[#050505]">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
-             <div className="order-2 md:order-1 flex justify-center gap-8">
+      {/* 06. TACTICAL FEEDBACK */}
+      <section className="reveal-section opacity-0 translate-y-10 py-12 md:py-48 px-6 md:px-24 bg-[#050505]">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
+             <div className="order-2 md:order-1 flex justify-center gap-12">
                 <div className="parallax-slow relative w-[180px] md:w-[240px] aspect-[1/2.1] drop-shadow-[0_20px_40px_rgba(0,109,119,0.3)]">
                    <Image src="/projects/spandhika/Bluetooth dark.jpg" alt="BT" fill className="object-contain" />
                 </div>
@@ -255,15 +372,15 @@ export default function SpandhikaProfessionalUX() {
                 </div>
              </div>
              <div className="order-1 md:order-2">
-                <span className="text-[11px] font-black tracking-[0.5em] text-[#006D77] uppercase block mb-8">Clinical Interactions</span>
-                <h2 className="text-[36px] md:text-[50px] font-bold mb-8 tracking-tighter">Tactical Feedback.</h2>
-                <p className="text-[16px] text-white/50 leading-relaxed font-light mb-12 italic">
-                   To guarantee clinical reliability, pairing processes were transformed into pneumatic, pulsing radar interfaces that immediately communicate sensor status to the practitioner.
-                </p>
-                <div className="flex flex-col gap-4">
-                   {["Bluetooth Mesh Pairing", "Live Heatmap Delta"].map((item, i) => (
-                      <div key={i} className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[#006D77]">
-                         <div className="w-8 h-px bg-[#006D77]" /> {item}
+                 <span className="text-[11px] font-black tracking-[0.5em] text-[#006D77] uppercase block mb-12">The Interaction</span>
+                 <h2 className="text-[42px] md:text-[64px] font-bold mb-8 tracking-tighter italic font-helvetica uppercase leading-none">Seamless <br/> Connections.</h2>
+                 <p className="text-[18px] text-white/40 leading-relaxed font-normal mb-12 italic">
+                    I transformed technical device pairing into a "radar" experience—giving practitioners instant visual confirmation without digging through menus.
+                 </p>
+                <div className="flex flex-col gap-6">
+                    {["Rapid Device Pairing", "Contextual Feedback"].map((item, i) => (
+                      <div key={i} className="flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.4em] text-[#006D77]">
+                         <div className="w-12 h-px bg-[#006D77]" /> {item}
                       </div>
                    ))}
                 </div>

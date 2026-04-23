@@ -31,14 +31,12 @@ export default function CaseStudyFooter({ nextProject, theme = "light" }: CaseSt
         </div>
         
         <div className="text-right max-w-[200px]">
-          <p className={`text-[11px] font-black tracking-[0.4em] uppercase mb-4 italic ${isDark ? 'text-white/10' : 'text-black/10'}`}>
-            Audit Complete
-          </p>
+
           <p className={`text-[11px] font-medium leading-relaxed italic ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
-            Final project documentation verified 100%. All states clinical.
+            Project documentation and design system complete.
           </p>
           <p className={`text-[10px] font-black uppercase mt-6 tracking-widest ${isDark ? 'text-white/20' : 'text-black/20'}`}>
-            © 2026 Portfolio / Forensics
+            © 2026 Product Design Portfolio
           </p>
         </div>
       </div>

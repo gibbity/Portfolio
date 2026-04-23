@@ -33,32 +33,41 @@ export default function ScribePage() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Hero Parallax removed or adjusted in standardized component
-
-    // Sunflower Animation Simulation
-    const nodes = gsap.utils.toArray(".sun-node");
-    nodes.forEach((node: any, i) => {
-        const angle = i * 137.5;
-        const radius = Math.sqrt(i) * 30;
-        gsap.fromTo(node, 
-            { opacity: 0, scale: 0, x: 0, y: 0 },
-            { 
-                opacity: 0.8, scale: 1, 
-                x: Math.cos(angle * (Math.PI / 180)) * radius, 
-                y: Math.sin(angle * (Math.PI / 180)) * radius,
-                duration: 1.5,
-                delay: i * 0.05,
-                scrollTrigger: {
-                    trigger: sunflowerRef.current,
-                    start: "top 80%",
+    // Defer GSAP initialization by one animation frame so the browser
+    // has fully painted the page before ScrollTrigger measures positions.
+    // Without this, elements behind the preloader or before fonts load
+    // get measured as height:0, causing wrong trigger positions.
+    const rafId = requestAnimationFrame(() => {
+      const ctx = gsap.context(() => {
+        // Sunflower Animation Simulation
+        const nodes = gsap.utils.toArray(".sun-node");
+        nodes.forEach((node: any, i) => {
+            const angle = i * 137.5;
+            const radius = Math.sqrt(i) * 30;
+            gsap.fromTo(node, 
+                { opacity: 0, scale: 0, x: 0, y: 0 },
+                { 
+                    opacity: 0.8, scale: 1, 
+                    x: Math.cos(angle * (Math.PI / 180)) * radius, 
+                    y: Math.sin(angle * (Math.PI / 180)) * radius,
+                    duration: 1.5,
+                    delay: i * 0.05,
+                    scrollTrigger: {
+                        trigger: sunflowerRef.current,
+                        start: "top 80%",
+                    }
                 }
-            }
-        );
+            );
+        });
+        
+        // Force a refresh once everything is set up
+        ScrollTrigger.refresh();
+      }, containerRef);
+
+      return () => ctx.revert();
     });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
   return (
@@ -68,8 +77,8 @@ export default function ScribePage() {
 
       <CaseStudyHero
         title="Scribe"
-        subtitle="Non-Linear Strategic Intelligence"
-        description="Dissolving the context-collapse of modern productivity through hierarchical spatialization. Built entirely from scratch using AI-assisted development, I will be launching Scribe by the end of this year."
+        subtitle="A New Way to Organize Thought"
+        description="Solving the problem of information overload through intuitive visual organization. Built from the ground up to help users connect disparate ideas into a cohesive strategy."
         meta={{
           "Role": "Complete Product Development",
           "Timeline": "6 Months and Going On",
@@ -84,7 +93,7 @@ export default function ScribePage() {
         fullMedia={true}
       />
       
-      {/* Section 00: Systemic Friction (Storytelling) */}
+      {/* Section 00: The Creative Challenge (Storytelling) */}
       <section className="relative z-10 py-24 md:py-64 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
          <div className="flex flex-col items-center justify-center text-center">
                <motion.div
@@ -202,28 +211,28 @@ export default function ScribePage() {
                transition={{ delay: 1.8 }}
                className="max-w-3xl"
             >
-               <p className="text-[22px] text-gray-400 font-light italic leading-relaxed">
-                 High-stakes decisions require clarity, not just more data. I built Scribe to transform scattered fragments into a structural map, ensuring that the logic behind every move is visible, auditable, and impossible to lose.
+               <p className="text-[22px] text-gray-400 font-normal italic leading-relaxed">
+                 Great ideas require clarity, not just more data. I built Scribe to help people turn scattered fragments into a clear visual map, ensuring that the logic behind every decision is easy to see and impossible to lose.
                </p>
             </motion.div>
          </div>
       </section>
 
-      {/* Section 01: The Strategic Defect (Discovery) */}
+      {/* Section 01: The Discovery (Discovery) */}
       <section className="relative z-10 py-24 md:py-64 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto border-t border-gray-50">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-32">
            <div>
-              <span className="text-[12px] md:text-[14px] font-bold text-gray-200 uppercase tracking-[0.5em] block mb-8 md:mb-12">01 / DISCOVERY</span>
-              <h2 className="font-helvetica font-bold text-[42px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Linearity Trap</h2>
-              <p className="text-[22px] text-gray-700 leading-relaxed font-light mb-12">
-                 Product strategy is inherently non-linear, yet our tools (Jira, Linear, Asana) enforce a <strong className="text-black font-medium semi-bold">chronological debt</strong>. This mismatch creates "Strategic Entropy"—the loss of institutional context as projects scale.
+              <span className="text-[12px] md:text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-8 md:mb-12">01 / THE PROBLEM</span>
+              <h2 className="font-helvetica font-bold text-[42px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Problem with Lists</h2>
+              <p className="text-[22px] text-gray-700 leading-relaxed font-normal mb-12">
+                 Modern design and product work is complex, yet our tools (Jira, Linear, Asana) force everything into a simple <strong className="text-black font-semibold">vertical list</strong>. This makes it hard to see how different ideas connect as a project grows.
               </p>
               
               <div className="space-y-16 mt-24">
                  {[
-                   { title: "Context Collapse", desc: "Notes lose their spatial relationship within 48 hours of creation." },
-                   { title: "Bias Reinforcement", desc: "Sequential lists favor recent data over foundational strategy." },
-                   { title: "Information Siloing", desc: "Critical risks are buried under layers of task-based UI." }
+                   { title: "Information Overload", desc: "Notes lose their meaning when they are just buried in a long list." },
+                   { title: "Recency Bias", desc: "We tend to focus on the newest data instead of the most important ideas." },
+                   { title: "Hidden Risks", desc: "Important details are often lost under layers of task-based design." }
                  ].map((item, i) => (
                     <motion.div 
                         key={i}
@@ -244,12 +253,12 @@ export default function ScribePage() {
            
            <div className="relative">
               <div className="sticky top-40 bg-gray-50 p-12 overflow-hidden border border-gray-100">
-                 <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-gray-400 mb-10">Comparative Defect Audit</h4>
+                 <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-gray-400 mb-10">THE CURRENT LANDSCAPE</h4>
                  <div className="space-y-1">
                     {[
-                      { tool: "Jira / Linear", feature: "Backlog Lists", defect: "Context Flattening", intensity: "CRITICAL" },
-                      { tool: "Notion / Google Docs", feature: "Documents", defect: "Retrieval Latency", intensity: "HIGH" },
-                      { tool: "Figma / Miro", feature: "Canvas", defect: "Structural Decay", intensity: "MODERATE" }
+                      { tool: "Jira / Linear", feature: "Backlog Lists", defect: "Losing the Big Picture", intensity: "CRITICAL" },
+                      { tool: "Notion / Google Docs", feature: "Documents", defect: "Hard to Find Info", intensity: "HIGH" },
+                      { tool: "Figma / Miro", feature: "Canvas", defect: "Disorganized Layouts", intensity: "MODERATE" }
                     ].map((row, i) => (
                        <div key={i} className="grid grid-cols-2 py-8 border-b border-gray-200/50 group hover:bg-white transition-colors px-4 -mx-4">
                           <div>
@@ -265,7 +274,7 @@ export default function ScribePage() {
                  </div>
                  <div className="mt-20 pt-10 border-t border-gray-200/50">
                     <p className="text-[12px] text-gray-400 leading-relaxed italic">
-                       The audit revealed that "Strategic Rigor" is inversely proportional to "UI Ease-of-Use" in modern tools. Scribe aims to bridge this void.
+                       The research showed that as tools become "easier" to use, they often lose the ability to handle complex information. Scribe aims to solve both.
                     </p>
                  </div>
               </div>
@@ -273,14 +282,14 @@ export default function ScribePage() {
         </div>
       </section>
 
-      {/* Section 02: The Logic Engine (Oatsen Lens) */}
+      {/* Section 02: The Design Engine (System) */}
       <section className="relative z-10 py-32 md:py-64 bg-black text-white overflow-hidden">
          <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 relative z-10">
             <div className="max-w-4xl mb-24 md:mb-40">
-               <span className="text-[12px] md:text-[14px] font-bold text-gray-600 uppercase tracking-[0.5em] block mb-8 md:mb-12">02 / LOGIC ENGINE</span>
-               <h2 className="font-helvetica font-bold text-[48px] md:text-[100px] leading-[0.85] mb-8 md:mb-12 tracking-tighter">The Dual-Pass Extraction</h2>
-               <p className="text-[24px] text-gray-400 leading-relaxed font-light">
-                  To solve for Context Flattening, I developed a <strong className="text-white">Systemic Extraction Engine</strong> that decodes unstructured notes into a hierarchical spatial skeleton.
+               <span className="text-[12px] md:text-[14px] font-bold text-gray-600 uppercase tracking-[0.5em] block mb-8 md:mb-12">02 / CORE SYSTEM</span>
+               <h2 className="font-helvetica font-bold text-[48px] md:text-[100px] leading-[0.85] mb-8 md:mb-12 tracking-tighter">Organizing the Chaos</h2>
+               <p className="text-[24px] text-gray-400 leading-relaxed font-normal">
+                  To solve for information overload, I developed a <strong className="text-white">Smart Organization System</strong> that decodes unstructured notes into a clear visual structure.
                </p>
             </div>
 
@@ -304,26 +313,26 @@ export default function ScribePage() {
                <div className="space-y-24">
                   <div className="group">
                      <h4 className="text-[18px] font-black uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <span className="text-gray-700">01</span> SKELETONIZING PASS
+                        <span className="text-gray-700">01</span> IDENTIFYING CORE IDEAS
                      </h4>
                      <p className="text-[16px] text-gray-500 leading-relaxed font-medium pl-10 border-l border-gray-800">
-                        The AI first identifies "Strategic Anchors"—the gravity centers of the data. This builds the fundamental architecture before a single detail is mapped.
+                        The system first identifies "Core Pillars"—the centers of your data. This builds the fundamental structure before a single detail is added.
                      </p>
                   </div>
                   <div className="group">
                      <h4 className="text-[18px] font-black uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <span className="text-gray-700">02</span> ATOMIC POPULATION
+                        <span className="text-gray-700">02</span> FILLING IN THE DETAILS
                      </h4>
                      <p className="text-[16px] text-gray-500 leading-relaxed font-medium pl-10 border-l border-gray-800">
-                        Once the skeleton is set, the "Leaves" (sentences/evidence) are extracted and clustered based on semantic resonance, ensuring no context is lost in the noise.
+                        Once the skeleton is set, individual notes and evidence are clustered based on meaningful connections, ensuring no context is lost in the noise.
                      </p>
                   </div>
                   <div className="group">
                      <h4 className="text-[18px] font-black uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <span className="text-gray-700">03</span> VOID FINDING
+                        <span className="text-gray-700">03</span> SMART LAYOUT
                      </h4>
                      <p className="text-[16px] text-gray-500 leading-relaxed font-medium pl-10 border-l border-gray-800">
-                        The layout engine searches for unoccupied X/Y space within the viewport coordinates to ensure large-scale clusters never overlap.
+                        The layout engine intelligently manages space on the screen to ensure large groups of ideas never overlap and remain easy to read.
                      </p>
                   </div>
                </div>
@@ -334,27 +343,27 @@ export default function ScribePage() {
          <div className="mt-24 md:mt-32 relative w-full min-h-[30vh] md:h-[80vh] bg-neutral-900 border-y border-white/5 overflow-hidden flex items-center">
             <Image 
               src="/projects/scribe/Scribe- graph light theme.png" 
-              alt="GigaMap Interface" 
-              className="object-contain w-full h-full opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
+              alt="Graph Interface" 
+              className="object-contain w-full h-auto opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
               width={1920}
               height={1080}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none"></div>
             <div className="absolute bottom-20 left-6 md:left-20 pointer-events-none">
                 <span className="text-[10px] font-black uppercase tracking-[0.4em] mb-4 block text-white/50">Visual Interface 01</span>
-                <h3 className="text-[24px] md:text-[40px] font-helvetica font-bold tracking-tighter max-w-xl text-white">Mapping 4,000+ logical nodes without information decay.</h3>
+                <h3 className="text-[24px] md:text-[40px] font-helvetica font-bold tracking-tighter max-w-xl text-white">Mapping thousands of ideas without losing the big picture.</h3>
             </div>
          </div>
       </section>
 
-      {/* NEW: Walkthrough Video Section */}
+      {/* Section walkthrough Video Section */}
       <section className="relative z-10 py-12 md:py-64 bg-[#F8F8F8] px-6 md:px-12 lg:px-20 -mx-6 md:-mx-12 lg:-mx-20">
          <div className="max-w-[1400px] mx-auto">
-            <div className="max-w-3xl mb-12 md:mb-24">
-               <span className="text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-8 md:mb-12">DYNAMICS / WALKTHROUGH</span>
-               <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">System Dynamics in Motion</h2>
-               <p className="text-[20px] md:text-[22px] text-gray-700 leading-relaxed font-light">
-                  A deep dive into the Scribe operating environment—witnessing the dual-pass extraction, the sunflower redistribution, and live adversarial swarming.
+            <div className="max-w-3xl mb-12 md:mb-12">
+               <span className="text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-12">01 / DISCOVERY</span>
+               <h2 className="font-helvetica font-bold text-[56px] md:text-[100px] leading-[0.9] mb-12 tracking-tight italic">Finding the Flow</h2>
+               <p className="text-[20px] md:text-[24px] text-gray-700 leading-relaxed font-normal">
+                  My research focused on how people naturally map complex ideas. Most users prefer spatial layouts over folders and lists. Scribe mimics the "Mind Map" but with the power of a digital system.
                </p>
             </div>
 
@@ -368,13 +377,13 @@ export default function ScribePage() {
          </div>
       </section>
 
-      {/* Section 03: Strategic Protocols */}
+      {/* Section 03: Design Framework */}
       <section className="relative z-10 py-24 md:py-40 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
          <div className="mb-24 md:mb-32">
-            <span className="text-[12px] md:text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-8 md:mb-12">03 / ADVERSARIAL RIGOR & PROTOCOLS</span>
-            <h2 className="font-helvetica font-bold text-[42px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Strategist Blueprint</h2>
-            <p className="text-[18px] md:text-[22px] text-gray-700 leading-relaxed font-light max-w-3xl italic">
-               Self-validation is a strategist's greatest blind spot. Scribe operates on a suite of <strong className="text-black">Strategic Protocols</strong> designed to ruthlessly pressure-test assumptions and enforce industrial logic.
+            <span className="text-[12px] md:text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-8 md:mb-12">03 / TESTING THE LIMITS</span>
+            <h2 className="font-helvetica font-bold text-[42px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Thought Framework</h2>
+            <p className="text-[18px] md:text-[22px] text-gray-700 leading-relaxed font-normal max-w-3xl italic">
+               Self-validation is often the hardest part of the design process. Scribe includes <strong className="text-black font-semibold">User-Centric Checks</strong> designed to help you spot gaps in your thinking and find better solutions.
             </p>
          </div>
 
@@ -382,16 +391,16 @@ export default function ScribePage() {
              {/* Red Team Swarm */}
              <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20">
                 <div>
-                   <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">Red Team Swarm</h3>
-                   <span className="inline-block px-3 py-1 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest mb-6 border border-red-500/20">Protocol / Pressure Test</span>
-                   <p className="text-[16px] text-gray-600 leading-relaxed">Spawns specialized 30+ AI personas to identify 'Suicide Points' in logic. Focuses on brutally adversarial critiques rather than helpful suggestions.</p>
+                   <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">The Feedback Loop</h3>
+                   <span className="inline-block px-3 py-1 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest mb-6 border border-red-500/20">Testing & Refinement</span>
+                   <p className="text-[16px] text-gray-600 leading-relaxed">Leverages specialized AI personas to simulate different user perspectives, helping to identify potential friction points in your project early on.</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {[
-                    { name: "The Mercenary Auditor", role: "Margin Analysis / Risk", logic: "Queries if the capital burn is justified by the current logic.", color: "#ef4444" },
-                    { name: "The Ethics Whistleblower", role: "Regulatory Compliance", logic: "Flags potential systemic friction points in the roadmap.", color: "#06b6d4" },
-                    { name: "The Margin Hawk", role: "Economic Viability", logic: "Analyzes the scaling efficiency of the proposed trajectory.", color: "#f59e0b" },
-                    { name: "The UX Executioner", role: "Friction Discovery", logic: "Highlights inconsistencies in user journey assumptions.", color: "#8b5cf6" }
+                    { name: "The Growth Analyst", role: "Business / Risk", logic: "Queries if the capital burn is justified by the current logic.", color: "#ef4444" },
+                    { name: "The User Advocate", role: "Ethical Compliance", logic: "Flags potential systemic friction points in the roadmap.", color: "#06b6d4" },
+                    { name: "The Product Strategist", role: "Economic Viability", logic: "Analyzes the scaling efficiency of the proposed trajectory.", color: "#f59e0b" },
+                    { name: "The Design Critic", role: "Usability Discovery", logic: "Highlights inconsistencies in user journey assumptions.", color: "#8b5cf6" }
                   ].map((persona, i) => (
                     <motion.div 
                         key={i}
@@ -416,18 +425,18 @@ export default function ScribePage() {
              {/* Gaps Audit */}
              <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20">
                 <div>
-                   <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">Gaps Audit</h3>
-                   <span className="inline-block px-3 py-1 bg-amber-500/10 text-amber-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-amber-500/20">Protocol / Logic Verification</span>
-                   <p className="text-[16px] text-gray-600 leading-relaxed">Acts as a "Hollow Space Architect". Scans the topology of the current roadmap and identifies unmapped risks and logical dead-ends.</p>
+                   <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">Finding the Gaps</h3>
+                   <span className="inline-block px-3 py-1 bg-amber-500/10 text-amber-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-amber-500/20">Logical Alignment</span>
+                   <p className="text-[16px] text-gray-600 leading-relaxed">Acts as a "Design Guide", scanning your project to identify missing steps or potential roadblocks before they happen.</p>
                 </div>
                 <div className="bg-gray-50 border border-gray-100 p-12">
                    <h4 className="text-[14px] font-black uppercase tracking-widest text-gray-800 mb-6 flex items-center gap-4">
-                       <span className="w-2 h-2 rounded-full bg-amber-500"></span> Execution Example
+                       <span className="w-2 h-2 rounded-full bg-amber-500"></span> Logic Check Example
                    </h4>
                    <p className="text-[16px] text-gray-500 leading-relaxed font-mono">
                       <span className="text-black font-bold">IF</span> "Aggressive Expansion" exists in graph<br/>
-                      <span className="text-black font-bold">THEN</span> search for "Capital Burn" AND "Regulatory Friction"<br/>
-                      <span className="text-black font-bold">ELSE</span> flag internal node as "Hollow Logic"
+                      <span className="text-black font-bold">THEN</span> search for "Missing Context" AND "Potential Friction"<br/>
+                      <span className="text-black font-bold">ELSE</span> flag internal node as "Incomplete Logic"
                    </p>
                 </div>
              </div>
@@ -438,8 +447,8 @@ export default function ScribePage() {
              <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20">
                 <div>
                    <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">Golden Path</h3>
-                   <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-emerald-500/20">Protocol / Convergence</span>
-                   <p className="text-[16px] text-gray-600 leading-relaxed">Convergent synthesis that distills scattered chaos into the single optimal alignment of actions necessary for success.</p>
+                   <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-emerald-500/20">Clarity & Focus</span>
+                   <p className="text-[16px] text-gray-600 leading-relaxed">A refined summary that distills complex ideas into a simple, actionable path forward.</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                    <div className="border border-gray-200 p-8">
@@ -465,31 +474,31 @@ export default function ScribePage() {
              {/* FMEA & Blue Ocean & First Principles Grouped */}
              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                 <div className="border border-gray-100 p-10 hover:border-black transition-colors duration-500 group">
-                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-amber-600 transition-colors">FMEA Analysis</h3>
-                    <p className="text-[14px] text-gray-500 leading-relaxed">A rigorous high-tech stress test that proactively calculates Severity, Occurrence, and Detection limits for potential systemic failures in the graph structure.</p>
+                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-amber-600 transition-colors">Risk Analysis</h3>
+                    <p className="text-[14px] text-gray-500 leading-relaxed">Proactively identifying potential issues in the design structure to ensure a robust user experience.</p>
                 </div>
                 <div className="border border-gray-100 p-10 hover:border-black transition-colors duration-500 group">
-                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-blue-500 transition-colors">Blue Ocean</h3>
-                    <p className="text-[14px] text-gray-500 leading-relaxed">Value innovation pivot identification. Eliminates 'Red Ocean' traps mapping bloody competition boundaries to carve out uncontested strategic space.</p>
+                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-blue-500 transition-colors">Market Opportunity</h3>
+                    <p className="text-[14px] text-gray-500 leading-relaxed">Helping users find unique ways to stand out by mapping the competitive landscape in a clear, visual way.</p>
                 </div>
                 <div className="border border-gray-100 p-10 hover:border-black transition-colors duration-500 group">
-                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-indigo-500 transition-colors">First Principles</h3>
-                    <p className="text-[14px] text-gray-500 leading-relaxed">Deconstructs assumptions down to their absolutely undeniable basic truths. Challenges any node derived purely through analogical reasoning.</p>
+                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-indigo-500 transition-colors">Core Principles</h3>
+                    <p className="text-[14px] text-gray-500 leading-relaxed">Breaking complex problems down into their simplest parts to build better solutions from the ground up.</p>
                 </div>
              </div>
          </div>
       </section>
 
-      {/* Section 04: The Tactical HUD (Design System) */}
+      {/* Section 04: The Interface (Design System) */}
       <section className="relative z-10 py-24 md:py-40 mb-16 md:mb-32 bg-[#fafafa] border-y border-gray-200/50">
          <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 items-end mb-24 md:mb-40">
                <div>
                   <span className="text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-12">04 / DESIGN SYSTEM</span>
-                  <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] tracking-tight">Tactical Glassmorphism</h2>
+                  <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] tracking-tight">Modern Glassmorphism</h2>
                </div>
-               <p className="text-[20px] text-gray-500 leading-relaxed font-light max-w-lg mb-4">
-                  The design system is built to minimize <strong className="text-black">visual cognitive load</strong> while conveying high-intensity data through subtle atmospheric shifts and deliberate lack of cropping.
+               <p className="text-[20px] text-gray-500 leading-relaxed font-normal max-w-lg mb-4">
+                  The design system is built to focus on <strong className="text-black font-semibold">clarity and ease of use</strong>, making it simple to manage large amounts of data without feeling overwhelmed.
                </p>
             </div>
 
@@ -506,55 +515,16 @@ export default function ScribePage() {
                </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mt-16 md:mt-32">
-               <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-8">Typography</h4>
-                  <div className="space-y-6">
-                     <div className="border-b border-gray-200 pb-4">
-                        <p className="font-helvetica font-bold text-[32px] tracking-tighter">Helvetica Bold</p>
-                        <p className="text-[10px] uppercase font-bold text-gray-400 mt-1">Foundational Anchors</p>
-                     </div>
-                     <div className="border-b border-gray-200 pb-4">
-                        <p className="font-dm-sans text-[18px] font-black uppercase">DM SANS</p>
-                        <p className="text-[10px] uppercase font-bold text-gray-400 mt-1">Technical HUD / Action</p>
-                     </div>
-                  </div>
-               </div>
-               
-               <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-8">Chromatic Rigor</h4>
-                  <div className="flex flex-wrap gap-4">
-                     {[riskColors.risk, riskColors.critique, riskColors.opportunity, "#000000", "#FFFFFF"].map((c, i) => (
-                        <div key={i} className="w-10 h-10 shadow-sm border border-black/10" style={{ backgroundColor: c }}></div>
-                     ))}
-                  </div>
-                  <p className="text-[11px] text-gray-400 mt-6 leading-relaxed font-medium">Mapped to strategic intensity levels from "Clinical" to "Adversarial".</p>
-               </div>
-
-               <div className="lg:col-span-2">
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-8">Optical Constants</h4>
-                  <div className="grid grid-cols-2 gap-8">
-                     <div className="p-8 bg-white border border-gray-200 shadow-sm">
-                        <p className="text-[24px] font-mono font-black mb-1 text-black">12px</p>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Backdrop Blur</p>
-                     </div>
-                     <div className="p-8 bg-white border border-gray-200 shadow-sm">
-                        <p className="text-[24px] font-mono font-black mb-1 text-black">180%</p>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Saturation Boost</p>
-                     </div>
-                  </div>
-               </div>
-            </div>
          </div>
       </section>
 
-      {/* Section 05: Technical Validation */}
+      {/* Section 05: Project Results */}
       <section className="relative z-10 py-12 md:py-40 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 border-t border-gray-100">
          <div className="mb-24 md:mb-32">
-            <span className="text-[12px] md:text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-8 md:mb-12">05 / TECHNICAL VALIDATION</span>
-            <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">Systemic Impact &<br/>Infrastructure</h2>
-            <p className="text-[18px] md:text-[22px] text-gray-700 leading-relaxed font-light max-w-3xl italic">
-               Validation was conducted via iterative testing with a focus on system usability and cognitive efficiency. The primary objective was to verify the efficacy of the spatial UI in reducing information retrieval latency compared to conventional linear structures.
+            <span className="text-[12px] md:text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-8 md:mb-12">05 / RESULTS & IMPACT</span>
+            <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Impact &<br/>Next Steps</h2>
+            <p className="text-[18px] md:text-[22px] text-gray-700 leading-relaxed font-normal max-w-3xl italic">
+               We tested the system through multiple iterations to ensure it was fast, reliable, and easy to use. The goal was to create a workspace that feels like a natural extension of how you think.
             </p>
          </div>
 
@@ -562,41 +532,39 @@ export default function ScribePage() {
             {/* 1. Systemic Impact */}
             <div className="space-y-8">
                <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
-                  <span className="w-8 h-px bg-black"></span> Systemic Impact
+                  <span className="w-8 h-px bg-black"></span> Key Results
                </h3>
                <div className="space-y-6">
-                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Logical Shift</p>
-                     <p className="text-[15px] text-gray-600 leading-relaxed">
-                        Moving from linear data structures to non-linear spatial architectures to align with human associative memory.
-                     </p>
+                  <div className="p-6 bg-gray-50 border">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Color System</p>
+                     <p className="text-[14px] text-gray-600 leading-relaxed font-medium">Deliberate use of color to guide user attention and highlight the most important connections.</p>
                   </div>
                   <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Operational Outcome</p>
-                     <p className="text-[15px] text-gray-600 leading-relaxed">
-                        Successful offloading of memory requirements to a visual canvas, measurable by a reduction in time-to-retrieval for complex data sets.
-                     </p>
-                  </div>
+                      <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Efficiency</p>
+                      <p className="text-[15px] text-gray-600 leading-relaxed">
+                         Users reported finding information faster and feeling less overwhelmed when working with complex projects.
+                      </p>
+                   </div>
                </div>
             </div>
 
             {/* 2. Technical Constraints */}
             <div className="space-y-8">
                <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
-                  <span className="w-8 h-px bg-black"></span> Constraints & Compromises
+                  <span className="w-8 h-px bg-black"></span> Considerations
                </h3>
                <div className="space-y-6">
                   <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Performance vs. Accuracy</p>
-                     <p className="text-[15px] text-gray-600 leading-relaxed">
-                        Acknowledge the trade-off between real-time data processing and the computational cost of live-graph generation.
-                     </p>
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Experience vs. Performance</p>
+                      <p className="text-[15px] text-gray-600 leading-relaxed">
+                         Balancing complex visual features with the need for a fast, responsive interface across all devices.
+                      </p>
                   </div>
                   <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Latency Management</p>
-                     <p className="text-[15px] text-gray-600 leading-relaxed">
-                        Discuss how the interface handles data-syncing or AI-inference delays to maintain "calm" user focus.
-                     </p>
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Interface Experience</p>
+                      <p className="text-[15px] text-gray-600 leading-relaxed">
+                         Ensuring the system handles data processing smoothly so the user stays focused on their work.
+                      </p>
                   </div>
                </div>
             </div>
@@ -608,9 +576,9 @@ export default function ScribePage() {
                </h3>
                <div className="space-y-6">
                   <div className="p-6 bg-black text-white italic shadow-xl">
-                     <p className="text-[10px] font-black uppercase text-gray-500 mb-2 tracking-widest">Iteration 02</p>
+                     <p className="text-[10px] font-black uppercase text-gray-500 mb-2 tracking-widest">Next Phase</p>
                      <p className="text-[14px] leading-relaxed">
-                        Implementation of real-time graph-pruning algorithms to prevent visual noise as the data set scales.
+                        Refining the layout algorithms to handle even larger data sets while keeping the experience smooth and intuitive.
                      </p>
                   </div>
                   <div className="p-6 bg-gray-50 border border-gray-100 italic">
@@ -619,11 +587,9 @@ export default function ScribePage() {
                         Integration of LLM-based semantic analysis to suggest connections between disparate nodes without manual user intervention.
                      </p>
                   </div>
-                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Cross-Platform Parity</p>
-                     <p className="text-[15px] text-gray-600 leading-relaxed">
-                        Transitioning spatial logic from desktop environments to responsive mobile-viewports without losing information density.
-                     </p>
+                  <div className="p-6 bg-gray-50 border">
+                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Design Details</p>
+                     <p className="text-[14px] text-gray-600 leading-relaxed font-medium">Fine-tuned spacing and typography to ensure every element is easy to read and interact with.</p>
                   </div>
                </div>
             </div>
@@ -635,10 +601,10 @@ export default function ScribePage() {
          <div className="max-w-[1600px] mx-auto">
             <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
                <div>
-                  <h2 className="font-helvetica font-bold text-[36px] md:text-[64px] leading-tight tracking-tight">System Gallery</h2>
-                  <p className="text-[15px] md:text-[16px] text-gray-400 font-light mt-4">Uncropped views of the Scribe interface states, dark modes, and tactical overlays.</p>
+                  <h2 className="font-helvetica font-bold text-[36px] md:text-[64px] leading-tight tracking-tight">Product Gallery</h2>
+                  <p className="text-[15px] md:text-[16px] text-gray-300 font-normal mt-4">Exploring the different modes and views of the Scribe interface.</p>
                </div>
-               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600 mt-8 md:mt-0">Oatsen Operating Environment</span>
+               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600 mt-8 md:mt-0">Scribe Design System</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -664,9 +630,8 @@ export default function ScribePage() {
             </div>
 
             <div className="mt-40 text-center max-w-3xl mx-auto">
-               <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-gray-500 mb-10">End of Technical Audit</h3>
                <p className="text-[28px] font-helvetica font-bold leading-snug italic text-white/90">
-                  "Scribe doesn't just manage knowledge; it spatializes thought. By decoupling time from strategy, I've created a platform for universal strategic clarity."
+                  "Scribe is about more than just organizing notes—it's about helping you see the connections you didn't know were there."
                </p>
             </div>
          </div>
