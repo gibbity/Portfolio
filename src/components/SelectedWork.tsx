@@ -42,7 +42,7 @@ const projects = [
     tags: ["React", "MapLibre", "Supabase"],
     description: "A modern campus issue reporting system for VIT Vellore with real-time geospatial archival.",
     color: "#000000",
-    thumbnail: "/projects/campus-trace/campus-trace.mp4"
+    thumbnail: "/projects/campus-trace/preview.mp4"
   },
   {
     id: "context",
@@ -51,7 +51,7 @@ const projects = [
     tags: ["Chrome API", "LocalPersistence"],
     description: "Eliminating context-collapse through intentional capture and logical session offloading.",
     color: "#E5E5E5",
-    thumbnail: "/projects/context/context.mp4"
+    thumbnail: "/projects/context/preview.mp4"
   },
 ];
 

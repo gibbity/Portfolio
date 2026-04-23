@@ -12,6 +12,7 @@ const SpatialCanvas: React.FC = () => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(['root']));
   const [selectedProject, setSelectedProject] = useState<NodeData | null>(null);
   const [isolatedId, setIsolatedId] = useState<string | null>(null);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
   const [activeAboutTab, setActiveAboutTab] = useState<'about-intro' | 'about-skills' | 'about-work'>('about-intro');
   const isProjectMode = !!selectedProject;
 
@@ -59,6 +60,12 @@ const SpatialCanvas: React.FC = () => {
     if (!node) return;
 
     if (node.type === 'project') {
+      if (isMobile && node.url) {
+        // Direct navigation on mobile
+        setLoadingId(id);
+        router.push(node.url);
+        return;
+      }
       setSelectedProject(node);
       setIsolatedId(id);
       return;
@@ -73,7 +80,8 @@ const SpatialCanvas: React.FC = () => {
     }
 
     // Set selected project for major categories to show initial dossier info
-    if (['about', 'contact', 'designer', 'cv', 'projects'].includes(id)) {
+    // But skip 'projects' category itself as it's a container and can cause layout shift issues on mobile
+    if (['about', 'contact', 'designer', 'cv'].includes(id)) {
       setSelectedProject(node);
     }
 
@@ -163,6 +171,7 @@ const SpatialCanvas: React.FC = () => {
           width={dimensions.width}
           height={dimensions.height}
           isMobile={isMobile}
+          loadingId={loadingId}
         />
 
       </div>

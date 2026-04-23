@@ -30,6 +30,7 @@ interface NodeItemProps {
   onLiveDragEnd: () => void;
   isMobile: boolean;
   selectedId: string | null;
+  isLoading?: boolean;
 }
 
 const PROJECT_STAGGER: Record<string, number> = {
@@ -44,7 +45,7 @@ const SHAPE_PATHS = {
   circle: "M 0 0 m -9, 0 a 9,9 0 1,0 18,0 a 9,9 0 1,0 -18,0",
   pentagon: "M 0 -10 L 9.51 -3.09 L 5.88 8.09 L -5.88 8.09 L -9.51 -3.09 Z",
   diamond: "M 0 -10 L 10 0 L 0 10 L -10 0 Z",
-  asterisk: "M 0 -10 L 0 10 M -10 0 L 10 0 M -7 -7 L 7 7 M -7 7 L 7 -7 M -4 -9 L 4 9 M -9 -4 L 9 4 M -4 9 L 4 -9 M -9 4 L 9 -4" // Detailed star/flower
+  asterisk: "M 0 -10 L 0 10 M -10 0 L 10 0 M -7 -7 L 7 7 M -7 7 L 7 -7 M -4 -9 L 4 9 M -9 -4 L 9 4 M -4 9 L 4 -9 M -9 4 L 9 -4" 
 };
 
 const NodeItem: React.FC<NodeItemProps> = ({
@@ -52,7 +53,8 @@ const NodeItem: React.FC<NodeItemProps> = ({
   width: windowWidth, height: windowHeight,
   registerNode, onLiveDragStart, onLiveDragMove, onLiveDragEnd,
   isMobile,
-  selectedId
+  selectedId,
+  isLoading
 }) => {
   const router = useRouter();
   const isRoot = node.type === 'root';
@@ -66,7 +68,6 @@ const NodeItem: React.FC<NodeItemProps> = ({
 
   const strokeColor = isSelected ? '#4A5EBF' : (isSymmetrical ? '#000000' : '#E0E0E0');
 
-  // Filter out the old panel nodes
   if (node.id === 'about-panel' || node.id === 'cv-panel') return null;
 
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -107,6 +108,9 @@ const NodeItem: React.FC<NodeItemProps> = ({
   isMobileRef.current = isMobile;
   selectedIdRef.current = selectedId;
 
+  const [isNavigating, setIsNavigating] = useState(false);
+  const showLoading = isLoading || isNavigating;
+
   useEffect(() => {
     const el = nodeRef.current;
     if (!el) return;
@@ -146,26 +150,21 @@ const NodeItem: React.FC<NodeItemProps> = ({
       onLiveDragEndRef.current();
 
       if (!isDragging) {
-        // Use refs to get current state within the closure
         const currentIsMobile = isMobileRef.current;
         const currentIsSelected = isSelectedRef.current;
         const currentSelectedId = selectedIdRef.current;
         
         const isProjectNode = node.type === 'project';
         const isContactNode = node.id.startsWith('contact-');
-        
-        // If we are looking at the Projects list (selectedId === 'projects'), 
-        // clicking any project should navigate immediately on desktop too.
         const isInProjectGallery = isProjectNode && currentSelectedId === 'projects';
         
-        // On mobile, navigate on first click if it's a project or contact with a URL.
-        // On desktop, we allow direct navigation for project cards or selected nodes.
         const canOpenUrl = !!node.original.url && (
           isContactNode || 
           (isProjectNode && (currentIsMobile || currentIsSelected || isInProjectGallery))
         );
         
         if (canOpenUrl && node.original.url) {
+          setIsNavigating(true);
           if (node.original.url.startsWith('http') || node.original.url.startsWith('mailto:') || node.original.url.startsWith('tel:')) {
             if (node.original.url.startsWith('mailto:') || node.original.url.startsWith('tel:')) {
               window.location.href = node.original.url;
@@ -218,7 +217,6 @@ const NodeItem: React.FC<NodeItemProps> = ({
   const pathKey = shapeType === 'circle-outline' ? 'circle' : shapeType;
   const path = SHAPE_PATHS[pathKey as keyof typeof SHAPE_PATHS];
 
-  // Story nodes get their category color at rest; others use standard logic
   const categoryColor = STORY_NODE_COLOR[node.original?.category_type ?? ''];
   const dotColor = isSelected ? '#4A5EBF' : (isSymmetrical ? '#000000' : '#000000');
   const isHighlighted = isSelected;
@@ -227,10 +225,8 @@ const NodeItem: React.FC<NodeItemProps> = ({
     : (isSymmetrical ? '#000000' : (categoryColor ?? '#A4A4A4'));
   const shapeScale = 1;
 
-  // Nodes on the left side of the graph get their label on the left
   const LEFT_SIDE_NODES = ['about', 'contact', 'about-intro', 'about-skills', 'about-work',
     'contact-linkedin', 'contact-github', 'contact-mail', 'contact-phone'];
-  // Nodes whose label appears below the shape
   const BOTTOM_NODES = ['designer'];
   const labelSide = !isRoot && BOTTOM_NODES.includes(node.id) ? 'bottom'
     : !isRoot && LEFT_SIDE_NODES.includes(node.id) ? 'left'
@@ -243,13 +239,11 @@ const NodeItem: React.FC<NodeItemProps> = ({
   const shapeSize = isProjectCard ? 330 : (isMobile ? (isRoot ? 24 : 14) : (isRoot ? 46 : 24));
   const fontSize = isMobile ? (isRoot ? 14 : 11) : (isRoot ? 18 : 13);
   const secondaryFontSize = isMobile ? 8 : 10;
-  // In card mode, we don't use the separate label div below
   const shapeOffset = isMobile 
     ? (isProject ? 0 : (shapeType === 'circle' ? 14 : 16)) 
     : (shapeType === 'circle' ? 24 : 28);
 
   const isSnappedRef = useRef(false);
-
   const isIsolated = selectedId !== null && selectedId !== 'root';
 
   if (isProjectCard) {
@@ -269,7 +263,7 @@ const NodeItem: React.FC<NodeItemProps> = ({
           animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
           transition={{ type: 'spring', damping: 20, stiffness: 300 }}
           style={{
-            position: 'absolute', // Important for centering relative to parent
+            position: 'absolute',
             width: isMobile ? '300px' : '400px',
             height: isMobile ? '120px' : '150px',
             background: '#FFFFFF',
@@ -285,6 +279,7 @@ const NodeItem: React.FC<NodeItemProps> = ({
           }}
           onClick={() => {
             if (node.original.url) {
+              setIsNavigating(true);
               if (node.original.url.startsWith('http') || node.original.url.startsWith('mailto:') || node.original.url.startsWith('tel:')) {
                 if (node.original.url.startsWith('mailto:') || node.original.url.startsWith('tel:')) {
                   window.location.href = node.original.url;
@@ -299,21 +294,19 @@ const NodeItem: React.FC<NodeItemProps> = ({
             }
           }}
         >
-          {/* Left Side: Media Preview (Bigger) */}
           <div style={{ width: isMobile ? '140px' : '180px', height: '100%', background: '#F9F9F9', position: 'relative', overflow: 'hidden', borderRight: '0.5px solid #F0F0F0' }}>
             {node.original.lottie ? (
-              <LottiePlayer url={node.original.lottie} style={{ width: '100%', height: '100%', objectFit: isMobile ? 'cover' : 'contain' }} />
+              <LottiePlayer url={node.original.lottie} style={{ width: '100%', height: '100%', objectFit: isMobile ? 'cover' : 'contain', opacity: showLoading ? 0.3 : 1 }} />
             ) : node.original.video ? (
               <video 
                 autoPlay loop muted playsInline 
-                style={{ width: '100%', height: '100%', objectFit: isMobile ? 'cover' : 'contain' }}
+                style={{ width: '100%', height: '100%', objectFit: isMobile ? 'cover' : 'contain', opacity: showLoading ? 0.3 : 1 }}
               >
                 <source src={node.original.video} type="video/mp4" />
               </video>
             ) : null}
           </div>
 
-          {/* Right Side: Information */}
           <div style={{ flex: 1, padding: '12px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
             <div style={{ 
               fontFamily: "'Inter', sans-serif", 
@@ -340,6 +333,37 @@ const NodeItem: React.FC<NodeItemProps> = ({
               {node.original.description}
             </div>
           </div>
+
+          <AnimatePresence>
+            {showLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(0,0,0,0.6)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 20,
+                  backdropFilter: 'blur(2px)'
+                }}
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    border: '3px solid rgba(255,255,255,0.1)',
+                    borderTop: '3px solid #FFF',
+                    borderRadius: '50%'
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     );
@@ -373,30 +397,59 @@ const NodeItem: React.FC<NodeItemProps> = ({
           }}
         >
           {isMobile && isProject && (node.original.video || node.original.lottie) ? (
-            node.original.lottie ? (
-              <LottiePlayer 
-                url={node.original.lottie} 
-                style={{ 
-                  width: '100%', 
+            <div style={{ position: 'relative', width: '100%' }}>
+              {node.original.lottie ? (
+                <LottiePlayer 
+                  url={node.original.lottie} 
+                  style={{ 
+                    width: '100%', 
+                    borderRadius: '4px',
+                    border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    overflow: 'hidden',
+                    opacity: showLoading ? 0.3 : 1
+                  }} 
+                />
+              ) : (
+                <video 
+                  autoPlay loop muted playsInline 
+                  style={{ 
+                    width: '100%', 
+                    borderRadius: '4px',
+                    border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    opacity: showLoading ? 0.3 : 1
+                  }}
+                >
+                  <source src={node.original.video} type="video/mp4" />
+                </video>
+              )}
+              {showLoading && (
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(0,0,0,0.4)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   borderRadius: '4px',
-                  border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  overflow: 'hidden'
-                }} 
-              />
-            ) : (
-              <video 
-                autoPlay loop muted playsInline 
-                style={{ 
-                  width: '100%', 
-                  borderRadius: '4px',
-                  border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                }}
-              >
-                <source src={node.original.video} type="video/mp4" />
-              </video>
-            )
+                  zIndex: 10,
+                  backdropFilter: 'blur(2px)'
+                }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      border: '2px solid rgba(255,255,255,0.2)',
+                      borderTop: '2px solid #FFF',
+                      borderRadius: '50%'
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           ) : (
             <motion.svg
               width={shapeSize} height={shapeSize} viewBox="-12 -12 24 24"
@@ -429,9 +482,7 @@ const NodeItem: React.FC<NodeItemProps> = ({
           isSnappedRef.current = false;
         }
       }}
-      onMouseMove={(e) => {
-        e.stopPropagation();
-      }}
+      onMouseMove={(e) => { e.stopPropagation(); }}
       style={{
         position: 'absolute',
         left: 0,
@@ -445,7 +496,6 @@ const NodeItem: React.FC<NodeItemProps> = ({
       data-cursor="interaction"
     >
       <div style={{ position: 'relative' }}>
-        {/* Geometric Anchor Node */}
         <motion.div
           onMouseEnter={(e) => {
             if (isSnappedRef.current) return;
@@ -468,30 +518,59 @@ const NodeItem: React.FC<NodeItemProps> = ({
           }}
         >
           {isMobile && isProject && (node.original.video || node.original.lottie) ? (
-            node.original.lottie ? (
-              <LottiePlayer 
-                url={node.original.lottie} 
-                style={{ 
-                  width: '100%', 
+            <div style={{ position: 'relative', width: '100%' }}>
+              {node.original.lottie ? (
+                <LottiePlayer 
+                  url={node.original.lottie} 
+                  style={{ 
+                    width: '100%', 
+                    borderRadius: '4px',
+                    border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    overflow: 'hidden',
+                    opacity: showLoading ? 0.3 : 1
+                  }} 
+                />
+              ) : (
+                <video 
+                  autoPlay loop muted playsInline 
+                  style={{ 
+                    width: '100%', 
+                    borderRadius: '4px',
+                    border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    opacity: showLoading ? 0.3 : 1
+                  }}
+                >
+                  <source src={node.original.video} type="video/mp4" />
+                </video>
+              )}
+              {showLoading && (
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(0,0,0,0.4)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   borderRadius: '4px',
-                  border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  overflow: 'hidden'
-                }} 
-              />
-            ) : (
-              <video 
-                autoPlay loop muted playsInline 
-                style={{ 
-                  width: '100%', 
-                  borderRadius: '4px',
-                  border: isHighlighted ? '1.5px solid #4A5EBF' : '1px solid #E0E0E0',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                }}
-              >
-                <source src={node.original.video} type="video/mp4" />
-              </video>
-            )
+                  zIndex: 10,
+                  backdropFilter: 'blur(2px)'
+                }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      border: '2px solid rgba(255,255,255,0.2)',
+                      borderTop: '2px solid #FFF',
+                      borderRadius: '50%'
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           ) : (
             <motion.svg
               width={shapeSize} height={shapeSize} viewBox="-12 -12 24 24"
@@ -528,7 +607,6 @@ const NodeItem: React.FC<NodeItemProps> = ({
           )}
         </motion.div>
         
-        {/* Typographic Label & Subtitle */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -536,7 +614,6 @@ const NodeItem: React.FC<NodeItemProps> = ({
           style={{
             position: 'absolute',
             ...(labelSide === 'bottom' ? {
-              // Centered below the shape
               left: 0,
               top: shapeOffset,
               transform: 'translate(-50%, 0)',

@@ -19,6 +19,7 @@ interface NodeGraphProps {
   width: number;
   height: number;
   isMobile?: boolean;
+  loadingId?: string | null;
 }
 
 // Draws a straight line from source → target
@@ -74,7 +75,7 @@ function elbowPath(
 }
 
 const NodeGraph: React.FC<NodeGraphProps> = ({
-  data, expandedIds, selectedId, activeAboutTab, isProjectMode, onToggle, width, height, isMobile
+  data, expandedIds, selectedId, activeAboutTab, isProjectMode, onToggle, width, height, isMobile, loadingId
 }) => {
   const { flatNodes, flatLinks, registerNode, registerLink, simulationRef } =
     useForceGraph(data, expandedIds, width, height, isProjectMode, selectedId, isMobile);
@@ -289,6 +290,7 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
           onLiveDragEnd={() => handleDragEnd(node.id)}
           isMobile={!!isMobile}
           selectedId={selectedId}
+          isLoading={loadingId === node.id}
         />
       ))}
 

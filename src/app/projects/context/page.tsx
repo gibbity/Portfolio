@@ -103,11 +103,12 @@ export default function ContextPage() {
           "Role": "Product Designer",
           "Timeline": "2024",
           "Impact": "Open Source",
-          "Repository": "https://github.com/shresthkushwaha/Context-extension.git"
+          "Repository": "https://github.com/shresthkushwaha/Context-extension.git",
+          "Poster": "/projects/context/Extension active.png"
         }}
         media={{
           type: "video",
-          src: "/projects/context/context.mp4"
+          src: "/projects/context/preview.mp4"
         }}
         theme="light"
         fullMedia={true}

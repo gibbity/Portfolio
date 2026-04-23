@@ -84,11 +84,12 @@ export default function ScribePage() {
           "Role": "Complete Product Development",
           "Timeline": "6 Months and Going On",
           "Type": "Personal Project",
-          "Repository": "https://github.com/shresthkushwaha/Scribe"
+          "Repository": "https://github.com/shresthkushwaha/Scribe",
+          "Poster": "/projects/scribe/Scribe- home- dark.png"
         }}
         media={{
           type: "video",
-          src: "/projects/scribe/scribe.mp4"
+          src: "/projects/scribe/preview.mp4"
         }}
         theme="light"
         fullMedia={true}

@@ -54,7 +54,7 @@ export const portfolioData: NodeData = {
           shape: 'hexagon',
           innerContent: '1',
           image: '/projects/scribe/Scribe- home- dark.png',
-          video: '/projects/scribe/scribe.mp4',
+          video: '/projects/scribe/preview.mp4',
           url: '/projects/scribe',
           description: 'Non-linear strategic intelligence platform for dissolving context-collapse through hierarchical spatialization.'
         },
@@ -76,7 +76,7 @@ export const portfolioData: NodeData = {
           shape: 'hexagon',
           innerContent: '3',
           image: '/projects/campus-trace/hero.png',
-          video: '/projects/campus-trace/camp-finale.mp4',
+          video: '/projects/campus-trace/preview.mp4',
           url: '/projects/campus-trace',
           description: 'Forensic geospatial provenance system for real-time incident archival and thematic cluster analysis.'
         },
@@ -87,7 +87,7 @@ export const portfolioData: NodeData = {
           shape: 'hexagon',
           innerContent: '4',
           image: '/projects/context/selecting a context and looking at the webpages.png',
-          video: '/projects/context/context.mp4',
+          video: '/projects/context/preview.mp4',
           url: '/projects/context',
           description: 'Open-source browser instrument for bridging OS shortcuts and browser session state to eliminate cognitive latency.'
         }

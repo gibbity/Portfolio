@@ -122,7 +122,8 @@ export default function CampusTraceOverhaul() {
           "Role": "Product Designer",
           "Timeline": "2024",
           "Impact": "200+ Reports",
-          "Repository": "https://github.com/shresthkushwaha/CampusTrace"
+          "Repository": "https://github.com/shresthkushwaha/CampusTrace",
+          "Poster": "/projects/campus-trace/hero.png"
         }}
         media={{
           type: "video",
@@ -201,10 +202,11 @@ export default function CampusTraceOverhaul() {
       <section className="video-section relative aspect-video md:h-screen w-full flex items-center overflow-hidden border-y border-white/10">
          <video 
             ref={videoRef}
-            autoPlay 
-            loop 
-            muted 
+            autoPlay
+            muted
+            loop
             playsInline
+            poster="/projects/campus-trace/hero.png"
             className="absolute inset-0 w-full h-full object-cover opacity-30 scale-105"
          >
             <source src="/projects/campus-trace/rush-hour.mp4" type="video/mp4" />

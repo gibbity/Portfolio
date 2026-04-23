@@ -18,6 +18,7 @@ interface DossierSidebarProps {
 const DossierSidebar: React.FC<DossierSidebarProps> = ({ node, expandedIds, onClose, onToggle, activeAboutTab }) => {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('Overview');
   const observerRef = useRef<IntersectionObserver | null>(null);
   const dragControls = useDragControls();
@@ -216,13 +217,53 @@ const DossierSidebar: React.FC<DossierSidebarProps> = ({ node, expandedIds, onCl
           exit={{ opacity: 0 }}
           style={{ width: '100%' }}
         >
-          <div style={{ padding: '12px 0 24px 0' }}>
+          {/* Mobile Media Hero */}
+          {(node.video || node.image) && (
+            <div style={{ 
+              width: '100%', 
+              aspectRatio: '16/9', 
+              backgroundColor: '#EEE', 
+              marginBottom: 20, 
+              overflow: 'hidden',
+              borderRadius: '8px',
+              border: '1px solid #E0E0E0'
+            }}>
+              {node.video ? (
+                <video 
+                  src={node.video} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
+              ) : (
+                <img 
+                  src={node.image} 
+                  alt={node.label} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
+              )}
+            </div>
+          )}
+
+          <div style={{ padding: '0 0 24px 0' }}>
+            <h2 style={{ 
+              fontFamily: "'Playfair Display', serif", 
+              fontSize: 32, 
+              fontWeight: 700, 
+              color: '#1A1A1A',
+              marginBottom: 16,
+              lineHeight: 1.1
+            }}>
+              {node.label}
+            </h2>
             <p style={{ 
               fontFamily: "'Inter', sans-serif", 
               fontSize: 14, 
-              color: '#333', 
+              color: '#666', 
               lineHeight: 1.6, 
-              marginBottom: 24,
+              marginBottom: 32,
               fontWeight: 400
             }}>
               {node.description}
@@ -230,23 +271,52 @@ const DossierSidebar: React.FC<DossierSidebarProps> = ({ node, expandedIds, onCl
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              disabled={isLoading}
               onClick={() => {
-                if (node.url) router.push(node.url);
+                if (node.url) {
+                  setIsLoading(true);
+                  router.push(node.url);
+                }
               }}
               style={{
                 width: '100%',
-                padding: '16px',
-                background: '#4A5EBF',
+                padding: '20px',
+                background: isLoading ? '#2A3A8F' : '#4A5EBF',
                 color: '#FFF',
                 border: 'none',
                 fontFamily: "'Inter', sans-serif",
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase'
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                borderRadius: '4px',
+                boxShadow: '0 10px 20px rgba(74, 94, 191, 0.2)',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                cursor: isLoading ? 'wait' : 'pointer'
               }}
             >
-              READ CASE STUDY
+              {isLoading ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    style={{
+                      width: 16,
+                      height: 16,
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      borderTop: '2px solid #FFF',
+                      borderRadius: '50%'
+                    }}
+                  />
+                  <span>Loading Case...</span>
+                </div>
+              ) : (
+                "READ CASE STUDY →"
+              )}
             </motion.button>
           </div>
         </motion.div>

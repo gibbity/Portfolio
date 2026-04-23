@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 
@@ -16,9 +16,11 @@ const LOG_MESSAGES = [
 
 export default function Preloader() {
   const pathname = usePathname();
+  const router = useRouter();
   const isHomepage = pathname === "/";
 
   const [progress, setProgress] = useState(0);
+  const [realProgress, setRealProgress] = useState(0);
   const [currentLog, setCurrentLog] = useState(0);
   const [phase, setPhase] = useState<"loading" | "curtain" | "done">(isHomepage ? "loading" : "done");
   const [isMounted, setIsMounted] = useState(false);
@@ -28,10 +30,43 @@ export default function Preloader() {
     setIsMounted(true);
   }, []);
 
+  // Real Asset Tracking
   useEffect(() => {
     if (!isHomepage) return;
 
-    // Progress simulation
+    const criticalAssets = [
+      "/projects/scribe/Scribe- graph light theme.png",
+      "/projects/scribe/Scribe- graph dark theme.png",
+      "/projects/scribe/Scribe- graph light theme zoomed.png",
+      "/projects/scribe/Scribe - graph workbench.png"
+    ];
+
+    let loaded = 0;
+    const total = criticalAssets.length;
+
+    const updateRealProgress = () => {
+      loaded++;
+      setRealProgress((loaded / total) * 100);
+    };
+
+    criticalAssets.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = updateRealProgress;
+      img.onerror = updateRealProgress;
+    });
+
+    // Also prefetch routes
+    router.prefetch("/projects/scribe");
+    router.prefetch("/projects/spandhika");
+    router.prefetch("/projects/campus-trace");
+    router.prefetch("/projects/context");
+  }, [isHomepage, router]);
+
+  useEffect(() => {
+    if (!isHomepage) return;
+
+    // Progress simulation logic
     const interval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
@@ -39,20 +74,28 @@ export default function Preloader() {
           setTimeout(() => setPhase("curtain"), 500);
           return 100;
         }
-        return prev + (Math.random() * 25);
+
+        // Stall at 90% if real assets aren't done
+        if (prev >= 90 && realProgress < 100) {
+          return prev;
+        }
+
+        const target = Math.max(realProgress, prev + 1);
+        const step = Math.random() * 4 + 1; // Controlled growth
+        return Math.min(prev + step, target, 100);
       });
-    }, 100);
+    }, 150);
 
     // Log message simulation
     const logInterval = setInterval(() => {
       setCurrentLog(prev => (prev + 1) % LOG_MESSAGES.length);
-    }, 250);
+    }, 800);
 
     return () => {
       clearInterval(interval);
       clearInterval(logInterval);
     };
-  }, [isHomepage]);
+  }, [isHomepage, realProgress]);
 
   useEffect(() => {
     if (phase === "curtain" && pathRef.current) {

@@ -138,9 +138,10 @@ export default function CaseStudyHero({
           <video
             src={media.src}
             autoPlay
-            loop
             muted
+            loop
             playsInline
+            poster={meta["Poster"] || ""}
             className={`w-full h-full ${fullMedia ? 'object-contain' : 'object-cover'}`}
           />
         ) : (

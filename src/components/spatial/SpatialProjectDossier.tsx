@@ -1,9 +1,10 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { NodeData } from '@/data/nodes';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Lottie from "lottie-react";
 
 interface SpatialProjectDossierProps {
   node: NodeData;
@@ -11,9 +12,33 @@ interface SpatialProjectDossierProps {
   y: number;
 }
 
+const LottieAnimation = ({ url }: { url: string }) => {
+  const [animationData, setAnimationData] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setAnimationData(data))
+      .catch((err) => console.error("Lottie load error:", err));
+  }, [url]);
+
+  if (!animationData) return null;
+
+  return <Lottie animationData={animationData} loop={true} />;
+};
+
 const SpatialProjectDossier: React.FC<SpatialProjectDossierProps> = ({ node, x, y }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const router = useRouter();
   const hasMedia = !!(node.video || node.image);
   
+  const handleNavigate = () => {
+    if (node.url) {
+      setIsLoading(true);
+      router.push(node.url);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -95,32 +120,43 @@ const SpatialProjectDossier: React.FC<SpatialProjectDossierProps> = ({ node, x, 
         {/* Action Button */}
         <div style={{ marginTop: 32 }}>
           {node.url ? (
-            <Link 
-              href={node.url}
-              style={{ textDecoration: 'none' }}
+            <motion.div
+              whileHover={{ backgroundColor: isLoading ? '#2A3A8F' : '#3A4DAF' }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleNavigate}
+              style={{
+                background: isLoading ? '#2A3A8F' : '#4A5EBF',
+                color: '#FFF',
+                padding: '16px 28px',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: 11,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 12,
+                cursor: isLoading ? 'wait' : 'pointer',
+                minWidth: '180px',
+                justifyContent: 'center'
+              }}
             >
-              <motion.div
-                whileHover={{ backgroundColor: '#3A4DAF' }}
-                whileTap={{ scale: 0.98 }}
-                style={{
-                  background: '#4A5EBF',
-                  color: '#FFF',
-                  padding: '16px 28px',
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  cursor: 'pointer'
-                }}
-              >
-                {node.type === 'project' ? 'View Case Study' : 'Explore Branch'}
-                <span style={{ fontSize: 16 }}>→</span>
-              </motion.div>
-            </Link>
+              {isLoading ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #FFF', borderRadius: '50%' }}
+                  />
+                  <span>Loading</span>
+                </div>
+              ) : (
+                <>
+                  {node.type === 'project' ? 'View Case Study' : 'Explore Branch'}
+                  <span style={{ fontSize: 16 }}>→</span>
+                </>
+              )}
+            </motion.div>
           ) : !hasMedia ? (
              <div style={{ height: 1, width: 40, background: '#E0E0E0' }} />
           ) : (
@@ -139,31 +175,83 @@ const SpatialProjectDossier: React.FC<SpatialProjectDossierProps> = ({ node, x, 
 
       {/* ── RIGHT COLUMN: Video/Media (Only if present) ── */}
       {hasMedia && (
-        <div style={{ 
-          flex: 1.4, 
-          backgroundColor: '#000',
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}>
-          {node.video ? (
+        <div 
+          onClick={handleNavigate}
+          style={{ 
+            flex: 1.4, 
+            backgroundColor: '#000',
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            cursor: isLoading ? 'wait' : 'pointer'
+          }}
+        >
+          {node.lottie ? (
+             <div style={{ width: '100%', height: '100%', padding: '40px', opacity: isLoading ? 0.3 : 1, transition: 'opacity 0.5s ease' }}>
+                <LottieAnimation url={node.lottie} />
+             </div>
+          ) : node.video ? (
             <video 
               src={node.video} 
+              poster={node.image}
               autoPlay 
               loop 
               muted 
               playsInline 
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                opacity: isLoading ? 0.3 : 1,
+                transition: 'opacity 0.5s ease'
+              }} 
             />
-          ) : (
+          ) : node.image ? (
             <img 
               src={node.image} 
               alt={node.label} 
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                opacity: isLoading ? 0.3 : 1,
+                transition: 'opacity 0.5s ease'
+              }} 
             />
-          )}
+          ) : null}
+
+          {/* Darken Overlay with Loading Circle */}
+          <AnimatePresence>
+            {isLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(0,0,0,0.6)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 10
+                }}
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    border: '3px solid rgba(255,255,255,0.1)',
+                    borderTop: '3px solid #FFF',
+                    borderRadius: '50%'
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Cinematic Corner Accents */}
           <div style={{ position: 'absolute', top: 12, right: 12, borderRight: '1px solid rgba(255,255,255,0.3)', borderTop: '1px solid rgba(255,255,255,0.3)', width: 20, height: 20 }} />
