@@ -18,6 +18,8 @@ export interface GraphNode extends d3.SimulationNodeDatum {
 
 export interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
   id: string;
+  source: string | GraphNode;
+  target: string | GraphNode;
 }
 
 const CATEGORY_ORDER = ['about', 'contact', 'designer', 'cv', 'projects'];
