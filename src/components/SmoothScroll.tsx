@@ -17,8 +17,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     useEffect(() => {
         const lenis = new Lenis({
-            lerp: 0.08,
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
             smoothWheel: true,
+            wheelMultiplier: 1,
+            touchMultiplier: 2,
+            infinite: false,
         });
 
         lenisRef.current = lenis;
@@ -30,10 +36,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
         requestAnimationFrame(raf);
 
-        // Notify ScrollTrigger on every scroll
-        lenis.on('scroll', () => {
-            ScrollTrigger.update();
+        // Connect Lenis to ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
         });
+
+        gsap.ticker.lagSmoothing(0);
 
         return () => {
             lenis.destroy();

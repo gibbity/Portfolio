@@ -39,14 +39,14 @@ export default function Preloader() {
           setTimeout(() => setPhase("curtain"), 500);
           return 100;
         }
-        return prev + (Math.random() * 15);
+        return prev + (Math.random() * 25);
       });
-    }, 150);
+    }, 100);
 
     // Log message simulation
     const logInterval = setInterval(() => {
       setCurrentLog(prev => (prev + 1) % LOG_MESSAGES.length);
-    }, 400);
+    }, 250);
 
     return () => {
       clearInterval(interval);
@@ -69,12 +69,12 @@ export default function Preloader() {
       tl.set(pathRef.current, { attr: { d: full } })
         .to(pathRef.current, {
           attr: { d: mid },
-          duration: 0.8,
+          duration: 0.5,
           ease: "power3.in"
         })
         .to(pathRef.current, {
           attr: { d: empty },
-          duration: 0.6,
+          duration: 0.4,
           ease: "power3.out"
         });
     }

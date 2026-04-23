@@ -10,7 +10,8 @@ import HeroBackground from "@/components/HeroBackground";
 import CaseStudyNav from "@/components/case-study/CaseStudyNav";
 import CaseStudyHero from "@/components/case-study/CaseStudyHero";
 import CaseStudyFooter from "@/components/case-study/CaseStudyFooter";
-import MuxVideo from "@/components/MuxVideo";
+import dynamic from "next/dynamic";
+const MuxVideo = dynamic(() => import("@/components/MuxVideo"), { ssr: false });
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);

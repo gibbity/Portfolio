@@ -6,11 +6,13 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Lottie from "lottie-react";
-import animationData from "./spandhika.json";
+import dynamic from "next/dynamic";
 import CaseStudyNav from "@/components/case-study/CaseStudyNav";
 import CaseStudyHero from "@/components/case-study/CaseStudyHero";
 import CaseStudyFooter from "@/components/case-study/CaseStudyFooter";
+import { useState } from "react";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -18,6 +20,15 @@ if (typeof window !== "undefined") {
 
 export default function SpandhikaProfessionalUX() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [animationData, setAnimationData] = useState<any>(null);
+
+  useEffect(() => {
+    // Fetch animation data asynchronously to keep bundle size small
+    fetch("/projects/spandhika/spandhika.json")
+      .then(res => res.json())
+      .then(data => setAnimationData(data))
+      .catch(err => console.error("Failed to load Lottie:", err));
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -67,17 +78,19 @@ export default function SpandhikaProfessionalUX() {
   }, []);
 
   return (
-    <main ref={containerRef} className="bg-[#050505] min-h-screen font-helvetica text-white selection:bg-[#006D77] selection:text-white pb-32 overflow-x-hidden">
+    <main ref={containerRef} className="relative z-10 bg-[#050505] min-h-screen font-helvetica text-white selection:bg-[#006D77] selection:text-white pb-32 overflow-x-hidden">
       <CaseStudyNav projectTitle="Spandhika" category="AR-UX Case Study" />
 
       <div className="relative">
         {/* Background Lottie Layer */}
         <div className="absolute inset-0 z-0 h-screen w-full pointer-events-none opacity-40">
-           <Lottie 
-              animationData={animationData} 
-              loop={true} 
-              className="w-full h-full object-cover"
-            />
+           {animationData && (
+             <Lottie 
+                animationData={animationData} 
+                loop={true} 
+                className="w-full h-full object-cover"
+              />
+           )}
             <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/0 via-[#050505]/50 to-[#050505]" />
         </div>
 

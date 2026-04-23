@@ -20,8 +20,9 @@ export default function ContextPage() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const ctx = gsap.context(() => {
-      // 1. STAGGERED REVEALS - TEXT & BLOCKS
+    const rafId = requestAnimationFrame(() => {
+      const ctx = gsap.context(() => {
+        // 1. STAGGERED REVEALS - TEXT & BLOCKS
       gsap.utils.toArray(".reveal").forEach((el: any) => {
         gsap.fromTo(el, 
           { opacity: 0, y: 30 },
@@ -82,13 +83,16 @@ export default function ContextPage() {
           }
         });
       });
-    }, containerRef);
+      }, containerRef);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
+
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
   return (
-    <main ref={containerRef} className="relative min-h-screen bg-white font-helvetica text-gray-900 selection:bg-black selection:text-white pb-32 overflow-x-hidden">
+    <main ref={containerRef} className="relative z-10 min-h-screen bg-white font-helvetica text-gray-900 selection:bg-black selection:text-white pb-32 overflow-x-hidden">
       <CaseStudyNav projectTitle="Context" category="Open Source Utility" />
 
       <CaseStudyHero

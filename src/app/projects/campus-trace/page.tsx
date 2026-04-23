@@ -38,9 +38,12 @@ export default function CampusTraceOverhaul() {
 
   useEffect(() => {
     setIsLoaded(true);
-    const ctx = gsap.context(() => {
-      // Staggered reveal for all sections
-      gsap.utils.toArray(".reveal-section").forEach((section: any) => {
+    
+    // Defer GSAP initialization to ensure DOM is fully ready
+    const rafId = requestAnimationFrame(() => {
+      const ctx = gsap.context(() => {
+        // Staggered reveal for all sections
+        gsap.utils.toArray(".reveal-section").forEach((section: any) => {
         gsap.to(section, {
           opacity: 1,
           y: 0,
@@ -100,12 +103,15 @@ export default function CampusTraceOverhaul() {
           }
         );
       });
-    }, containerRef);
-    return () => ctx.revert();
+      }, containerRef);
+      return () => ctx.revert();
+    });
+
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
   return (
-    <main ref={containerRef} className="bg-black min-h-screen font-helvetica text-white selection:bg-[#00B4D8] selection:text-white pb-32 overflow-x-hidden relative">
+    <main ref={containerRef} className="relative z-10 bg-black min-h-screen font-helvetica text-white selection:bg-[#00B4D8] selection:text-white pb-32 overflow-x-hidden">
       <CaseStudyNav projectTitle="Campus Trace" category="Geospatial Provenance" />
 
       <CaseStudyHero
