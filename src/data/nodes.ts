@@ -15,6 +15,7 @@ export interface NodeData {
   pathStyle?: 'straight' | 'elbow' | 'fanned';
   subtitle?: string;
   category_type?: string;
+  color?: string;
 }
 
 export const portfolioData: NodeData = {
