@@ -348,7 +348,7 @@ export const useForceGraph = (
             if (selectedId === 'designer' && child.category_type) {
               let prevId = null;
               for (let i = index - 1; i >= 0; i--) {
-                if (targetData.children[i].category_type === child.category_type) {
+                if (targetData.children && targetData.children[i].category_type === child.category_type) {
                   prevId = targetData.children[i].id;
                   break;
                 }
