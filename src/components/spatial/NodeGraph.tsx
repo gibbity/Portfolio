@@ -287,7 +287,7 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
           onLiveDragStart={(x, y) => handleDragStart(node.id, x, y)}
           onLiveDragMove={(x, y) => handleDragMove(node.id, x, y)}
           onLiveDragEnd={() => handleDragEnd(node.id)}
-          isMobile={isMobile}
+          isMobile={!!isMobile}
           selectedId={selectedId}
         />
       ))}
