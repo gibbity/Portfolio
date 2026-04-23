@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { NodeData } from '@/data/nodes';
@@ -20,7 +20,7 @@ const DossierSidebar: React.FC<DossierSidebarProps> = ({ node, expandedIds, onCl
   const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('Overview');
   const observerRef = useRef<IntersectionObserver | null>(null);
-
+  const dragControls = useDragControls();
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
@@ -486,6 +486,8 @@ const DossierSidebar: React.FC<DossierSidebarProps> = ({ node, expandedIds, onCl
         drag="y"
         dragConstraints={{ top: 0, bottom: 600 }}
         dragElastic={0.15}
+        dragListener={false}
+        dragControls={dragControls}
         onDragEnd={(e, info) => {
           if (info.offset.y > 60 || info.velocity.y > 200) {
             onClose(); 
@@ -512,13 +514,16 @@ const DossierSidebar: React.FC<DossierSidebarProps> = ({ node, expandedIds, onCl
         }}
       >
         {/* Drag Handle */}
-        <div style={{ 
+        <div 
+          onPointerDown={(e) => dragControls.start(e)}
+          style={{ 
           width: '100%', 
           height: 32, 
           display: 'flex', 
           justifyContent: 'center', 
           alignItems: 'center',
-          cursor: 'grab' 
+          cursor: 'grab',
+          touchAction: 'none'
         }}>
           <div style={{ width: 40, height: 4, background: '#D9D9D9', borderRadius: 2 }} />
         </div>
