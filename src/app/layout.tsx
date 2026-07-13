@@ -63,6 +63,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import Preloader from "@/components/Preloader";
 import PageWrapper from "@/components/PageWrapper";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
   children,
@@ -80,6 +81,7 @@ export default function RootLayout({
         <SmoothScroll>
           <PageWrapper>{children}</PageWrapper>
         </SmoothScroll>
+        <SpeedInsights />
       </body>
     </html>
   );
