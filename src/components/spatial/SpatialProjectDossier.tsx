@@ -4,6 +4,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NodeData } from '@/data/nodes';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Lottie from "lottie-react";
 
 interface SpatialProjectDossierProps {
@@ -13,7 +14,7 @@ interface SpatialProjectDossierProps {
 }
 
 const LottieAnimation = ({ url }: { url: string }) => {
-  const [animationData, setAnimationData] = React.useState<any>(null);
+  const [animationData, setAnimationData] = React.useState<object | null>(null);
 
   React.useEffect(() => {
     fetch(url)
@@ -90,7 +91,7 @@ const SpatialProjectDossier: React.FC<SpatialProjectDossierProps> = ({ node, x, 
             gap: 8
           }}>
             <span style={{ width: 6, height: 6, background: '#4A5EBF' }} />
-            {(node.type || 'CATEGORY').toUpperCase()} // {node.id.toUpperCase()}
+            {(node.type || 'CATEGORY').toUpperCase()}{" // "}{node.id.toUpperCase()}
           </div>
 
           <h2 style={{ 
@@ -209,15 +210,14 @@ const SpatialProjectDossier: React.FC<SpatialProjectDossierProps> = ({ node, x, 
               }} 
             />
           ) : node.image ? (
-            <img 
+            <Image 
               src={node.image} 
               alt={node.label} 
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-opacity duration-500"
               style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'cover',
-                opacity: isLoading ? 0.3 : 1,
-                transition: 'opacity 0.5s ease'
+                opacity: isLoading ? 0.3 : 1
               }} 
             />
           ) : null}

@@ -1,645 +1,738 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import HeroBackground from "@/components/HeroBackground";
-import CaseStudyNav from "@/components/case-study/CaseStudyNav";
-import CaseStudyHero from "@/components/case-study/CaseStudyHero";
-import CaseStudyFooter from "@/components/case-study/CaseStudyFooter";
 import dynamic from "next/dynamic";
+import CaseStudyNav from "@/components/case-study/CaseStudyNav";
+import CaseStudyFooter from "@/components/case-study/CaseStudyFooter";
+
 const MuxVideo = dynamic(() => import("@/components/MuxVideo"), { ssr: false });
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+const sections = [
+  { id: "intro", label: "Hook" },
+  { id: "context", label: "Context" },
+  { id: "problem", label: "The Real Problem" },
+  { id: "decisions", label: "Key Decisions" },
+  { id: "simulation", label: "Live Simulation" },
+  { id: "friction", label: "What Didn't Work" },
+  { id: "outcome", label: "Outcome" }
+];
+
+interface SimulationNode {
+  id: string;
+  label: string;
+  type: "pillar" | "cluster" | "leaf";
+  x: number;
+  y: number;
 }
 
-const riskColors = {
-  risk: "#ef4444",
-  critique: "#f97316",
-  opportunity: "#22c55e",
-  redTeam: "#ef4444",
-  bauhaus: "#06b6d4",
-  market: "#f59e0b",
-  deep: "#8b5cf6",
-};
+interface SimulationLink {
+  source: string;
+  target: string;
+}
 
 export default function ScribePage() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const sunflowerRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState("intro");
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [expandedDecision, setExpandedDecision] = useState<number | null>(0);
+  const [showFullProcess, setShowFullProcess] = useState(false);
+
+  // Interactive Live Node Simulation States
+  const [selectedPrompt, setSelectedPrompt] = useState<number>(0);
+  const [isSimulating, setIsSimulating] = useState(false);
+  const [simNodes, setSimNodes] = useState<SimulationNode[]>([]);
+  const [simLinks, setSimLinks] = useState<SimulationLink[]>([]);
+  const [simLogs, setSimLogs] = useState<string[]>([]);
+
+  const prompts = [
+    {
+      text: "Pivot from Enterprise SaaS to Open-Source Dev Tool",
+      pillars: ["Licensing Strategy", "Developer Marketing", "Self-Host Infrastructure"],
+      nodes: [
+        { id: "n1", label: "AGPLv3 License", type: "cluster" as const, x: 280, y: 150 },
+        { id: "n2", label: "Contributor Agreement", type: "leaf" as const, x: 200, y: 110 },
+        { id: "n3", label: "Enterprise Extensions", type: "leaf" as const, x: 360, y: 120 },
+        { id: "n4", label: "Self-Serve Registry", type: "cluster" as const, x: 520, y: 220 },
+        { id: "n5", label: "IndexedDB Local Cache", type: "leaf" as const, x: 600, y: 180 },
+        { id: "n6", label: "Developer Relations Swarm", type: "cluster" as const, x: 320, y: 320 },
+        { id: "n7", label: "Telemetry Opt-out Risk", type: "leaf" as const, x: 240, y: 360 }
+      ],
+      links: [
+        { source: "n1", target: "n2" },
+        { source: "n1", target: "n3" },
+        { source: "n4", target: "n5" },
+        { source: "n6", target: "n7" }
+      ],
+      logs: [
+        "Initializing adversarial PM swarm...",
+        "Advocate: Open-sourcing will spike contribution velocity by 40%.",
+        "Critic: Telemetry constraints make user-testing loops difficult.",
+        "Analyst: Contributor CLA agreement structured to handle scaling.",
+        "Golden path synthesized: AGPLv3 + Local IndexedDB caching."
+      ]
+    },
+    {
+      text: "Expand Scribe Map Into Medical Diagnostics HUD",
+      pillars: ["Rigid Telemetry Feeds", "FDA Compliance", "Clinician Urgency IA"],
+      nodes: [
+        { id: "m1", label: "ISO 13485 Standards", type: "cluster" as const, x: 300, y: 160 },
+        { id: "m2", label: "Patient Data Safety", type: "leaf" as const, x: 220, y: 120 },
+        { id: "m3", label: "Audit Log Persistence", type: "leaf" as const, x: 380, y: 130 },
+        { id: "m4", label: "HUD Triage Display", type: "cluster" as const, x: 500, y: 240 },
+        { id: "m5", label: "120ms Latency Cap", type: "leaf" as const, x: 580, y: 200 },
+        { id: "m6", label: "Triage Alert Matrix", type: "cluster" as const, x: 340, y: 340 },
+        { id: "m7", label: "Visual Noise Filtering", type: "leaf" as const, x: 260, y: 380 }
+      ],
+      links: [
+        { source: "m1", target: "m2" },
+        { source: "m1", target: "m3" },
+        { source: "m4", target: "m5" },
+        { source: "m6", target: "m7" }
+      ],
+      logs: [
+        "Initializing diagnostic simulation swarm...",
+        "Strategist: Clinician IA must prioritize alarm states over baseline logs.",
+        "User Advocate: Constant telemetry flashes cause cognitive fatigue.",
+        "Analyst: Local IndexedDB caching guarantees zero patient data loss.",
+        "Golden path synthesized: HUD Triage + 120ms local rendering engine."
+      ]
+    }
+  ];
+
+  const startSimulation = () => {
+    setIsSimulating(true);
+    setSimNodes([]);
+    setSimLinks([]);
+    setSimLogs([]);
+
+    const data = prompts[selectedPrompt];
+    let currentLogIndex = 0;
+    
+    const logInterval = setInterval(() => {
+      if (currentLogIndex < data.logs.length) {
+        setSimLogs(prev => [...prev, data.logs[currentLogIndex]]);
+        currentLogIndex++;
+      } else {
+        clearInterval(logInterval);
+        setSimNodes(data.nodes);
+        setSimLinks(data.links);
+        setIsSimulating(false);
+      }
+    }, 700);
+  };
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const handleScrollProgress = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100);
+      }
+    };
+    window.addEventListener("scroll", handleScrollProgress);
 
-    // Defer GSAP initialization by one animation frame so the browser
-    // has fully painted the page before ScrollTrigger measures positions.
-    // Without this, elements behind the preloader or before fonts load
-    // get measured as height:0, causing wrong trigger positions.
-    const rafId = requestAnimationFrame(() => {
-      const ctx = gsap.context(() => {
-        // Sunflower Animation Simulation
-        const nodes = gsap.utils.toArray(".sun-node");
-        nodes.forEach((node: any, i) => {
-            const angle = i * 137.5;
-            const radius = Math.sqrt(i) * 30;
-            gsap.fromTo(node, 
-                { opacity: 0, scale: 0, x: 0, y: 0 },
-                { 
-                    opacity: 0.8, scale: 1, 
-                    x: Math.cos(angle * (Math.PI / 180)) * radius, 
-                    y: Math.sin(angle * (Math.PI / 180)) * radius,
-                    duration: 1.5,
-                    delay: i * 0.05,
-                    scrollTrigger: {
-                        trigger: sunflowerRef.current,
-                        start: "top 80%",
-                    }
-                }
-            );
-        });
-        
-        // Force a refresh once everything is set up
-        ScrollTrigger.refresh();
-      }, containerRef);
+    const observerOptions = {
+      root: null,
+      rootMargin: "-25% 0px -70% 0px",
+      threshold: 0
+    };
 
-      return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((sec) => {
+      const el = document.getElementById(sec.id);
+      if (el) observer.observe(el);
     });
 
-    return () => cancelAnimationFrame(rafId);
+    return () => {
+      window.removeEventListener("scroll", handleScrollProgress);
+      observer.disconnect();
+    };
   }, []);
 
+  const handleJumpToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <main ref={containerRef} className="relative min-h-screen bg-white font-helvetica text-gray-900 selection:bg-black selection:text-white">
-      <HeroBackground />
+    <main className="relative min-h-screen bg-white font-sans text-black selection:bg-black selection:text-white pb-32 overflow-x-hidden">
+      
+      {/* Scroll Progress Bar */}
+      <div 
+        style={{ width: `${scrollProgress}%` }}
+        className="fixed top-0 left-0 h-[2px] bg-black z-50 transition-all duration-75"
+      />
+
+      {/* Case Study Nav */}
       <CaseStudyNav projectTitle="Scribe" category="Strategic Intelligence" />
 
-      <CaseStudyHero
-        title="Scribe"
-        subtitle="A New Way to Organize Thought"
-        description="Solving the problem of information overload through intuitive visual organization. Built from the ground up to help users connect disparate ideas into a cohesive strategy."
-        meta={{
-          "Role": "Complete Product Development",
-          "Timeline": "6 Months and Going On",
-          "Type": "Personal Project",
-          "Repository": "https://github.com/shresthkushwaha/Scribe",
-          "Poster": "/projects/scribe/Scribe- home- dark.png"
-        }}
-        media={{
-          type: "video",
-          src: "/projects/scribe/preview.mp4"
-        }}
-        theme="light"
-        fullMedia={true}
-      />
-      
-      {/* Section 00: The Creative Challenge (Storytelling) */}
-      <section className="relative z-10 py-24 md:py-64 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
-         <div className="flex flex-col items-center justify-center text-center">
-               <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 2 }}
-                  className="relative w-full max-w-2xl aspect-[3/2] md:aspect-square flex items-center justify-center mb-12 md:mb-20"
-               >
-               {/* Minimalist Chaos Illustration: Tangled Nodes with Central Decision Point */}
-               <svg viewBox="0 0 400 400" className="w-full h-full stroke-black">
-                  <motion.path
-                    d="M 100 100 C 150 150 50 250 200 200 C 350 150 250 350 300 300 C 350 250 150 150 100 250 C 50 350 250 350 200 100"
-                    fill="none"
-                    strokeWidth="1"
-                    className="opacity-10"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 2, ease: "easeInOut" }}
-                  />
-                  <motion.path
-                    d="M 200 100 C 100 200 300 300 100 300 C 0 300 100 100 300 100 C 400 100 300 400 100 350"
-                    fill="none"
-                    strokeWidth="0.5"
-                    className="opacity-5"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 3, ease: "easeInOut", delay: 0.5 }}
-                  />
-                  {/* Central "Decision" point pulling things in */}
-                  <motion.circle 
-                    cx="200" cy="200" r="4" 
-                    className="fill-black"
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 0.8 }}
-                    transition={{ delay: 1.5, duration: 1 }}
-                  />
-                  <motion.circle 
-                    cx="200" cy="200" r="30" 
-                    className="fill-none stroke-black/10"
-                    strokeDasharray="4 4"
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.8 }}
-                  />
-               </svg>
-               {/* Expanded Dialogues - 5 Bubbles in Close Proximity */}
-               <motion.div 
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 }}
-                 className="absolute -top-4 -left-4 md:top-[0%] md:left-[0%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[140px] md:max-w-[240px] z-20"
-               >
-                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
-                    "50 pages of research, yet the strategy remains invisible behind a wall of noise."
-                 </p>
-               </motion.div>
+      {/* LIVE SECTION LABEL (Wayfinding) */}
+      <div className="fixed top-24 left-6 md:left-12 lg:left-16 hidden md:block z-30 pointer-events-none">
+        <span className="font-sans font-medium text-[10px] text-black/30 uppercase tracking-[0.2em] block">
+          Current Section
+        </span>
+        <span className="font-sans font-semibold text-[12px] text-black uppercase tracking-wider block mt-1 transition-all duration-300">
+          {sections.find(s => s.id === activeSection)?.label || "Hook"}
+        </span>
+      </div>
 
-               <motion.div 
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 }}
-                 className="absolute top-[15%] -right-4 md:top-[25%] md:right-[0%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[150px] md:max-w-[260px] z-20"
-               >
-                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
-                    "Important logic is buried in Slack threads and scattered docs. I'm losing the plot."
-                 </p>
-               </motion.div>
+      {/* SIDE PROGRESS SPINE RAIL (Wayfinding) */}
+      <div className="fixed right-6 md:right-12 lg:right-16 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-5 items-center z-30">
+        <div className="w-[1.5px] h-36 bg-gray-100 relative flex flex-col justify-between items-center py-2">
+          {sections.map((sec) => {
+            const isActive = activeSection === sec.id;
+            return (
+              <button
+                key={sec.id}
+                onClick={() => handleJumpToSection(sec.id)}
+                title={sec.label}
+                className={`w-2 h-2 rounded-full border transition-all duration-300 ${
+                  isActive 
+                    ? "bg-black border-black scale-125" 
+                    : "bg-white border-gray-300 hover:border-black"
+                }`}
+              />
+            );
+          })}
+        </div>
+      </div>
 
-               <motion.div 
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.6 }}
-                 className="absolute -bottom-4 left-0 md:bottom-[5%] md:left-[5%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[130px] md:max-w-[220px] z-20"
-               >
-                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
-                    "Making high-stakes decisions shouldn't feel like guessing. I need a skeleton for my logic."
-                 </p>
-               </motion.div>
+      {/* LIGHTBOX OVERLAY */}
+      {lightboxImage && (
+        <div 
+          onClick={() => setLightboxImage(null)}
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center cursor-zoom-out p-6"
+        >
+          <div className="relative w-full max-w-5xl h-[85vh]">
+            <Image 
+              src={lightboxImage} 
+              alt="Zoomed Scribe View" 
+              fill 
+              className="object-contain" 
+            />
+          </div>
+          <span className="absolute top-8 right-8 font-sans text-white/50 text-[12px] uppercase tracking-widest">
+            Click anywhere to close
+          </span>
+        </div>
+      )}
 
-               <motion.div 
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 }}
-                 className="absolute bottom-[10%] -right-4 md:bottom-[20%] md:right-[5%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[140px] md:max-w-[240px] z-20"
-               >
-                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
-                    "Spending more time documenting the work than actually doing it. Context collapse is real."
-                 </p>
-               </motion.div>
+      {/* 2. COVER / HERO BANNER */}
+      <section id="intro" className="relative w-full pt-32 pb-16 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto">
+        <div className="flex flex-wrap gap-2 mb-6 font-sans">
+          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">Strategic Spatial Mapping</span>
+          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">React / D3 Engine</span>
+          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">IndexedDB Storage</span>
+          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">AI Strategy Audit</span>
+        </div>
 
-               <motion.div 
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.0 }}
-                 className="absolute top-[5%] left-[15%] md:top-[15%] md:left-[20%] bg-white/90 backdrop-blur-md p-2 md:p-4 border border-black/5 rounded-sm shadow-xl max-w-[140px] md:max-w-[240px] z-20"
-               >
-                 <p className="text-[10px] md:text-[13px] font-helvetica italic text-gray-600 leading-snug">
-                    "I can't find the 'Why' behind this feature anymore. It was here yesterday. Now it's buried."
-                 </p>
-               </motion.div>
+        {/* Title */}
+        <h1 className="font-sans font-normal text-[36px] md:text-[54px] lg:text-[72px] leading-[1.05] tracking-tight text-black text-left max-w-4xl font-serif">
+          Scribe — Spatial Strategy Mapping
+        </h1>
+        
+        {/* Subtitle */}
+        <p className="font-sans text-[18px] md:text-[22px] leading-relaxed text-black/60 mt-4 max-w-3xl italic">
+          Designed an interactive spatial mapping interface that helps product teams spot critical strategic gaps and stress-test roadmaps without getting lost in flat document systems.
+        </p>
 
-               <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.5, duration: 0.8 }}
-                  className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
-                >
-                  <h3 className="font-helvetica font-bold text-[32px] md:text-[64px] tracking-tighter text-black">The Cost of Noise</h3>
-                </motion.div>
-            </motion.div>
+        {/* Case Study Appendix Redirect Alert Card */}
+        <div className="mt-6 p-4 bg-gray-50 border border-gray-150 rounded-sm flex items-start gap-4 text-left max-w-3xl font-sans">
+          <div className="w-1.5 h-full min-h-[36px] bg-neutral-900 rounded-sm shrink-0" />
+          <div>
+            <span className="text-[9px] font-bold text-black/40 uppercase tracking-widest block mb-0.5">Engineering Appendix Link</span>
+            <p className="text-[12px] text-black/70 leading-normal font-light">
+              A complete, engineering-focused deep dive into the system architecture and implementation details is available in the collapsible process drawer at the bottom or the Scribe Appendix file.
+            </p>
+          </div>
+        </div>
 
-            <motion.div
-               initial={{ opacity: 0, y: 20 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               transition={{ delay: 1.8 }}
-               className="max-w-3xl"
-            >
-               <p className="text-[22px] text-gray-400 font-normal italic leading-relaxed">
-                 Great ideas require clarity, not just more data. I built Scribe to help people turn scattered fragments into a clear visual map, ensuring that the logic behind every decision is easy to see and impossible to lose.
-               </p>
-            </motion.div>
-         </div>
-      </section>
+        <div className="flex gap-6 mt-8">
+          <button 
+            onClick={() => handleJumpToSection("outcome")}
+            className="font-sans font-semibold text-[12px] text-black/50 hover:text-black underline underline-offset-4 uppercase tracking-wider"
+          >
+            Skip to outcome →
+          </button>
+          <span className="font-sans text-[12px] text-black/30 font-medium uppercase tracking-wider">
+            3 min read / 45 sec skim
+          </span>
+        </div>
 
-      {/* Section 01: The Discovery (Discovery) */}
-      <section className="relative z-10 py-24 md:py-64 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto border-t border-gray-50">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-32">
-           <div>
-              <span className="text-[12px] md:text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-8 md:mb-12">01 / THE PROBLEM</span>
-              <h2 className="font-helvetica font-bold text-[42px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Problem with Lists</h2>
-              <p className="text-[22px] text-gray-700 leading-relaxed font-normal mb-12">
-                 Modern design and product work is complex, yet our tools (Jira, Linear, Asana) force everything into a simple <strong className="text-black font-semibold">vertical list</strong>. This makes it hard to see how different ideas connect as a project grows.
-              </p>
-              
-              <div className="space-y-16 mt-24">
-                 {[
-                   { title: "Information Overload", desc: "Notes lose their meaning when they are just buried in a long list." },
-                   { title: "Recency Bias", desc: "We tend to focus on the newest data instead of the most important ideas." },
-                   { title: "Hidden Risks", desc: "Important details are often lost under layers of task-based design." }
-                 ].map((item, i) => (
-                    <motion.div 
-                        key={i}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="flex gap-10 items-start"
-                    >
-                        <span className="font-mono text-[14px] font-bold text-black/20">0{i+1}</span>
-                        <div>
-                           <h4 className="text-[14px] font-black uppercase tracking-widest mb-2">{item.title}</h4>
-                           <p className="text-[16px] text-gray-500 leading-relaxed font-medium">{item.desc}</p>
-                        </div>
-                    </motion.div>
-                 ))}
-              </div>
-           </div>
-           
-           <div className="relative">
-              <div className="sticky top-40 bg-gray-50 p-12 overflow-hidden border border-gray-100">
-                 <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-gray-400 mb-10">THE CURRENT LANDSCAPE</h4>
-                 <div className="space-y-1">
-                    {[
-                      { tool: "Jira / Linear", feature: "Backlog Lists", defect: "Losing the Big Picture", intensity: "CRITICAL" },
-                      { tool: "Notion / Google Docs", feature: "Documents", defect: "Hard to Find Info", intensity: "HIGH" },
-                      { tool: "Figma / Miro", feature: "Canvas", defect: "Disorganized Layouts", intensity: "MODERATE" }
-                    ].map((row, i) => (
-                       <div key={i} className="grid grid-cols-2 py-8 border-b border-gray-200/50 group hover:bg-white transition-colors px-4 -mx-4">
-                          <div>
-                             <p className="text-[13px] font-bold uppercase">{row.tool}</p>
-                             <p className="text-[11px] text-gray-400 font-mono mt-1">{row.feature}</p>
-                          </div>
-                          <div className="text-right">
-                             <p className="text-[13px] font-black text-gray-500">{row.defect}</p>
-                             <span className="text-[9px] font-mono bg-black text-white px-2 py-0.5 mt-2 inline-block tracking-widest">{row.intensity}</span>
-                          </div>
-                       </div>
-                    ))}
-                 </div>
-                 <div className="mt-20 pt-10 border-t border-gray-200/50">
-                    <p className="text-[12px] text-gray-400 leading-relaxed italic">
-                       The research showed that as tools become "easier" to use, they often lose the ability to handle complex information. Scribe aims to solve both.
-                    </p>
-                 </div>
-              </div>
-           </div>
+        {/* Hero Visual Video */}
+        <div className="w-full aspect-[16/9.5] border border-black/5 rounded-sm overflow-hidden mt-12 relative shadow-sm bg-neutral-950">
+          <MuxVideo 
+            playbackId="I755xvZ9WF017k4dgPRdKox3UWlwSdfBkxhxwr2aWQu8" 
+            className="w-full h-full object-cover"
+            metadata={{ video_title: "Scribe Interaction Demo" }}
+          />
         </div>
       </section>
 
-      {/* Section 02: The Design Engine (System) */}
-      <section className="relative z-10 py-32 md:py-64 bg-black text-white overflow-hidden">
-         <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 relative z-10">
-            <div className="max-w-4xl mb-24 md:mb-40">
-               <span className="text-[12px] md:text-[14px] font-bold text-gray-600 uppercase tracking-[0.5em] block mb-8 md:mb-12">02 / CORE SYSTEM</span>
-               <h2 className="font-helvetica font-bold text-[48px] md:text-[100px] leading-[0.85] mb-8 md:mb-12 tracking-tighter">Organizing the Chaos</h2>
-               <p className="text-[24px] text-gray-400 leading-relaxed font-normal">
-                  To solve for information overload, I developed a <strong className="text-white">Smart Organization System</strong> that decodes unstructured notes into a clear visual structure.
-               </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-40 items-center">
-               <div ref={sunflowerRef} className="relative aspect-square flex items-center justify-center">
-                  {/* Sunflower Simulation Visual */}
-                  <div className="absolute inset-0 bg-white/5 rounded-full border border-white/10 scale-90 animate-pulse"></div>
-                  <div className="absolute w-2 h-2 bg-white rounded-full"></div>
-                  {Array.from({ length: 48 }).map((_, i) => (
-                    <div 
-                        key={i} 
-                        className="sun-node absolute w-3 h-3 rounded-full bg-white transition-all duration-300 hover:scale-150 hover:bg-amber-400 cursor-pointer"
-                        style={{ border: '2px solid rgba(0,0,0,0.5)' }}
-                    ></div>
-                  ))}
-                  <div className="absolute bottom-[-60px] text-center w-full">
-                     <p className="text-[10px] font-black uppercase tracking-[0.6em] text-gray-600">Sunflower Node Distribution (137.5°)</p>
-                  </div>
-               </div>
-
-               <div className="space-y-24">
-                  <div className="group">
-                     <h4 className="text-[18px] font-black uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <span className="text-gray-700">01</span> IDENTIFYING CORE IDEAS
-                     </h4>
-                     <p className="text-[16px] text-gray-500 leading-relaxed font-medium pl-10 border-l border-gray-800">
-                        The system first identifies "Core Pillars"—the centers of your data. This builds the fundamental structure before a single detail is added.
-                     </p>
-                  </div>
-                  <div className="group">
-                     <h4 className="text-[18px] font-black uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <span className="text-gray-700">02</span> FILLING IN THE DETAILS
-                     </h4>
-                     <p className="text-[16px] text-gray-500 leading-relaxed font-medium pl-10 border-l border-gray-800">
-                        Once the skeleton is set, individual notes and evidence are clustered based on meaningful connections, ensuring no context is lost in the noise.
-                     </p>
-                  </div>
-                  <div className="group">
-                     <h4 className="text-[18px] font-black uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <span className="text-gray-700">03</span> SMART LAYOUT
-                     </h4>
-                     <p className="text-[16px] text-gray-500 leading-relaxed font-medium pl-10 border-l border-gray-800">
-                        The layout engine intelligently manages space on the screen to ensure large groups of ideas never overlap and remain easy to read.
-                     </p>
-                  </div>
-               </div>
-            </div>
-         </div>
-
-         {/* Cinematic Full Width Image */}
-         <div className="mt-24 md:mt-32 relative w-full min-h-[30vh] md:h-[80vh] bg-neutral-900 border-y border-white/5 overflow-hidden flex items-center">
-            <Image 
-              src="/projects/scribe/Scribe- graph light theme.png" 
-              alt="Graph Interface" 
-              className="object-contain w-full h-auto opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
-              width={1920}
-              height={1080}
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none"></div>
-            <div className="absolute bottom-20 left-6 md:left-20 pointer-events-none">
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] mb-4 block text-white/50">Visual Interface 01</span>
-                <h3 className="text-[24px] md:text-[40px] font-helvetica font-bold tracking-tighter max-w-xl text-white">Mapping thousands of ideas without losing the big picture.</h3>
-            </div>
-         </div>
-      </section>
-
-      {/* Section walkthrough Video Section */}
-      <section className="relative z-10 py-12 md:py-64 bg-[#F8F8F8] px-6 md:px-12 lg:px-20 -mx-6 md:-mx-12 lg:-mx-20">
-         <div className="max-w-[1400px] mx-auto">
-            <div className="max-w-3xl mb-12 md:mb-12">
-               <span className="text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-12">01 / DISCOVERY</span>
-               <h2 className="font-helvetica font-bold text-[56px] md:text-[100px] leading-[0.9] mb-12 tracking-tight italic">Finding the Flow</h2>
-               <p className="text-[20px] md:text-[24px] text-gray-700 leading-relaxed font-normal">
-                  My research focused on how people naturally map complex ideas. Most users prefer spatial layouts over folders and lists. Scribe mimics the "Mind Map" but with the power of a digital system.
-               </p>
-            </div>
-
-            <div className="flex flex-col gap-12 md:gap-24">
-                <MuxVideo 
-                    playbackId="I755xvZ9WF017k4dgPRdKox3UWlwSdfBkxhxwr2aWQu8" 
-                    className="rounded-sm shadow-2xl"
-                    metadata={{ video_title: "Scribe Interaction Logic 02" }}
-                />
-            </div>
-         </div>
-      </section>
-
-      {/* Section 03: Design Framework */}
-      <section className="relative z-10 py-24 md:py-40 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto overflow-hidden">
-         <div className="mb-24 md:mb-32">
-            <span className="text-[12px] md:text-[14px] font-bold text-gray-400 uppercase tracking-[0.5em] block mb-8 md:mb-12">03 / TESTING THE LIMITS</span>
-            <h2 className="font-helvetica font-bold text-[42px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Thought Framework</h2>
-            <p className="text-[18px] md:text-[22px] text-gray-700 leading-relaxed font-normal max-w-3xl italic">
-               Self-validation is often the hardest part of the design process. Scribe includes <strong className="text-black font-semibold">User-Centric Checks</strong> designed to help you spot gaps in your thinking and find better solutions.
+      {/* 3. CONTEXT SECTION */}
+      <section id="context" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div className="md:col-span-4">
+            <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
+              01 / CONTEXT
+            </span>
+          </div>
+          <div className="md:col-span-8 text-left space-y-6">
+            <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-black/75">
+              Scribe was built for **product executives and strategic leaders** who need to pressure-test critical decisions under intense timeline constraints.
             </p>
-         </div>
-
-         <div className="space-y-32">
-             {/* Red Team Swarm */}
-             <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20">
-                <div>
-                   <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">The Feedback Loop</h3>
-                   <span className="inline-block px-3 py-1 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest mb-6 border border-red-500/20">Testing & Refinement</span>
-                   <p className="text-[16px] text-gray-600 leading-relaxed">Leverages specialized AI personas to simulate different user perspectives, helping to identify potential friction points in your project early on.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {[
-                    { name: "The Growth Analyst", role: "Business / Risk", logic: "Queries if the capital burn is justified by the current logic.", color: "#ef4444" },
-                    { name: "The User Advocate", role: "Ethical Compliance", logic: "Flags potential systemic friction points in the roadmap.", color: "#06b6d4" },
-                    { name: "The Product Strategist", role: "Economic Viability", logic: "Analyzes the scaling efficiency of the proposed trajectory.", color: "#f59e0b" },
-                    { name: "The Design Critic", role: "Usability Discovery", logic: "Highlights inconsistencies in user journey assumptions.", color: "#8b5cf6" }
-                  ].map((persona, i) => (
-                    <motion.div 
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="p-10 border border-gray-100 bg-white shadow-sm hover:shadow-xl hover:border-black transition-all duration-700 relative overflow-hidden group"
-                    >
-                       <div className="absolute top-0 right-0 w-12 h-12 flex items-center justify-center opacity-10 group-hover:opacity-100 transition-opacity">
-                          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: persona.color }}></div>
-                       </div>
-                       <h5 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-6">{persona.role}</h5>
-                       <h4 className="text-[18px] font-black uppercase tracking-tight mb-4">{persona.name}</h4>
-                       <p className="text-[14px] text-gray-500 leading-relaxed font-medium italic">"{persona.logic}"</p>
-                    </motion.div>
-                  ))}
-                </div>
-             </div>
-
-             <div className="w-full h-px bg-gray-100"></div>
-
-             {/* Gaps Audit */}
-             <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20">
-                <div>
-                   <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">Finding the Gaps</h3>
-                   <span className="inline-block px-3 py-1 bg-amber-500/10 text-amber-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-amber-500/20">Logical Alignment</span>
-                   <p className="text-[16px] text-gray-600 leading-relaxed">Acts as a "Design Guide", scanning your project to identify missing steps or potential roadblocks before they happen.</p>
-                </div>
-                <div className="bg-gray-50 border border-gray-100 p-12">
-                   <h4 className="text-[14px] font-black uppercase tracking-widest text-gray-800 mb-6 flex items-center gap-4">
-                       <span className="w-2 h-2 rounded-full bg-amber-500"></span> Logic Check Example
-                   </h4>
-                   <p className="text-[16px] text-gray-500 leading-relaxed font-mono">
-                      <span className="text-black font-bold">IF</span> "Aggressive Expansion" exists in graph<br/>
-                      <span className="text-black font-bold">THEN</span> search for "Missing Context" AND "Potential Friction"<br/>
-                      <span className="text-black font-bold">ELSE</span> flag internal node as "Incomplete Logic"
-                   </p>
-                </div>
-             </div>
-
-             <div className="w-full h-px bg-gray-100"></div>
-
-             {/* Golden Path Synthesis */}
-             <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20">
-                <div>
-                   <h3 className="text-[28px] font-black uppercase tracking-tight mb-4">Golden Path</h3>
-                   <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-emerald-500/20">Clarity & Focus</span>
-                   <p className="text-[16px] text-gray-600 leading-relaxed">A refined summary that distills complex ideas into a simple, actionable path forward.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                   <div className="border border-gray-200 p-8">
-                       <span className="text-[10px] font-black text-gray-400 mb-4 block uppercase tracking-widest">Step 01</span>
-                       <h4 className="font-bold mb-2">The Source</h4>
-                       <p className="text-[13px] text-gray-500">Identify current bottleneck.</p>
-                   </div>
-                   <div className="border border-gray-200 p-8 border-l-4 border-l-black">
-                       <span className="text-[10px] font-black text-gray-400 mb-4 block uppercase tracking-widest">Step 02</span>
-                       <h4 className="font-bold mb-2">The Pivot</h4>
-                       <p className="text-[13px] text-gray-500">Find the structural shift.</p>
-                   </div>
-                   <div className="border border-gray-200 p-8">
-                       <span className="text-[10px] font-black text-gray-400 mb-4 block uppercase tracking-widest">Step 03</span>
-                       <h4 className="font-bold mb-2">The Outcome</h4>
-                       <p className="text-[13px] text-gray-500">High-fidelity end state.</p>
-                   </div>
-                </div>
-             </div>
-
-             <div className="w-full h-px bg-gray-100"></div>
-
-             {/* FMEA & Blue Ocean & First Principles Grouped */}
-             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="border border-gray-100 p-10 hover:border-black transition-colors duration-500 group">
-                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-amber-600 transition-colors">Risk Analysis</h3>
-                    <p className="text-[14px] text-gray-500 leading-relaxed">Proactively identifying potential issues in the design structure to ensure a robust user experience.</p>
-                </div>
-                <div className="border border-gray-100 p-10 hover:border-black transition-colors duration-500 group">
-                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-blue-500 transition-colors">Market Opportunity</h3>
-                    <p className="text-[14px] text-gray-500 leading-relaxed">Helping users find unique ways to stand out by mapping the competitive landscape in a clear, visual way.</p>
-                </div>
-                <div className="border border-gray-100 p-10 hover:border-black transition-colors duration-500 group">
-                    <h3 className="text-[18px] font-black uppercase tracking-tight mb-4 group-hover:text-indigo-500 transition-colors">Core Principles</h3>
-                    <p className="text-[14px] text-gray-500 leading-relaxed">Breaking complex problems down into their simplest parts to build better solutions from the ground up.</p>
-                </div>
-             </div>
-         </div>
-      </section>
-
-      {/* Section 04: The Interface (Design System) */}
-      <section className="relative z-10 py-24 md:py-40 mb-16 md:mb-32 bg-[#fafafa] border-y border-gray-200/50">
-         <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 items-end mb-24 md:mb-40">
-               <div>
-                  <span className="text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-12">04 / DESIGN SYSTEM</span>
-                  <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] tracking-tight">Modern Glassmorphism</h2>
-               </div>
-               <p className="text-[20px] text-gray-500 leading-relaxed font-normal max-w-lg mb-4">
-                  The design system is built to focus on <strong className="text-black font-semibold">clarity and ease of use</strong>, making it simple to manage large amounts of data without feeling overwhelmed.
-               </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-12">
-               {/* Full uncropped Graph Image */}
-               <div className="w-full relative shadow-2xl rounded-sm border border-black/5 bg-white p-2">
-                  <Image 
-                     src="/projects/scribe/Scribe- graph dark theme.png" 
-                     alt="Tactical Side Bar & Graph Uncropped" 
-                     width={3000} 
-                     height={1600} 
-                     className="w-full h-auto object-contain rounded-md"
-                  />
-               </div>
-            </div>
-
-         </div>
-      </section>
-
-      {/* Section 05: Project Results */}
-      <section className="relative z-10 py-12 md:py-40 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 border-t border-gray-100">
-         <div className="mb-24 md:mb-32">
-            <span className="text-[12px] md:text-[14px] font-bold text-gray-300 uppercase tracking-[0.5em] block mb-8 md:mb-12">05 / RESULTS & IMPACT</span>
-            <h2 className="font-helvetica font-bold text-[56px] md:text-[80px] leading-[0.9] mb-8 md:mb-12 tracking-tight">The Impact &<br/>Next Steps</h2>
-            <p className="text-[18px] md:text-[22px] text-gray-700 leading-relaxed font-normal max-w-3xl italic">
-               We tested the system through multiple iterations to ensure it was fast, reliable, and easy to use. The goal was to create a workspace that feels like a natural extension of how you think.
+            <p className="font-sans font-normal text-[15px] leading-relaxed text-black/50 border-l border-black/10 pl-6">
+              <strong>Constraints:</strong> Developed as a solo designer-developer project. The challenge was to create a tool that moves beyond the typical passive folder structure or flat chat threads to expose structural risks early while maintaining real-time client performance.
             </p>
-         </div>
-
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24 mb-16 md:mb-32">
-            {/* 1. Systemic Impact */}
-            <div className="space-y-8">
-               <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
-                  <span className="w-8 h-px bg-black"></span> Key Results
-               </h3>
-               <div className="space-y-6">
-                  <div className="p-6 bg-gray-50 border">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Color System</p>
-                     <p className="text-[14px] text-gray-600 leading-relaxed font-medium">Deliberate use of color to guide user attention and highlight the most important connections.</p>
-                  </div>
-                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                      <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Efficiency</p>
-                      <p className="text-[15px] text-gray-600 leading-relaxed">
-                         Users reported finding information faster and feeling less overwhelmed when working with complex projects.
-                      </p>
-                   </div>
-               </div>
-            </div>
-
-            {/* 2. Technical Constraints */}
-            <div className="space-y-8">
-               <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
-                  <span className="w-8 h-px bg-black"></span> Considerations
-               </h3>
-               <div className="space-y-6">
-                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Experience vs. Performance</p>
-                      <p className="text-[15px] text-gray-600 leading-relaxed">
-                         Balancing complex visual features with the need for a fast, responsive interface across all devices.
-                      </p>
-                  </div>
-                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Interface Experience</p>
-                      <p className="text-[15px] text-gray-600 leading-relaxed">
-                         Ensuring the system handles data processing smoothly so the user stays focused on their work.
-                      </p>
-                  </div>
-               </div>
-            </div>
-
-            {/* 3. Future Roadmap */}
-            <div className="space-y-8">
-               <h3 className="text-[18px] md:text-[20px] font-black uppercase tracking-tight flex items-center gap-4">
-                  <span className="w-8 h-px bg-black"></span> Future Roadmap
-               </h3>
-               <div className="space-y-6">
-                  <div className="p-6 bg-black text-white italic shadow-xl">
-                     <p className="text-[10px] font-black uppercase text-gray-500 mb-2 tracking-widest">Next Phase</p>
-                     <p className="text-[14px] leading-relaxed">
-                        Refining the layout algorithms to handle even larger data sets while keeping the experience smooth and intuitive.
-                     </p>
-                  </div>
-                  <div className="p-6 bg-gray-50 border border-gray-100 italic">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Automated Contextual Linking</p>
-                     <p className="text-[15px] text-gray-600 leading-relaxed">
-                        Integration of LLM-based semantic analysis to suggest connections between disparate nodes without manual user intervention.
-                     </p>
-                  </div>
-                  <div className="p-6 bg-gray-50 border">
-                     <p className="text-[11px] font-black uppercase text-gray-400 mb-2 tracking-widest">Design Details</p>
-                     <p className="text-[14px] text-gray-600 leading-relaxed font-medium">Fine-tuned spacing and typography to ensure every element is easy to read and interact with.</p>
-                  </div>
-               </div>
-            </div>
-         </div>
+          </div>
+        </div>
       </section>
 
-      {/* Final UI Collage */}
-      <section className="relative z-10 py-32 md:py-64 bg-black text-white px-6 md:px-12 lg:px-20 rounded-t-[4rem]">
-         <div className="max-w-[1600px] mx-auto">
-            <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
-               <div>
-                  <h2 className="font-helvetica font-bold text-[36px] md:text-[64px] leading-tight tracking-tight">Product Gallery</h2>
-                  <p className="text-[15px] md:text-[16px] text-gray-300 font-normal mt-4">Exploring the different modes and views of the Scribe interface.</p>
-               </div>
-               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600 mt-8 md:mt-0">Scribe Design System</span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-               {/* Hero Detail: Full Width */}
-               <div className="col-span-1 md:col-span-2 lg:col-span-3">
-                   <Image src="/projects/scribe/Scribe- graph light theme zoomed.png" alt="Light Theme Zoomed" width={1920} height={1080} className="w-full h-auto object-contain rounded border border-white/10 bg-neutral-900 shadow-2xl"/>
-               </div>
-               
-               {/* Left Column: Focused Detail */}
-               <div className="flex flex-col gap-12">
-                   <Image src="/projects/scribe/Scribe - graph workbench.png" alt="Graph Workbench" width={800} height={800} className="w-full h-auto object-contain rounded border border-white/10 bg-neutral-900"/>
-                   <Image src="/projects/scribe/Screenshot 2026-04-08 090023.png" alt="System Detail" width={800} height={800} className="w-full h-auto object-contain rounded border border-white/10 bg-neutral-900"/>
-               </div>
-
-               {/* Middle Column: Strategist Logic (Made Bigger) */}
-               <div className="col-span-1 md:col-span-1 lg:col-span-2 flex flex-col gap-12">
-                   <Image src="/projects/scribe/Scribe - Graph ligh theme node selectedd.png" alt="Light Theme Node Selected" width={1600} height={1200} className="w-full h-auto object-contain rounded border border-white/10 bg-neutral-900 shadow-xl"/>
-                   <div className="grid grid-cols-2 gap-12">
-                      <Image src="/projects/scribe/Scribe- home- dark.png" alt="Home Dark Mode" width={800} height={1200} className="w-full h-auto object-contain rounded border border-white/10 bg-neutral-900"/>
-                      <Image src="/projects/scribe/Scribe-note editor.png" alt="Note Editor" width={800} height={400} className="w-full h-auto object-contain rounded border border-white/10 bg-neutral-900"/>
-                   </div>
-               </div>
-            </div>
-
-            <div className="mt-40 text-center max-w-3xl mx-auto">
-               <p className="text-[28px] font-helvetica font-bold leading-snug italic text-white/90">
-                  "Scribe is about more than just organizing notes—it's about helping you see the connections you didn't know were there."
-               </p>
-            </div>
-         </div>
+      {/* 4. THE REAL PROBLEM SECTION */}
+      <section id="problem" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div className="md:col-span-4">
+            <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
+              02 / THE REAL PROBLEM
+            </span>
+          </div>
+          <div className="md:col-span-8 text-left space-y-6">
+            <h3 className="font-sans font-normal text-[26px] md:text-[34px] leading-tight text-black tracking-tight font-serif">
+              Traditional strategy documents create "ghost context"—hidden interdependencies and logic loops impossible to spot until they fail.
+            </h3>
+            <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60">
+              While flat chat interfaces generate passive advice, they fail to provide the structural resistance and visual hierarchy required to diagnose real strategic flaws. The challenge is exposing abstract concepts with physical distance, alignment, and color so that structural gaps become immediately apparent.
+            </p>
+          </div>
+        </div>
       </section>
 
-      <CaseStudyFooter nextProject={{ name: "Spandhika", href: "/projects/spandhika" }} theme="dark" />
+      {/* 5. KEY DECISIONS (PROGRESSIVE DISCLOSURE) */}
+      <section id="decisions" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
+        <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
+          <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
+            03 / KEY DECISIONS
+          </span>
+          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
+            CLICK TO EXPAND
+          </span>
+        </div>
+
+        <div className="space-y-4">
+          {[
+            {
+              title: "Columnar Spatial Anchoring",
+              summary: "Keeps hundreds of strategic insights scannable and organized.",
+              why: "Anchored strategic nodes into a predictable column rhythm rather than letting them drift into an unreadable 'spaghetti graph' of floating circles."
+            },
+            {
+              title: "Dynamic Chromatic Warning System",
+              why: "Directed the decision-maker's attention instantly to critical structural flaws by color-coding risks in high-contrast red and constructive opportunities in soft green.",
+              summary: "Directs attention instantly to critical structural flaws."
+            },
+            {
+              title: "Dual-Depth Navigation Scale",
+              why: "Allowed users to move seamlessly between a 10,000-foot view of major strategic pillars and ground-level specific insights without feeling disoriented or losing track of the surrounding context.",
+              summary: "Balances visual overview with atomic, granular details."
+            },
+            {
+              title: "Local Persistence Architecture",
+              why: "Guaranteed that strategic sessions remain fully intact and editable, preventing data loss during intensive focus sessions or sudden connection drops.",
+              summary: "Safeguards long working sessions from connection failures."
+            }
+          ].map((item, idx) => {
+            const isExpanded = expandedDecision === idx;
+            return (
+              <div 
+                key={idx}
+                className="border border-[#EDEDED] rounded bg-[#FAFAFA] transition-all"
+              >
+                <button
+                  onClick={() => setExpandedDecision(isExpanded ? null : idx)}
+                  className="w-full text-left p-6 flex justify-between items-center"
+                >
+                  <div>
+                    <h4 className="font-sans font-semibold text-[16px] text-black uppercase tracking-tight">
+                      → {item.title}
+                    </h4>
+                    <p className="font-sans text-[13px] text-black/50 mt-1 font-sans">
+                      {item.summary}
+                    </p>
+                  </div>
+                  <span className="text-[18px] font-mono font-bold text-black/30">
+                    {isExpanded ? "–" : "+"}
+                  </span>
+                </button>
+
+                {isExpanded && (
+                  <div className="px-6 pb-6 pt-2 border-t border-gray-100 text-left bg-white rounded-b">
+                    <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block mb-2 font-sans">Rationale</span>
+                    <p className="font-sans text-[14px] leading-relaxed text-black/70 font-light font-sans">
+                      {item.why}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 6. INTERACTIVE LIVE SIMULATION DEMO */}
+      <section id="simulation" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100 bg-[#FAFAFA] rounded-sm border border-black/5">
+        <div className="w-full flex justify-between items-baseline mb-8">
+          <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
+            04 / LIVE WORKSPACE SIMULATOR
+          </span>
+          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
+            REAL-TIME NODE SYNTHESIS
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Prompts Input Column */}
+          <div className="lg:col-span-4 text-left space-y-4">
+            <span className="text-[11px] font-bold text-black/40 uppercase tracking-wider block">Select Strategy Prompt</span>
+            
+            {prompts.map((p, i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedPrompt(i)}
+                disabled={isSimulating}
+                className={`w-full text-left p-4 rounded text-[13px] border font-sans leading-relaxed transition-all ${
+                  selectedPrompt === i 
+                    ? "bg-black border-black text-white" 
+                    : "bg-white border-gray-200 hover:border-black/20 text-black/75"
+                }`}
+              >
+                {p.text}
+              </button>
+            ))}
+
+            <button
+              onClick={startSimulation}
+              disabled={isSimulating}
+              className="w-full py-3.5 bg-[#ef4444] text-white font-sans text-[12px] uppercase font-bold tracking-wider hover:bg-[#d93838] disabled:opacity-50 transition-all rounded-[3px] mt-2 cursor-pointer"
+            >
+              {isSimulating ? "Swarm Simulating..." : "Synthesize Map"}
+            </button>
+          </div>
+
+          {/* Interactive Dynamic Grid Output Column */}
+          <div className="lg:col-span-8 border border-gray-200 bg-white rounded p-4 relative min-h-[360px] flex flex-col justify-between overflow-hidden shadow-inner">
+            
+            {/* Live SVG Graph Canvas */}
+            <div className="absolute inset-0 z-10 select-none pointer-events-none">
+              <svg className="w-full h-full">
+                {simLinks.map((link, idx) => {
+                  const sNode = simNodes.find(n => n.id === link.source);
+                  const tNode = simNodes.find(n => n.id === link.target);
+                  if (!sNode || !tNode) return null;
+                  return (
+                    <line
+                      key={idx}
+                      x1={sNode.x}
+                      y1={sNode.y}
+                      x2={tNode.x}
+                      y2={tNode.y}
+                      stroke="black"
+                      strokeWidth="0.8"
+                      strokeDasharray="3 3"
+                    />
+                  );
+                })}
+              </svg>
+            </div>
+
+            {/* Simulated Nodes Overlay */}
+            <div className="absolute inset-0 z-20 pointer-events-none">
+              {simNodes.map((node) => (
+                <div
+                  key={node.id}
+                  style={{ left: `${node.x}px`, top: `${node.y}px` }}
+                  className={`absolute -translate-x-1/2 -translate-y-1/2 px-2.5 py-1.5 border rounded text-[11px] font-sans font-bold shadow-sm pointer-events-auto bg-white hover:scale-105 transition-transform ${
+                    node.type === "cluster" ? "border-black bg-black text-white" : "border-black/15 bg-white text-black"
+                  }`}
+                >
+                  {node.label}
+                </div>
+              ))}
+            </div>
+
+            {simNodes.length === 0 && !isSimulating && (
+              <div className="absolute inset-0 flex items-center justify-center p-8 text-center text-black/35 font-sans text-[13px] italic z-0">
+                Click "Synthesize Map" to run Scribe's Pillar-Cluster-Leaf layout simulation.
+              </div>
+            )}
+
+            {/* Live Terminal Log Feeds at Bottom */}
+            <div className="mt-auto w-full bg-neutral-900 text-green-400 font-mono text-[11px] p-4 rounded text-left z-30 shadow-lg space-y-1">
+              <div className="text-white/40 border-b border-white/5 pb-2 mb-2 uppercase text-[9px] tracking-widest font-sans flex justify-between items-center">
+                <span>Terminal Log Swarm</span>
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
+              </div>
+              {simLogs.map((log, idx) => (
+                <div key={idx} className="transition-all duration-300">
+                  &gt; {log}
+                </div>
+              ))}
+              {isSimulating && <div className="animate-pulse">&gt; Processing...</div>}
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 7. WHAT DIDN'T WORK SECTION */}
+      <section id="friction" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div className="md:col-span-4">
+            <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
+              05 / WHAT DIDN'T WORK
+            </span>
+          </div>
+          <div className="md:col-span-8 text-left space-y-4">
+            <h4 className="font-sans font-bold text-[13px] text-black uppercase tracking-wider font-serif">The Information Spaghetti Trap</h4>
+            <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60 font-sans">
+              Early visual designs mapped strategic insights as a flat, uniform web of connected circles. During user testing, this created immediate cognitive overload—users could not tell which nodes were high-level pillars versus atomic details, and the canvas quickly became "information spaghetti."
+            </p>
+            <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60 border-l-2 border-black/10 pl-6 italic font-sans">
+              <strong>The Pivot:</strong> The design had to be restructured around a strict hierarchical pillar-to-cluster column system that visually separates core strategic pillars from individual leaf nodes, locking coordinates to a snap grid to prevent drift.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. OUTCOME SECTION */}
+      <section id="outcome" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
+        <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
+          <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
+            06 / OUTCOME
+          </span>
+          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
+            QUANTIFIED METRICS
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+          <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
+            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif font-sans">0ms</span>
+            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Synthesis Latency</span>
+            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal font-sans">Shifted strategy reviews from passive reading to active exploration, exposing gaps on a single screen.</p>
+          </div>
+          <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
+            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif font-sans">0</span>
+            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Data Loss</span>
+            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal font-sans">Maintained client-side state across long strategic editing sessions using IndexedDB cache layers.</p>
+          </div>
+          <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
+            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif font-sans">Snap Grid</span>
+            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Locked Spacings</span>
+            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal font-sans">Enabled rapid scanning of dozens of strategic nodes simultaneously using strict column intervals.</p>
+          </div>
+        </div>
+
+        {/* Reflection */}
+        <div className="mt-12 p-6 border-l-2 border-black text-left">
+          <span className="font-sans text-[11px] font-bold text-black/40 uppercase tracking-widest block mb-2 font-serif font-sans">Reflection</span>
+          <p className="font-sans text-[14px] leading-relaxed text-black/75 font-sans">
+            Building Scribe reinforced that strategic clarity is a spatial problem. When you give abstract concepts physical distance, alignment, and color, strategic flaws become immediately apparent.
+          </p>
+        </div>
+      </section>
+
+      {/* 9. COLLAPSIBLE DEEP PROCESS DRAWER */}
+      <section className="py-12 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto flex flex-col items-center">
+        <button
+          onClick={() => setShowFullProcess(!showFullProcess)}
+          className="px-8 py-4 border border-black text-black font-sans text-[12px] uppercase font-bold tracking-wider hover:bg-black hover:text-white transition-all duration-300 rounded-sm cursor-pointer"
+        >
+          {showFullProcess ? "Hide detailed process" : "See full process"}
+        </button>
+
+        {showFullProcess && (
+          <div className="w-full mt-12 pt-12 border-t border-gray-100 text-left space-y-16 animate-fadeIn font-sans">
+            
+            {/* SECTION 1: TECHNICAL STACK & ARCHITECTURE */}
+            <div className="space-y-6">
+              <span className="text-[10px] font-bold text-[#ef4444] uppercase tracking-widest block">01 / TECHNICAL STACK & ARCHITECTURE</span>
+              <h3 className="text-[20px] font-bold text-black uppercase tracking-tight font-sans">Scribe Strategy Engine</h3>
+              <p className="text-[14px] text-black/60 leading-relaxed max-w-3xl font-sans">
+                Scribe's visual workbench runs entirely client-side using a high-performance database and visual rendering layer. The backend services are decoupled to avoid vendor lock-in.
+              </p>
+              
+              {/* Architecture flow visual */}
+              <div className="p-6 bg-gray-50 border border-gray-100 rounded-sm grid grid-cols-1 md:grid-cols-5 gap-4 text-center items-center font-sans">
+                <div className="p-4 bg-white border border-gray-200 rounded-sm shadow-sm">
+                  <span className="block text-[10px] font-bold text-black/40 uppercase">Input</span>
+                  <span className="text-[12px] font-semibold text-black">Raw PRD Text</span>
+                </div>
+                <div className="text-black/30 font-bold">→</div>
+                <div className="p-4 bg-white border border-gray-200 rounded-sm shadow-sm">
+                  <span className="block text-[10px] font-bold text-black/40 uppercase">Synthesizer</span>
+                  <span className="text-[12px] font-semibold text-black">Two-Pass LLM</span>
+                </div>
+                <div className="text-black/30 font-bold">→</div>
+                <div className="p-4 bg-white border border-gray-200 rounded-sm shadow-sm col-span-1 md:col-span-1">
+                  <span className="block text-[10px] font-bold text-black/40 uppercase">Database</span>
+                  <span className="text-[12px] font-semibold text-black">Dexie / IndexedDB</span>
+                </div>
+              </div>
+
+              <div className="space-y-4 max-w-3xl font-sans">
+                <h4 className="text-[13px] font-bold text-black uppercase tracking-wider">Two-Pass Systemic Extraction</h4>
+                <p className="text-[13px] text-black/60 leading-relaxed">
+                  To prevent token limit bottlenecks and ensure stable layouts, the extraction workflow splits synthesis:
+                </p>
+                <ul className="list-disc pl-5 text-[13px] text-black/60 space-y-2">
+                  <li><strong>Pass 1 (Skeleton):</strong> Extracts structural pillars and sub-categorized clusters, pinning them as the blueprint grid coordinates.</li>
+                  <li><strong>Pass 2 (Leaves & Cross-links):</strong> Populates clusters with individual leaf insights (risks, opportunities) and builds inter-cluster dependencies without floating node jitter.</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* SECTION 2: LAYOUT CONSTANTS & MATHEMATICS */}
+            <div className="space-y-6 pt-12 border-t border-gray-100">
+              <span className="text-[10px] font-bold text-[#ef4444] uppercase tracking-widest block">02 / LAYOUT CONSTANTS & SPATIAL MATH</span>
+              <h3 className="text-[20px] font-bold text-black uppercase tracking-tight font-sans">Predictable Column Rhythms</h3>
+              <p className="text-[14px] text-black/60 leading-relaxed max-w-3xl font-sans">
+                Scribe avoids standard force-directed layout algorithms that let nodes drift. It enforces strict columnar math to keep graphs legible at scale:
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start font-sans">
+                <div className="p-5 bg-neutral-950 rounded text-neutral-300 font-mono text-[12px] space-y-1 shadow-inner">
+                  <div className="text-neutral-500 mb-2">// Layout engine configuration constants</div>
+                  <div><span className="text-[#ef4444]">const</span> PILLAR_COL_WIDTH = <span className="text-cyan-400">300</span>; <span className="text-neutral-600">// Column width</span></div>
+                  <div><span className="text-[#ef4444]">const</span> PILLAR_GAP       = <span className="text-cyan-400">320</span>; <span className="text-neutral-600">// Col separation</span></div>
+                  <div><span className="text-[#ef4444]">const</span> PILLAR_TOP_PAD   = <span className="text-cyan-400">100</span>; <span className="text-neutral-600">// Top offset</span></div>
+                  <div><span className="text-[#ef4444]">const</span> CLUSTER_GAP      = <span className="text-cyan-400">32</span>;  <span className="text-neutral-600">// Vertical cluster gap</span></div>
+                  <div><span className="text-[#ef4444]">const</span> LEAF_HEIGHT      = <span className="text-cyan-400">68</span>;  <span className="text-neutral-600">// Node card height</span></div>
+                  <div><span className="text-[#ef4444]">const</span> LEAF_GAP         = <span className="text-cyan-400">10</span>;  <span className="text-neutral-600">// Card gap</span></div>
+                </div>
+                <div className="space-y-3 text-[13px] text-black/60 leading-relaxed font-sans">
+                  <p>
+                    By constraining layouts to 300px columns with 320px separation, the workbench prevents overlapping. Users scan columns vertically to understand hierarchy and look horizontally along connection tracks to see dependencies.
+                  </p>
+                  <p>
+                    <strong>D3 Zoom Configuration:</strong> Viewport transforms scale constraint set strictly to <code>[0.04, 4.0]</code>. Saturation filters are applied at <code>backdrop-filter: blur(12px) saturate(180%)</code> on side drawers to isolate active workspace layers.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 3: THE UI COLOR SYSTEM */}
+            <div className="space-y-6 pt-12 border-t border-gray-100">
+              <span className="text-[10px] font-bold text-[#ef4444] uppercase tracking-widest block font-sans">03 / UI COLOR SYSTEM</span>
+              <h3 className="text-[20px] font-bold text-black uppercase tracking-tight font-sans font-bold">Strategic Semantic Archetypes</h3>
+              <p className="text-[14px] text-black/60 leading-relaxed max-w-3xl font-sans">
+                Every node is color-coded by its archetype, making strategic risks, facts, and opportunities scannable instantly:
+              </p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 font-sans">
+                {[
+                  { name: "RISK", color: "#ef4444", desc: "Structural failure points" },
+                  { name: "CRITIQUE", color: "#f97316", desc: "Disagreements or assumptions" },
+                  { name: "OPPORTUNITY", color: "#22c55e", desc: "Acceleration pathways" },
+                  { name: "INSIGHT", color: "#3b82f6", desc: "General strategic learnings" },
+                  { name: "FACT", color: "#8b5cf6", desc: "Verified data points and statements" },
+                  { name: "QUESTION", color: "#eab308", desc: "Unresolved assumptions or gaps" },
+                  { name: "PATH", color: "#06b6d4", desc: "Critical action directions" },
+                  { name: "DATA", color: "#94a3b8", desc: "Supporting metric values" }
+                ].map((c, i) => (
+                  <div key={i} className="p-4 border border-gray-100 rounded-sm bg-gray-50 flex flex-col justify-between min-h-[90px]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-black uppercase">{c.name}</span>
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: c.color }} />
+                    </div>
+                    <p className="text-[11px] text-black/55 mt-2 leading-tight">{c.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SECTION 4: ARCHITECTURAL ITERATION DETAILS */}
+            <div className="space-y-6 pt-12 border-t border-gray-100 font-sans">
+              <span className="text-[10px] font-bold text-[#ef4444] uppercase tracking-widest block font-sans">04 / ARCHITECTURAL ITERATION DETAILS</span>
+              <h3 className="text-[20px] font-bold text-black uppercase tracking-tight font-sans">The Information Spaghetti Trap</h3>
+              <p className="text-[14px] text-black/60 leading-relaxed max-w-3xl font-sans">
+                Early iterations of Scribe's strategy visual canvas relied on standard dynamic force-directed layouts (<code>d3.forceSimulation</code>). While visually impressive, user testing exposed critical performance and cognitive bottlenecks:
+              </p>
+              <ul className="list-disc pl-5 text-[13px] text-black/60 space-y-2 max-w-3xl font-sans">
+                <li><strong>Node Overlaps:</strong> Nodes clustered on top of each other when strategic graphs scaled past 50 items.</li>
+                <li><strong>Jittery Reading:</strong> Text labels rotated or drifted during navigation, making scanning and direct reading impossible.</li>
+                <li><strong>Context Collapse:</strong> The lack of structural columns made tracing inheritance and logical strategy paths extremely difficult.</li>
+              </ul>
+              <p className="text-[13px] text-black/60 leading-relaxed max-w-3xl font-sans">
+                To fix this, we replaced dynamic physics simulations with the **Columnar Spatial Engine**, pinning the horizontal (<code>x</code>) coordinates of major pillars and clusters while stacking leaf cards vertically. This stabilized coordinates, locked cards to snap grids, and significantly reduced the cognitive load.
+              </p>
+            </div>
+
+            {/* SECTION 5: SCREENSHOTS & WORKBENCH */}
+            <div className="space-y-6 pt-12 border-t border-gray-100">
+              <span className="text-[10px] font-bold text-[#ef4444] uppercase tracking-widest block font-sans">05 / INTERFACE GALLERY</span>
+              <h3 className="text-[20px] font-bold text-black uppercase tracking-tight font-sans">Detailed Interface & Screenshots</h3>
+              <p className="text-[14px] text-black/60 leading-relaxed max-w-3xl font-sans">
+                Exploring the Scribe interface across different layouts, note editor sidebars, and thematic HUD styles designed for deep working focus.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
+                <div 
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe- graph light theme.png")}
+                  className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
+                >
+                  <Image src="/projects/scribe/Scribe- graph light theme.png" alt="Light Theme Graph" fill className="object-cover" />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
+                  </div>
+                </div>
+
+                <div 
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe- graph dark theme.png")}
+                  className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
+                >
+                  <Image src="/projects/scribe/Scribe- graph dark theme.png" alt="Dark Theme Graph" fill className="object-cover" />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
+                  </div>
+                </div>
+
+                <div 
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe- home- dark.png")}
+                  className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
+                >
+                  <Image src="/projects/scribe/Scribe- home- dark.png" alt="Scribe Home Screen" fill className="object-cover" />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
+                  </div>
+                </div>
+
+                <div 
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe-note editor.png")}
+                  className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
+                >
+                  <Image src="/projects/scribe/Scribe-note editor.png" alt="Note Editor Workbench" fill className="object-cover" />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* 10. FOOTER NAVIGATION */}
+      <CaseStudyFooter nextProject={{ name: "Campus Trace", href: "/projects/campus-trace" }} />
     </main>
   );
 }

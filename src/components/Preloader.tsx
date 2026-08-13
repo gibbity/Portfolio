@@ -14,6 +14,14 @@ const LOG_MESSAGES = [
   "System ready."
 ];
 
+const ICONS = [
+  { id: "figma", name: "Figma", url: "https://images.shadcnspace.com/assets/svgs/figma.svg", threshold: 15 },
+  { id: "supabase", name: "Supabase", url: "https://images.shadcnspace.com/assets/svgs/supabase.svg", threshold: 35 },
+  { id: "claude", name: "Claude", url: "https://images.shadcnspace.com/assets/svgs/clude.svg", threshold: 55 },
+  { id: "antigravity", name: "Antigravity", isCustom: true, threshold: 75 },
+  { id: "gemini", name: "Gemini", url: "https://images.shadcnspace.com/assets/svgs/gemini.svg", threshold: 95 }
+];
+
 export default function Preloader() {
   const pathname = usePathname();
   const router = useRouter();
@@ -21,6 +29,7 @@ export default function Preloader() {
 
   const [progress, setProgress] = useState(0);
   const [realProgress, setRealProgress] = useState(0);
+  const [reelLoaded, setReelLoaded] = useState(false);
   const [currentLog, setCurrentLog] = useState(0);
   const [phase, setPhase] = useState<"loading" | "curtain" | "done">(isHomepage ? "loading" : "done");
   const [isMounted, setIsMounted] = useState(false);
@@ -58,10 +67,32 @@ export default function Preloader() {
 
     // Also prefetch routes
     router.prefetch("/projects/scribe");
-    router.prefetch("/projects/spandhika");
     router.prefetch("/projects/campus-trace");
-    router.prefetch("/projects/context");
+    router.prefetch("/projects/open-design-studio");
   }, [isHomepage, router]);
+
+  useEffect(() => {
+    if (!isHomepage) return;
+    if (typeof window !== "undefined") {
+      // @ts-expect-error - showcaseReelLoaded flag attached to window
+      if (window.__showcaseReelLoaded) {
+        setReelLoaded(true);
+      } else {
+        const handleReelLoaded = () => setReelLoaded(true);
+        window.addEventListener("showcase-reel-loaded", handleReelLoaded);
+        
+        // 8-second safety fallback
+        const fallback = setTimeout(() => {
+          setReelLoaded(true);
+        }, 8000);
+
+        return () => {
+          window.removeEventListener("showcase-reel-loaded", handleReelLoaded);
+          clearTimeout(fallback);
+        };
+      }
+    }
+  }, [isHomepage]);
 
   useEffect(() => {
     if (!isHomepage) return;
@@ -75,8 +106,8 @@ export default function Preloader() {
           return 100;
         }
 
-        // Stall at 90% if real assets aren't done
-        if (prev >= 90 && realProgress < 100) {
+        // Stall at 90% if showcase reel is not loaded yet
+        if (prev >= 90 && !reelLoaded) {
           return prev;
         }
 
@@ -95,7 +126,7 @@ export default function Preloader() {
       clearInterval(interval);
       clearInterval(logInterval);
     };
-  }, [isHomepage, realProgress]);
+  }, [isHomepage, realProgress, reelLoaded]);
 
   useEffect(() => {
     if (phase === "curtain" && pathRef.current) {
@@ -134,32 +165,54 @@ export default function Preloader() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#FBFBFB] overflow-hidden"
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#080808] overflow-hidden"
           >
             {/* Background Grid */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-                 style={{ backgroundImage: 'radial-gradient(#4A5EBF 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+            <div className="absolute inset-0 opacity-[0.015] pointer-events-none" 
+                 style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
             
             <div className="relative flex flex-col items-center">
-              {/* Central Asterisk Pulse */}
-              <motion.div
-                animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-                transition={{ rotate: { duration: 10, repeat: Infinity, ease: "linear" }, scale: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}
-                className="mb-12"
-              >
-                <svg width="40" height="40" viewBox="-12 -12 24 24" fill="none">
-                  <path 
-                    d="M 0 -10 L 0 10 M -10 0 L 10 0 M -7 -7 L 7 7 M -7 7 L 7 -7 M -4 -9 L 4 9 M -9 -4 L 9 4 M -4 9 L 4 -9 M -9 4 L 9 -4"
-                    stroke="#4A5EBF" 
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </motion.div>
+              {/* Tech Icons Row */}
+              <div className="flex items-center gap-6 mb-12 mt-4">
+                {ICONS.map((icon) => {
+                  const isActive = Math.floor(progress) >= icon.threshold;
+                  return (
+                    <div 
+                      key={icon.id}
+                      className="transition-all duration-500 p-3 rounded-lg border flex items-center justify-center"
+                      style={{
+                        backgroundColor: isActive ? "rgba(74, 94, 191, 0.12)" : "transparent",
+                        borderColor: isActive ? "rgba(74, 94, 191, 0.45)" : "rgba(255, 255, 255, 0.05)",
+                        opacity: isActive ? 1 : 0.15,
+                        filter: isActive ? "none" : "grayscale(100%)",
+                        boxShadow: isActive ? "0 0 15px rgba(74, 94, 191, 0.2)" : "none"
+                      }}
+                      title={icon.name}
+                    >
+                      {icon.isCustom ? (
+                        /* Antigravity Custom SVG */
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A5EBF" strokeWidth="2" className={isActive ? "animate-pulse" : ""}>
+                          <circle cx="12" cy="7" r="3" fill="#4A5EBF" />
+                          <path d="M5 17q7 3 14 0" strokeLinecap="round" />
+                          <path d="M8 20q4 2 8 0" strokeLinecap="round" opacity="0.5" />
+                        </svg>
+                      ) : (
+                        <img 
+                          src={icon.url} 
+                          alt={icon.name} 
+                          width={24}
+                          height={24}
+                          className="w-6 h-6 object-contain"
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
 
               {/* Counter */}
               <div className="mb-4">
-                <span className="font-helvetica text-[48px] font-bold tracking-tighter tabular-nums text-[#1A1A1A]">
+                <span className="font-helvetica text-[48px] font-bold tracking-tighter tabular-nums text-white">
                   {Math.min(100, Math.floor(progress))}
                 </span>
                 <span className="font-helvetica text-[14px] font-medium text-[#4A5EBF] ml-1">%</span>
@@ -174,7 +227,7 @@ export default function Preloader() {
                     animate={{ y: 0, opacity: 0.4 }}
                     exit={{ y: -10, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#1A1A1A]"
+                    className="font-mono text-[9px] uppercase tracking-[0.2em] text-white"
                   >
                     {LOG_MESSAGES[currentLog]}
                   </motion.p>
@@ -210,7 +263,7 @@ export default function Preloader() {
             <path 
               ref={pathRef}
               className="path" 
-              fill="#FBFBFB" 
+              fill="#080808" 
               d="M 0 100 V 100 Q 50 100 100 100 V 100 z" 
             />
           </svg>

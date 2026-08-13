@@ -34,8 +34,8 @@ export const portfolioData: NodeData = {
       description: 'Product Designer specializing in high-fidelity interaction design and spatial user interfaces.',
       children: [
         { id: 'about-intro', label: 'Intro', type: 'category', shape: 'square', innerContent: 'dot', description: 'Deeply focused on the intersection of human cognitive patterns and interactive machines. Currently based in VIT, pursuing Industrial Design with a focus on UX and Generative UI workflows.' },
-        { id: 'about-skills', label: 'Skills', type: 'category', shape: 'square', innerContent: 'dot', description: 'Core technical stack: React, TypeScript, Next.js, D3.js, Framer Motion, Three.js, and specialized AI-integrated design systems. Proficient in strategic intelligence spatialization and medical-grade biometric HUD design.' },
-        { id: 'about-work', label: 'Work history', type: 'category', shape: 'square', innerContent: 'dot', description: 'Experience in building non-linear strategic intelligence platforms (Scribe), medical diagnostic telemetry (Spandhika), and forensic geospatial systems (Campus Trace).' },
+        { id: 'about-skills', label: 'Skills', type: 'category', shape: 'square', innerContent: 'dot', description: 'Core technical stack: React, TypeScript, Next.js, D3.js, Framer Motion, Three.js, and specialized AI-integrated design systems. Proficient in strategic intelligence spatialization.' },
+        { id: 'about-work', label: 'Work history', type: 'category', shape: 'square', innerContent: 'dot', description: 'Experience in building non-linear strategic intelligence platforms (Scribe) and forensic geospatial systems (Campus Trace).' },
         { id: 'about-panel', label: '', type: 'project', shape: 'square' } 
       ]
     },
@@ -59,37 +59,26 @@ export const portfolioData: NodeData = {
           description: 'Non-linear strategic intelligence platform for dissolving context-collapse through hierarchical spatialization.'
         },
         {
-          id: 'spandhika',
-          label: 'Spandhika',
-          type: 'project',
-          shape: 'hexagon',
-          innerContent: '2',
-          image: '/projects/spandhika/Spanfhika.png',
-          lottie: '/projects/spandhika/spandhika.json',
-          url: '/projects/spandhika',
-          description: 'Medical-grade diagnostic HUD and biometric telemetry redesign for biomechanical researchers.'
-        },
-        {
           id: 'campus-trace',
           label: 'Campus Trace',
           type: 'project',
           shape: 'hexagon',
-          innerContent: '3',
+          innerContent: '2',
           image: '/projects/campus-trace/hero.png',
           video: '/projects/campus-trace/preview.mp4',
           url: '/projects/campus-trace',
           description: 'Forensic geospatial provenance system for real-time incident archival and thematic cluster analysis.'
         },
         {
-          id: 'context',
-          label: 'Context',
+          id: 'open-design-studio',
+          label: 'Open Design Studio',
           type: 'project',
           shape: 'hexagon',
-          innerContent: '4',
-          image: '/projects/context/selecting a context and looking at the webpages.png',
-          video: '/projects/context/preview.mp4',
-          url: '/projects/context',
-          description: 'Open-source browser instrument for bridging OS shortcuts and browser session state to eliminate cognitive latency.'
+          innerContent: '3',
+          image: '/projects/open-design-studio/hero.png',
+          video: '/projects/open-design-studio/open-component-main-video-3x4.mp4',
+          url: '/projects/open-design-studio',
+          description: 'Web-native, local-first AI prototyping environment for enterprise design privacy and speed.'
         }
       ]
     },
@@ -140,7 +129,6 @@ export const portfolioData: NodeData = {
         { id: 'st-genai', label: 'Generative UI', type: 'category', shape: 'triangle', category_type: 'skill' },
         { id: 'st-workflow', label: 'AI Workflows', type: 'category', shape: 'triangle', category_type: 'skill' },
         { id: 'st-unifyd', label: 'Unifyd BI', type: 'category', shape: 'square', category_type: 'work' },
-        { id: 'st-spandhika', label: 'Spandhika', type: 'category', shape: 'square', category_type: 'work' },
         { id: 'st-simplicity', label: 'Simplifying Complexity', type: 'category', shape: 'hexagon', category_type: 'style' },
         { id: 'st-bridge', label: 'Bridging Tech & UI', type: 'category', shape: 'hexagon', category_type: 'style' }
       ] 

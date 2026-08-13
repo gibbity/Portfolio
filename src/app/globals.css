@@ -3,29 +3,36 @@
 
 @theme inline {
   --color-accent: #4A5EBF;
-  --color-background: #FBFBFB;
+  --color-background: #FFFFFF;
   --color-foreground: #1A1A1A;
-  --font-helvetica: var(--font-helvetica), Helvetica, Arial, sans-serif;
+  --font-satoshi: var(--font-satoshi), Satoshi, sans-serif;
+  --font-helvetica: var(--font-satoshi), Helvetica, Arial, sans-serif;
   --font-dm-sans: var(--font-dm-sans), sans-serif;
+  --font-google-sans: "Google Sans", "Product Sans", var(--font-dm-sans), sans-serif;
   --accent-color: #4A5EBF;
-  --bg-color: #FBFBFB;
+  --bg-color: #FFFFFF;
 }
 
-html, body {
+html,
+body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-helvetica);
+  font-family: var(--font-satoshi);
 }
 
 /* Custom cursor only for desktop/hover devices */
 @media (hover: hover) {
-  html, body, * {
+
+  html,
+  body,
+  * {
     cursor: none !important;
   }
 }
 
 /* Lenis Recommended CSS */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 

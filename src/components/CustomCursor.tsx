@@ -28,9 +28,9 @@ const CustomCursor = () => {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  // useSpring for liquid-smooth movement that hides slight main-thread jitter
-  const cursorX = useSpring(mouseX, { stiffness: 1200, damping: 60, mass: 0.2 });
-  const cursorY = useSpring(mouseY, { stiffness: 1200, damping: 60, mass: 0.2 });
+  // DELAYED AND SMOOTH SPRING PHYSICS
+  const cursorX = useSpring(mouseX, { stiffness: 150, damping: 22, mass: 0.5 });
+  const cursorY = useSpring(mouseY, { stiffness: 150, damping: 22, mass: 0.5 });
 
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
@@ -56,8 +56,7 @@ const CustomCursor = () => {
     const moveCursor = (e: PointerEvent) => {
       const snap = snapPosRef.current;
       if (snap) {
-        // Magnetic/Sticky effect: 80% pull to center, 20% mouse influence
-        // This prevents the "stuck" feeling while maintaining the snap
+        // Magnetic snap behavior
         const dx = e.clientX - snap.x;
         const dy = e.clientY - snap.y;
         mouseX.set(snap.x + dx * 0.2);
@@ -107,36 +106,67 @@ const CustomCursor = () => {
     };
   }, [mouseX, mouseY, isMobile]);
 
-  const hoverScale = useSpring(isHovering ? 1.8 : 1, { stiffness: 400, damping: 25 });
-  const hoverRotate = useSpring(isHovering ? 360 : 0, { stiffness: 100, damping: 20 });
   const hasMedia = !!mediaData;
 
   if (isMobile) return null;
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        * { cursor: none !important; }
-      ` }} />
-      <motion.div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          x: cursorX,
-          y: cursorY,
-          pointerEvents: "none",
-          zIndex: 100000,
-          translateX: "-50%",
-          translateY: "-50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          willChange: "transform",
-        }}
-      >
-        <AnimatePresence>
-          {hasMedia && (
+      {/* 1. CIRCULAR DOT CURSOR CONTAINER (With mix-blend-mode difference on the outer container) */}
+      {!hasMedia && (
+        <motion.div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            x: cursorX,
+            y: cursorY,
+            pointerEvents: "none",
+            zIndex: 100000,
+            translateX: "-50%",
+            translateY: "-50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            willChange: "transform",
+            mixBlendMode: "difference",
+          }}
+        >
+          <motion.div
+            animate={{
+              scale: isHovering ? 2.5 : 1,
+            }}
+            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            style={{
+              width: 12,
+              height: 12,
+              borderRadius: "50%",
+              backgroundColor: "#FFFFFF",
+            }}
+          />
+        </motion.div>
+      )}
+
+      {/* 2. MEDIA PREVIEW CONTAINER (With normal blend mode to preserve original colors) */}
+      <AnimatePresence>
+        {hasMedia && (
+          <motion.div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              x: cursorX,
+              y: cursorY,
+              pointerEvents: "none",
+              zIndex: 99999,
+              translateX: "-50%",
+              translateY: "-50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              willChange: "transform",
+            }}
+          >
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -171,40 +201,9 @@ const CustomCursor = () => {
                 />
               ) : null}
             </motion.div>
-          )}
-        </AnimatePresence>
-
-        {!hasMedia && (
-          <div style={{ position: "relative", width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <motion.div
-              style={{
-                scale: hoverScale,
-                width: "4px",
-                height: "4px",
-                borderRadius: "50%",
-                backgroundColor: "#4A5EBF",
-                zIndex: 2,
-              }}
-            />
-            
-            <motion.div
-              style={{ 
-                rotate: hoverRotate,
-                position: "absolute", 
-                inset: 0, 
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center" 
-              }}
-            >
-              <motion.div animate={{ y: isHovering ? -5 : -10, height: isHovering ? 8 : 14 }} style={{ position: "absolute", width: "2px", height: "14px", borderRadius: "1px", backgroundColor: "#4A5EBF", top: "50%", transform: "translateY(-100%)", originY: "bottom" }} />
-              <motion.div animate={{ y: isHovering ? 5 : 10, height: isHovering ? 8 : 14 }} style={{ position: "absolute", width: "2px", height: "14px", borderRadius: "1px", backgroundColor: "#4A5EBF", bottom: "50%", transform: "translateY(100%)", originY: "top" }} />
-              <motion.div animate={{ x: isHovering ? -5 : -10, width: isHovering ? 8 : 14 }} style={{ position: "absolute", width: "14px", height: "2px", borderRadius: "1px", backgroundColor: "#4A5EBF", left: "50%", transform: "translateX(-100%)", originX: "right" }} />
-              <motion.div animate={{ x: isHovering ? 5 : 10, width: isHovering ? 8 : 14 }} style={{ position: "absolute", width: "14px", height: "2px", borderRadius: "1px", backgroundColor: "#4A5EBF", right: "50%", transform: "translateX(100%)", originX: "left" }} />
-            </motion.div>
-          </div>
+          </motion.div>
         )}
-      </motion.div>
+      </AnimatePresence>
     </>
   );
 };

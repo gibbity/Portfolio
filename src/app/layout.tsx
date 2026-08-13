@@ -2,7 +2,28 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-// Build trigger: 2026-04-23T16:22:00
+import { Analytics } from "@vercel/analytics/react";
+import SmoothScroll from "@/components/SmoothScroll";
+import CustomCursor from "@/components/CustomCursor";
+import Preloader from "@/components/Preloader";
+import PageWrapper from "@/components/PageWrapper";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
+const satoshi = localFont({
+  src: [
+    {
+      path: "../../Fonts/Satoshi-Variable.woff2",
+      weight: "100 900",
+      style: "normal",
+    },
+    {
+      path: "../../Fonts/Satoshi-VariableItalic.woff2",
+      weight: "100 900",
+      style: "italic",
+    },
+  ],
+  variable: "--font-satoshi",
+});
 
 const helvetica = localFont({
   src: [
@@ -41,8 +62,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Shresth Kushwaha - Product Designer",
-  description: "Research. Ux. Ui. Prototyping.",
+  title: "Shresth Kushwaha - AI Product Designer",
+  description: "AI Product Designer focused on stripping noise and shipping features and usable products.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -59,12 +80,6 @@ export const viewport = {
   themeColor: "#000000",
 };
 
-import SmoothScroll from "@/components/SmoothScroll";
-import CustomCursor from "@/components/CustomCursor";
-import Preloader from "@/components/Preloader";
-import PageWrapper from "@/components/PageWrapper";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -73,10 +88,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${helvetica.variable} ${dmSans.variable} antialiased bg-white text-gray-900 font-helvetica`}
+        className={`${satoshi.variable} ${helvetica.variable} ${dmSans.variable} antialiased bg-black text-white font-satoshi`}
         suppressHydrationWarning={true}
       >
         <Preloader />
+        <Analytics />
         <CustomCursor />
         <SmoothScroll>
           <PageWrapper>{children}</PageWrapper>

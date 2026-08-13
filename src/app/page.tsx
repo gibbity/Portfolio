@@ -1,60 +1,43 @@
 "use client";
 
-import SpatialCanvas from "@/components/spatial/SpatialCanvas";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import HeaderNav from "@/components/HeaderNav";
+import PosterHero from "@/components/PosterHero";
 import SelectedWork from "@/components/SelectedWork";
+import Waves from "@/components/Waves";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
-import { useState, useEffect } from "react";
-import { useScroll, useSpring } from "framer-motion";
 
 export default function Home() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  return (
+    <main className="relative w-full min-h-screen bg-white font-helvetica text-black">
+      <HeaderNav />
+      
+      {/* Hero Section */}
+      <section id="hero" className="relative w-full">
+        <PosterHero />
+      </section>
 
-    const { scrollYProgress } = useScroll();
-    const scaleY = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
+      {/* Selected Work Section */}
+      <section id="work" className="relative z-10 bg-white">
+        <SelectedWork />
+      </section>
 
-    const [activeSection, setActiveSection] = useState("hero");
+      {/* Waves Playground Section */}
+      <section className="relative w-full overflow-hidden bg-black z-10">
+        <Waves />
+      </section>
 
-    useEffect(() => {
-        const handleScroll = () => {
-          const sections = ["hero", "projects", "about", "contact"];
-          const current = sections.find(section => {
-            const el = document.getElementById(section);
-            if (el) {
-              const rect = el.getBoundingClientRect();
-              return rect.top <= 200 && rect.bottom >= 200;
-            }
-            return false;
-          });
-          if (current) setActiveSection(current);
-        };
+      {/* About Section */}
+      <section id="about" className="relative">
+        <AboutSection />
+      </section>
 
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-          window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
-
-    return (
-        <main className="relative w-full h-screen overflow-hidden bg-background font-helvetica text-white flex flex-col">
-            {/* Main Hero Section - Replaced with SpatialCanvas */}
-            <div id="hero" className="relative h-screen w-full overflow-hidden z-20">
-                <SpatialCanvas />
-            </div>
-
-            {/* Sub-sections (Commented out as requested - site is now a non-scrollable spatial experience)
-            <div className="relative z-10 bg-white shadow-[0_-50px_100px_rgba(0,0,0,0.03)]">
-                <SelectedWork />
-            </div>
-
-            <AboutSection />
-            <ContactSection />
-            */}
-        </main>
-    );
+      {/* Contact Section */}
+      <section id="contact" className="relative">
+        <ContactSection />
+      </section>
+    </main>
+  );
 }
+
