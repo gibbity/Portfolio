@@ -16,7 +16,7 @@ if (typeof window !== "undefined") {
 
 export default function OpenDesignStudioPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Section definitions for Side Progress Rail & Wayfinding
   const sections = [
     { id: "intro", label: "Hook" },
@@ -49,9 +49,9 @@ export default function OpenDesignStudioPage() {
     const rafId = requestAnimationFrame(() => {
       const ctx = gsap.context(() => {
         (gsap.utils.toArray(".reveal") as HTMLElement[]).forEach((el) => {
-          gsap.fromTo(el, 
+          gsap.fromTo(el,
             { opacity: 0, y: 30 },
-            { 
+            {
               opacity: 1, y: 0, duration: 1.2, ease: "power4.out",
               scrollTrigger: {
                 trigger: el,
@@ -138,9 +138,9 @@ export default function OpenDesignStudioPage() {
 
   return (
     <main ref={containerRef} className="relative z-10 min-h-screen bg-white font-sans text-gray-900 selection:bg-black selection:text-white pb-32 overflow-x-hidden">
-      
+
       {/* Scroll Progress Bar */}
-      <div 
+      <div
         style={{ width: `${scrollProgress}%` }}
         className="fixed top-0 left-0 h-[2px] bg-black z-50 transition-all duration-75"
       />
@@ -168,11 +168,10 @@ export default function OpenDesignStudioPage() {
                 key={sec.id}
                 onClick={() => handleJumpToSection(sec.id)}
                 title={sec.label}
-                className={`w-2 h-2 rounded-full border transition-all duration-300 ${
-                  isActive 
-                    ? "bg-black border-black scale-125" 
+                className={`w-2 h-2 rounded-full border transition-all duration-300 ${isActive
+                    ? "bg-black border-black scale-125"
                     : "bg-white border-gray-300 hover:border-black"
-                }`}
+                  }`}
               />
             );
           })}
@@ -227,7 +226,7 @@ export default function OpenDesignStudioPage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/75">
-              Open Design Studio was designed for designers and developers who want the speed of AI instrumentation without being locked into subscription silos or leaking client data. 
+              Open Design Studio was designed for designers and developers who want the speed of AI instrumentation without being locked into subscription silos or leaking client data.
               The application started as a native desktop application but pivoted to run fully inside standard browsers. The primary design constraint was guaranteeing absolute client-side data privacy while maintaining instant preview capabilities.
             </p>
           </div>
@@ -285,7 +284,7 @@ export default function OpenDesignStudioPage() {
           ].map((item, idx) => {
             const isExpanded = expandedDecision === idx;
             return (
-              <div 
+              <div
                 key={idx}
                 className="border border-[#EDEDED] rounded bg-[#FAFAFA] transition-all"
               >
@@ -330,7 +329,7 @@ export default function OpenDesignStudioPage() {
           {/* Controls Left Column */}
           <div className="lg:col-span-4 text-left space-y-6 bg-white p-6 border border-gray-200 rounded-sm">
             <span className="text-[11px] font-bold text-black/40 uppercase tracking-wider block border-b pb-2 font-sans">Visual Parameters</span>
-            
+
             {/* Aspect Ratio Toggle */}
             <div className="space-y-2">
               <label className="text-[11px] font-bold uppercase text-black/60 font-sans">Viewport Scale</label>
@@ -339,11 +338,10 @@ export default function OpenDesignStudioPage() {
                   <button
                     key={mode}
                     onClick={() => setAspectRatio(mode)}
-                    className={`flex-1 py-1.5 text-[10px] uppercase font-bold border rounded-sm transition-all font-sans ${
-                      aspectRatio === mode 
-                        ? "bg-black border-black text-white" 
+                    className={`flex-1 py-1.5 text-[10px] uppercase font-bold border rounded-sm transition-all font-sans ${aspectRatio === mode
+                        ? "bg-black border-black text-white"
                         : "bg-gray-50 border-gray-200 hover:border-gray-300 text-black/70"
-                    }`}
+                      }`}
                   >
                     {mode}
                   </button>
@@ -357,8 +355,8 @@ export default function OpenDesignStudioPage() {
                 <span>Padding</span>
                 <span>{cardPadding}px</span>
               </div>
-              <input 
-                type="range" min="10" max="40" value={cardPadding} 
+              <input
+                type="range" min="10" max="40" value={cardPadding}
                 onChange={(e) => setCardPadding(Number(e.target.value))}
                 className="w-full accent-black cursor-pointer"
               />
@@ -370,8 +368,8 @@ export default function OpenDesignStudioPage() {
                 <span>Vertical Gap</span>
                 <span>{itemGap}px</span>
               </div>
-              <input 
-                type="range" min="4" max="24" value={itemGap} 
+              <input
+                type="range" min="4" max="24" value={itemGap}
                 onChange={(e) => setItemGap(Number(e.target.value))}
                 className="w-full accent-black cursor-pointer"
               />
@@ -383,8 +381,8 @@ export default function OpenDesignStudioPage() {
                 <span>Border Radius</span>
                 <span>{borderRadius}px</span>
               </div>
-              <input 
-                type="range" min="0" max="24" value={borderRadius} 
+              <input
+                type="range" min="0" max="24" value={borderRadius}
                 onChange={(e) => setBorderRadius(Number(e.target.value))}
                 className="w-full accent-black cursor-pointer"
               />
@@ -399,9 +397,8 @@ export default function OpenDesignStudioPage() {
                     key={color}
                     onClick={() => setAccentColor(color)}
                     style={{ backgroundColor: color }}
-                    className={`w-6 h-6 rounded-full border-2 transition-all ${
-                      accentColor === color ? "border-black scale-110" : "border-transparent hover:scale-105"
-                    }`}
+                    className={`w-6 h-6 rounded-full border-2 transition-all ${accentColor === color ? "border-black scale-110" : "border-transparent hover:scale-105"
+                      }`}
                   />
                 ))}
               </div>
@@ -414,9 +411,9 @@ export default function OpenDesignStudioPage() {
             <div className="absolute top-4 left-4 text-[10px] text-black/25 uppercase font-mono tracking-widest">
               Preview Sandbox (Fluid Reflow)
             </div>
-            
+
             {/* The reflowing viewport */}
-            <motion.div 
+            <motion.div
               layout
               transition={{ type: "spring", stiffness: 120, damping: 20 }}
               className={`${getAspectStyle()} border border-gray-200 rounded-sm bg-neutral-50 shadow-md p-6 flex flex-col justify-between overflow-y-auto`}
@@ -428,14 +425,14 @@ export default function OpenDesignStudioPage() {
               </div>
 
               {/* Render dynamic mockup card */}
-              <div 
-                style={{ 
-                  padding: `${cardPadding}px`, 
-                  borderRadius: `${borderRadius}px` 
+              <div
+                style={{
+                  padding: `${cardPadding}px`,
+                  borderRadius: `${borderRadius}px`
                 }}
                 className="bg-white border border-gray-150 flex-1 flex flex-col justify-center shadow-sm min-h-0"
               >
-                <div 
+                <div
                   style={{ gap: `${itemGap}px` }}
                   className="flex flex-col text-left"
                 >
@@ -444,7 +441,7 @@ export default function OpenDesignStudioPage() {
                   <p className="text-[11px] text-black/45 leading-normal font-sans">
                     This component reflows dynamically as you adjust spacing sliders and viewport constraints, demonstrating our direct visual adjustments sandbox.
                   </p>
-                  <button 
+                  <button
                     style={{ borderRadius: `${Math.min(borderRadius, 8)}px` }}
                     className="w-full py-2 bg-neutral-900 hover:bg-black text-white text-[10px] uppercase font-bold tracking-wider transition-all mt-1 font-sans cursor-pointer"
                   >
@@ -469,7 +466,7 @@ export default function OpenDesignStudioPage() {
           <div className="md:col-span-8 text-left space-y-6">
             <h4 className="font-sans font-bold text-[13px] text-black uppercase tracking-wider font-serif">The Local Database Installation Friction</h4>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60">
-              The initial version stored user history using a native desktop database. However, this required platforms-specific desktop compilers, causing failures during corporate updates and locking users out of designs. 
+              The initial version stored user history using a native desktop database. However, this required platforms-specific desktop compilers, causing failures during corporate updates and locking users out of designs.
               We pivoted the storage to browser IndexedDB (Dexie.js). To prevent legacy users from losing historical sessions, we engineered an automatic background migration utility that silently extracts SQLite files and puts them into IndexedDB on first launch.
             </p>
           </div>
@@ -525,7 +522,7 @@ export default function OpenDesignStudioPage() {
 
         {showFullProcess && (
           <div className="w-full mt-12 pt-12 border-t border-gray-100 text-left space-y-12 animate-fadeIn font-sans text-black">
-            
+
             {/* SECTION 1: ARCHITECTURE DIAGRAM */}
             <div className="space-y-4">
               <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block font-sans">01 / REPO STRUCTURE & FLOW</span>
@@ -548,7 +545,7 @@ export default function OpenDesignStudioPage() {
               <p className="font-sans text-[13px] text-black/60 leading-relaxed max-w-3xl">
                 To run fully in the browser, version <code>v0.2.0</code> migrates data from the Electron SQLite layer to IndexedDB via this utility:
               </p>
-              
+
               <div className="p-5 bg-neutral-950 rounded text-neutral-300 font-mono text-[12px] space-y-1 shadow-inner overflow-x-auto">
                 <div>async function migrateFromSqlite(electronStudio: any) &#123;</div>
                 <div className="pl-4">{"const isMigrated = await db.preferences.get('migration_done');"}</div>

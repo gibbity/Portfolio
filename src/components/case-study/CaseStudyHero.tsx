@@ -39,9 +39,9 @@ export default function CaseStudyHero({
       {layout === "stacked" ? (
         <div className="flex flex-col gap-16 md:gap-24 mb-16 md:mb-24">
           <motion.div
-             initial={{ opacity: 0, y: 30 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
             <h1 className={`font-helvetica font-bold text-[52px] md:text-[140px] lg:text-[160px] leading-[0.85] tracking-tighter mb-8 md:mb-12 ${isItalic ? 'italic' : ''} break-words`}>
               {title}
@@ -84,9 +84,9 @@ export default function CaseStudyHero({
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr,0.9fr] gap-12 md:gap-24 items-start mb-16 md:mb-24">
           <motion.div
-             initial={{ opacity: 0, y: 30 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
             <h1 className={`font-helvetica font-bold text-[48px] md:text-[110px] lg:text-[140px] leading-[0.85] tracking-tighter mb-8 md:mb-12 ${isItalic ? 'italic' : ''} break-words`}>
               {title}
@@ -128,7 +128,7 @@ export default function CaseStudyHero({
         </div>
       )}
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}

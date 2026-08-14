@@ -16,7 +16,7 @@ if (typeof window !== "undefined") {
 
 export default function CampusTracePage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Section definitions for Side Progress Rail & Wayfinding
   const sections = [
     { id: "intro", label: "Hook" },
@@ -40,9 +40,9 @@ export default function CampusTracePage() {
       const ctx = gsap.context(() => {
         // Staggered reveals
         gsap.utils.toArray(".reveal").forEach((el: any) => {
-          gsap.fromTo(el, 
+          gsap.fromTo(el,
             { opacity: 0, y: 30 },
-            { 
+            {
               opacity: 1, y: 0, duration: 1.2, ease: "power4.out",
               scrollTrigger: {
                 trigger: el,
@@ -118,9 +118,9 @@ export default function CampusTracePage() {
 
   return (
     <main ref={containerRef} className="relative z-10 min-h-screen bg-[#050505] font-sans text-white selection:bg-[#00B4D8] selection:text-white pb-32 overflow-x-hidden">
-      
+
       {/* Scroll Progress Bar */}
-      <div 
+      <div
         style={{ width: `${scrollProgress}%` }}
         className="fixed top-0 left-0 h-[2px] bg-[#00B4D8] z-50 transition-all duration-75"
       />
@@ -148,11 +148,10 @@ export default function CampusTracePage() {
                 key={sec.id}
                 onClick={() => handleJumpToSection(sec.id)}
                 title={sec.label}
-                className={`w-2 h-2 rounded-full border transition-all duration-300 ${
-                  isActive 
-                    ? "bg-[#00B4D8] border-[#00B4D8] scale-125" 
+                className={`w-2 h-2 rounded-full border transition-all duration-300 ${isActive
+                    ? "bg-[#00B4D8] border-[#00B4D8] scale-125"
                     : "bg-[#050505] border-white/20 hover:border-white"
-                }`}
+                  }`}
               />
             );
           })}
@@ -161,16 +160,16 @@ export default function CampusTracePage() {
 
       {/* LIGHTBOX OVERLAY */}
       {lightboxImage && (
-        <div 
+        <div
           onClick={() => setLightboxImage(null)}
           className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center cursor-zoom-out p-6"
         >
           <div className="relative w-full max-w-5xl h-[85vh]">
-            <Image 
-              src={lightboxImage} 
-              alt="Zoomed Graphic View" 
-              fill 
-              className="object-contain" 
+            <Image
+              src={lightboxImage}
+              alt="Zoomed Graphic View"
+              fill
+              className="object-contain"
             />
           </div>
           <span className="absolute top-8 right-8 font-sans text-white/50 text-[12px] uppercase tracking-widest">
@@ -284,7 +283,7 @@ export default function CampusTracePage() {
           ].map((item, idx) => {
             const isExpanded = expandedDecision === idx;
             return (
-              <div 
+              <div
                 key={idx}
                 className="border border-white/10 rounded bg-white/[0.02] transition-all"
               >
@@ -325,7 +324,7 @@ export default function CampusTracePage() {
           <div className="md:col-span-8 text-left space-y-6">
             <h4 className="font-sans font-bold text-[13px] text-white uppercase tracking-wider font-serif">The Global Clutter Overload</h4>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60 font-sans">
-              Early designs displayed every reported issue globally to all users on load. Testing showed this caused immediate confusion: users couldn't distinguish their own active reports from others, and the high concentration of pins in central campus areas made the map unreadable. 
+              Early designs displayed every reported issue globally to all users on load. Testing showed this caused immediate confusion: users couldn't distinguish their own active reports from others, and the high concentration of pins in central campus areas made the map unreadable.
               I resolved this by introducing the "Switch to Global Data" toggle, keeping the default state clean and personal, and utilizing severity-colored badges and status filters in the side drawer.
             </p>
           </div>
@@ -381,7 +380,7 @@ export default function CampusTracePage() {
 
         {showFullProcess && (
           <div className="w-full mt-12 pt-12 border-t border-white/10 text-left space-y-16 animate-fadeIn font-sans text-white">
-            
+
             {/* SECTION 1: STACK & FLOW */}
             <div className="space-y-6">
               <span className="text-[10px] font-bold text-[#00B4D8] uppercase tracking-widest block">01 / TECHNICAL STACK & INFORMATION FLOW</span>
@@ -389,7 +388,7 @@ export default function CampusTracePage() {
               <p className="text-[14px] text-white/60 leading-relaxed max-w-3xl">
                 CampusTrace is built using React 18 and Vite. It couples MapLibre GL rendering with Supabase PostgreSQL and Google Generative AI (Gemini 3.1 Flash Lite API) to coordinate student reports and AI-driven clustering.
               </p>
-              
+
               {/* System Architecture flowchart */}
               <div className="p-6 bg-white/5 border border-white/10 rounded-sm grid grid-cols-1 md:grid-cols-5 gap-4 text-center items-center">
                 <div className="p-4 bg-neutral-900 border border-white/10 rounded shadow-sm">
@@ -416,7 +415,7 @@ export default function CampusTracePage() {
               <p className="text-[14px] text-white/60 leading-relaxed max-w-3xl">
                 The database enforces strict privacy boundaries. The <code>reports</code> table columns include: <code>id</code>, <code>lat</code>, <code>lng</code>, <code>category</code>, <code>description</code>, <code>status</code>, <code>user_id</code>, and <code>user_email</code>.
               </p>
-              
+
               <div className="p-5 bg-neutral-900 rounded text-neutral-300 font-mono text-[12px] space-y-3 shadow-inner">
                 <div>
                   <span className="text-cyan-400">CREATE POLICY</span> "Insert Policy" <span className="text-cyan-400">ON</span> reports <span className="text-cyan-400">FOR INSERT WITH CHECK</span> (auth.uid() = user_id);
@@ -437,7 +436,7 @@ export default function CampusTracePage() {
               <p className="text-[14px] text-white/60 leading-relaxed max-w-3xl">
                 Rather than drawing rigid circular rings, organic polygons are calculated dynamically using a 2D Convex Hull algorithm (Graham Scan variation) to enclose clusters of points:
               </p>
-              
+
               <div className="p-5 bg-neutral-950 rounded text-neutral-300 font-mono text-[12px] space-y-1 shadow-inner overflow-x-auto">
                 <div><span className="text-[#ef4444]">const</span> getConvexHull = (points) =&gt; &#123;</div>
                 <div className="pl-4">if (points.length &lt;= 2) return points;</div>
@@ -458,7 +457,7 @@ export default function CampusTracePage() {
                 <div className="pl-4">return lower.concat(upper);</div>
                 <div>&#125;;</div>
               </div>
-              
+
               <div className="space-y-2 text-[13px] text-white/60 leading-relaxed max-w-3xl">
                 <p>
                   <strong>3 or more reports:</strong> Renders a closed organic polygon representing the exact convex hull boundaries.
@@ -494,7 +493,7 @@ export default function CampusTracePage() {
                 Visualizing student reports and heat zones on the custom Swiss-Toon map layouts:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
-                <div 
+                <div
                   onClick={() => setLightboxImage("/projects/campus-trace/ai-heatmap-1.png")}
                   className="relative aspect-video border border-white/10 rounded overflow-hidden bg-white/5 cursor-zoom-in group"
                 >
@@ -504,7 +503,7 @@ export default function CampusTracePage() {
                   </div>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setLightboxImage("/projects/campus-trace/ai-heatmap-2.png")}
                   className="relative aspect-video border border-white/10 rounded overflow-hidden bg-white/5 cursor-zoom-in group"
                 >

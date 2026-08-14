@@ -62,11 +62,13 @@ export default function PosterHero() {
   );
 
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     let active = true;
     requestAnimationFrame(() => {
       if (active) setMounted(true);
     });
+
     return () => {
       active = false;
     };
@@ -145,8 +147,17 @@ export default function PosterHero() {
     setTilt({ x: 0, y: 0 });
   };
 
+  const activeScale = mounted ? (typeof window !== "undefined" && window.innerWidth >= 1024 ? videoScale : 1.1) : 1.1;
+  const activeY = mounted ? (typeof window !== "undefined" && window.innerWidth >= 1024 ? videoY : "0%") : "0%";
+  const activeZIndex = mounted ? (typeof window !== "undefined" && window.innerWidth >= 1024 ? videoZIndex : 10) : 10;
+  const activeFilter = mounted ? (typeof window !== "undefined" && window.innerWidth >= 1024 ? videoFilter : "none") : "none";
+  const activeOpacity = 1;
+  const activePosterY = mounted ? (typeof window !== "undefined" && window.innerWidth >= 1024 ? posterY : "0%") : "0%";
+  const activePosterOpacity = mounted ? (typeof window !== "undefined" && window.innerWidth >= 1024 ? posterOpacity : 1) : 1;
+  const activeCardFilter = mounted ? (typeof window !== "undefined" && window.innerWidth >= 1024 ? "url(#wind-waving-filter)" : "none") : "none";
+
   return (
-    <section ref={outerSectionRef} className="relative w-full h-[150vh]">
+    <section ref={outerSectionRef} className="relative w-full h-screen min-h-screen lg:h-[150vh]">
       {/* SVG Displacement Filter Definition with Localized Mask Composite */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
@@ -189,7 +200,7 @@ export default function PosterHero() {
       </svg>
 
       {/* Sticky Viewport Frame */}
-      <div className="sticky top-0 w-full h-screen min-h-screen bg-white flex flex-col justify-between items-center pt-20 pb-8 px-4 md:px-12 select-none overflow-hidden">
+      <div className="relative lg:sticky lg:top-0 w-full h-screen min-h-screen bg-white flex flex-col justify-between items-center pt-20 pb-8 px-4 md:px-12 select-none overflow-hidden">
         
         {/* Outer Poster Container - Constrained by height & Aspect Ratio 988/1256 */}
         <div 
@@ -197,25 +208,63 @@ export default function PosterHero() {
           onMouseEnter={() => setHovered(true)}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative aspect-[988/1256] h-full max-h-[calc(100vh-140px)] w-auto max-w-[90vw] my-auto flex-shrink-0 transition-transform duration-300 ease-out cursor-pointer"
+          className="poster-card relative h-full max-h-[calc(100vh-140px)] w-auto max-w-[90vw] my-auto flex-shrink-0 transition-transform duration-300 ease-out cursor-pointer"
           style={{
             containerType: "inline-size",
             transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
             transformStyle: "preserve-3d",
+            aspectRatio: mounted && typeof window !== "undefined" && window.innerWidth >= 1024 ? "988/1256" : "352/450",
+            ...((mounted && typeof window !== "undefined" && window.innerWidth >= 1024 ? {
+              "--video-left": "11.44%",
+              "--video-top": "29.30%",
+              "--video-width": "77.02%",
+              "--video-height": "34.08%",
+              "--shresth-top": "21.5%",
+              "--kushwaha-top": "61.3%",
+              "--profile-left": "3.44%",
+              "--profile-top": "78.03%",
+              "--profile-width": "30.26%",
+              "--profile-height": "21.97%",
+              "--desc-left": "43.62%",
+              "--desc-top": "89.65%",
+              "--desc-width": "44.84%",
+              "--desc-font": "2.43cqw",
+              "--label-font": "2.43cqw",
+              "--card-shadow": "-3.5px -3.5px 13.93px rgba(0,0,0,0.46), 2.45px 2.45px 11.305px rgba(0,0,0,0.38)",
+            } : {
+              "--video-left": "7.10%",
+              "--video-top": "29.42%",
+              "--video-width": "85.5%",
+              "--video-height": "37.62%",
+              "--shresth-top": "27.23%",
+              "--kushwaha-top": "61.5%",
+              "--profile-left": "74.15%",
+              "--profile-top": "83.3%",
+              "--profile-width": "25.85%",
+              "--profile-height": "16.7%",
+              "--desc-left": "10.22%",
+              "--desc-top": "77.5%",
+              "--desc-width": "41.76%",
+              "--desc-font": "11px",
+              "--label-font": "11px",
+              "--card-shadow": "none",
+            }) as React.CSSProperties)
           }}
         >
+
           {/* INNER FILTERED CONTAINER: Slides UP (-120%) and fades out as user scrolls */}
           <motion.div 
-            className="absolute inset-0 w-full h-full pointer-events-auto"
+            className="absolute inset-0 w-full h-full pointer-events-auto rounded-[6px] lg:rounded-none"
             style={{
-              filter: "url(#wind-waving-filter)",
-              y: posterY,
-              opacity: posterOpacity,
+              filter: activeCardFilter,
+              y: activePosterY,
+              opacity: activePosterOpacity,
+              boxShadow: "var(--card-shadow)",
             }}
           >
             {/* Concrete textured background poster */}
             <div 
-              className="absolute inset-0 bg-cover bg-center pointer-events-none"
+              className="absolute inset-0 bg-[length:100%_100%] bg-center pointer-events-none"
               style={{
                 backgroundImage: "url('/page.png')",
               }}
@@ -229,8 +278,8 @@ export default function PosterHero() {
               className="absolute font-helvetica font-bold uppercase text-white mix-blend-difference select-none tracking-tight leading-none -translate-x-1/2 z-0"
               style={{
                 left: "50%",
-                top: "21.5%",
-                fontSize: "12.95cqw",
+                top: "var(--shresth-top)",
+                fontSize: "14cqw",
               }}
             >
               SHRESTH
@@ -244,8 +293,8 @@ export default function PosterHero() {
               className="absolute font-helvetica font-bold uppercase text-white mix-blend-difference select-none tracking-tight leading-none -translate-x-1/2 z-0"
               style={{
                 left: "50%",
-                top: "61.3%",
-                fontSize: "12.95cqw",
+                top: "var(--kushwaha-top)",
+                fontSize: "14cqw",
               }}
             >
               KUSHWAHA
@@ -258,10 +307,10 @@ export default function PosterHero() {
               transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
               className="absolute z-20 pointer-events-none"
               style={{
-                left: "3.44%",
-                top: "78.03%",
-                width: "30.26%",
-                height: "21.97%",
+                left: "var(--profile-left)",
+                top: "var(--profile-top)",
+                width: "var(--profile-width)",
+                height: "var(--profile-height)",
                 transform: "translateZ(45px)",
               }}
             >
@@ -270,7 +319,7 @@ export default function PosterHero() {
                 alt="Shresth Kushwaha Cutout"
                 fill
                 sizes="(max-width: 768px) 30vw, 20vw"
-                className="object-contain"
+                className="object-contain object-bottom"
                 priority
               />
             </motion.div>
@@ -282,15 +331,16 @@ export default function PosterHero() {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="absolute text-left font-sans font-normal text-black leading-normal z-20"
               style={{
-                left: "43.62%",
-                top: "89.65%",
-                width: "44.84%",
-                fontSize: "2.43cqw",
+                left: "var(--desc-left)",
+                top: "var(--desc-top)",
+                width: "var(--desc-width)",
+                fontSize: "var(--desc-font)",
                 transform: "translateZ(15px)",
               }}
             >
-              <p className="leading-snug mb-0">Building complex web applications,</p>
-              <p className="leading-snug">UI systems, and functional digital tools.</p>
+              <p className="leading-[1.3] font-sans font-normal text-black select-none">
+                Building complex web applications, UI systems, and functional digital tools.
+              </p>
             </motion.div>
 
             {/* 6. "Scroll" Text */}
@@ -298,7 +348,7 @@ export default function PosterHero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="absolute text-center font-sans font-normal text-black -translate-x-1/2 z-20"
+              className="absolute text-center font-sans font-normal text-black -translate-x-1/2 z-20 hidden lg:block"
               style={{
                 left: "50%",
                 top: "102.5%",
@@ -310,12 +360,24 @@ export default function PosterHero() {
 
             {/* 7. Vertical Scroll Indicator Line */}
             <div 
-              className="absolute left-1/2 -translate-x-1/2 w-[1.5px] bg-black z-20"
+              className="absolute left-1/2 -translate-x-1/2 w-[1.5px] bg-black z-20 hidden lg:block"
               style={{
                 top: "106.2%",
                 height: "3.5%",
               }}
             />
+
+            {/* Mobile-only Bottom Labels (Dynamic alignment with card left/right margins) */}
+            <div 
+              className="absolute w-[99%] left-[0.5%] flex justify-between items-center z-20 lg:hidden text-black font-sans font-normal select-none"
+              style={{
+                top: "102.5%",
+                fontSize: "2.62cqw",
+              }}
+            >
+              <div>AI Product Designer</div>
+              <div>Available for 2026/2027 Roles</div>
+            </div>
           </motion.div>
 
           {/* 2. EXPANDING SHOWREEL VIDEO MOCKUP */}
@@ -325,15 +387,16 @@ export default function PosterHero() {
             transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
             className="absolute overflow-hidden rounded-[1.2cqw] border border-black/10 origin-center"
             style={{
-              left: "11.44%",
-              top: "29.30%",
-              width: "77.02%",
-              height: "34.08%",
-              scale: videoScale,
-              y: videoY,
-              zIndex: videoZIndex,
+              left: "var(--video-left)",
+              top: "var(--video-top)",
+              width: "var(--video-width)",
+              height: "var(--video-height)",
+              scale: activeScale,
+              y: activeY,
+              zIndex: activeZIndex,
               boxShadow: videoShadow,
-              filter: videoFilter,
+              filter: activeFilter,
+              opacity: activeOpacity,
             }}
           >
             <video
@@ -349,7 +412,7 @@ export default function PosterHero() {
                   window.dispatchEvent(new CustomEvent("showcase-reel-loaded"));
                 }
               }}
-              className="w-full h-full object-cover rounded-[1.2cqw]"
+              className="w-full h-full object-contain rounded-[1.2cqw]"
             />
           </motion.div>
 
@@ -399,18 +462,7 @@ export default function PosterHero() {
 
         </div>
 
-        {/* Mobile/Tablet Fallback Sidebar Labels */}
-        <motion.div 
-          style={{ opacity: sideLabelsOpacity }}
-          className="w-full max-w-[450px] sm:max-w-[550px] md:max-w-[650px] lg:hidden flex justify-between items-center px-4 font-sans font-normal text-black text-xs sm:text-sm"
-        >
-          <div>
-            AI Product Designer
-          </div>
-          <div>
-            Available for 2026/2027 Roles
-          </div>
-        </motion.div>
+
       </div>
     </section>
   );

@@ -16,7 +16,7 @@ if (typeof window !== "undefined") {
 
 export default function TSOTPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Section definitions for Side Progress Rail & Wayfinding
   const sections = [
     { id: "intro", label: "Hook" },
@@ -107,7 +107,7 @@ export default function TSOTPage() {
     setIsAuditing(true);
     setShowResultCard(false);
     setAuditLogs([]);
-    
+
     const data = scenarios[selectedScenario];
     let currentLog = 0;
 
@@ -133,9 +133,9 @@ export default function TSOTPage() {
       const ctx = gsap.context(() => {
         // Staggered reveals
         gsap.utils.toArray(".reveal").forEach((el: any) => {
-          gsap.fromTo(el, 
+          gsap.fromTo(el,
             { opacity: 0, y: 30 },
-            { 
+            {
               opacity: 1, y: 0, duration: 1.2, ease: "power4.out",
               scrollTrigger: {
                 trigger: el,
@@ -211,9 +211,9 @@ export default function TSOTPage() {
 
   return (
     <main ref={containerRef} className="relative z-10 min-h-screen bg-[#050505] font-sans text-white selection:bg-[#ef4444] selection:text-white pb-32 overflow-x-hidden">
-      
+
       {/* Scroll Progress Bar */}
-      <div 
+      <div
         style={{ width: `${scrollProgress}%` }}
         className="fixed top-0 left-0 h-[2px] bg-[#ef4444] z-50 transition-all duration-75"
       />
@@ -241,11 +241,10 @@ export default function TSOTPage() {
                 key={sec.id}
                 onClick={() => handleJumpToSection(sec.id)}
                 title={sec.label}
-                className={`w-2 h-2 rounded-full border transition-all duration-300 ${
-                  isActive 
-                    ? "bg-[#ef4444] border-[#ef4444] scale-125" 
+                className={`w-2 h-2 rounded-full border transition-all duration-300 ${isActive
+                    ? "bg-[#ef4444] border-[#ef4444] scale-125"
                     : "bg-[#050505] border-white/20 hover:border-white"
-                }`}
+                  }`}
               />
             );
           })}
@@ -284,7 +283,7 @@ export default function TSOTPage() {
               Designing an evidence-gated verification interface that prevents cognitive complacency.
             </h3>
             <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-white/70">
-              Teams build conversational interfaces that prioritize short-term "magic" and low friction over cognitive clarity, leading to automation bias and anthropomorphic attachment. 
+              Teams build conversational interfaces that prioritize short-term "magic" and low friction over cognitive clarity, leading to automation bias and anthropomorphic attachment.
               The challenge was designing an audit tool that forces product builders to introduce deliberate, beneficial friction back into user experiences.
             </p>
           </div>
@@ -301,8 +300,8 @@ export default function TSOTPage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/75">
-              This tool was created for AI product designers, developers, and compliance teams auditing conversational agents against behavioral science research and the EU AI Act. 
-              Built as a solo project, the interface had to translate dense academic papers and legal codes into clear design adjustments. 
+              This tool was created for AI product designers, developers, and compliance teams auditing conversational agents against behavioral science research and the EU AI Act.
+              Built as a solo project, the interface had to translate dense academic papers and legal codes into clear design adjustments.
               The primary constraint was maintaining absolute groundedness—preventing the auditor from fabricating compliance guidelines by locking claims behind database evidence.
             </p>
           </div>
@@ -322,8 +321,8 @@ export default function TSOTPage() {
               Conversational interfaces bypass human skepticism, triggering subconscious automation reliance.
             </h3>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60">
-              Seamless AI chats feel premium, but they reduce cognitive friction to near-zero, inducing automation bias. Users trust machine output without cross-validating sources. 
-              Furthermore, simulators mimicking human emotional feedback run the risk of generating illegal anthropomorphic bonding under EU frameworks. 
+              Seamless AI chats feel premium, but they reduce cognitive friction to near-zero, inducing automation bias. Users trust machine output without cross-validating sources.
+              Furthermore, simulators mimicking human emotional feedback run the risk of generating illegal anthropomorphic bonding under EU frameworks.
               Compliance isn't just about checklists; it requires inserting design constraints that protect user autonomy.
             </p>
           </div>
@@ -362,7 +361,7 @@ export default function TSOTPage() {
           ].map((item, idx) => {
             const isExpanded = expandedDecision === idx;
             return (
-              <div 
+              <div
                 key={idx}
                 className="border border-white/10 rounded bg-white/[0.02] transition-all"
               >
@@ -407,7 +406,7 @@ export default function TSOTPage() {
           {/* Controls Left Column */}
           <div className="lg:col-span-5 text-left space-y-4 bg-white/[0.02] p-6 border border-white/10 rounded-sm">
             <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider block border-b border-white/5 pb-2 font-sans">Select Bot Archetype</span>
-            
+
             {scenarios.map((scen, idx) => (
               <button
                 key={idx}
@@ -416,11 +415,10 @@ export default function TSOTPage() {
                   setShowResultCard(false);
                 }}
                 disabled={isAuditing}
-                className={`w-full text-left p-4 rounded text-[13px] border font-sans leading-relaxed transition-all ${
-                  selectedScenario === idx 
-                    ? "bg-white text-black border-white" 
+                className={`w-full text-left p-4 rounded text-[13px] border font-sans leading-relaxed transition-all ${selectedScenario === idx
+                    ? "bg-white text-black border-white"
                     : "bg-transparent border-white/10 hover:border-white/30 text-white/70"
-                }`}
+                  }`}
               >
                 <div className="font-bold uppercase text-[10px] mb-1">{scen.title}</div>
                 <div className="text-[11px] opacity-75">{scen.desc}</div>
@@ -439,14 +437,14 @@ export default function TSOTPage() {
 
           {/* Terminal Right Column */}
           <div className="lg:col-span-7 border border-white/10 bg-black rounded p-5 flex flex-col justify-between min-h-[380px] shadow-2xl relative">
-            
+
             {/* Live Terminal Log Output */}
             <div className="font-mono text-[12px] text-green-400 space-y-2 text-left">
               <div className="text-white/30 border-b border-white/5 pb-2 mb-2 uppercase text-[9px] tracking-widest font-sans flex justify-between items-center">
                 <span>TSOT Console logs</span>
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
               </div>
-              
+
               {auditLogs.map((log, idx) => (
                 <div key={idx} className="transition-all duration-300">
                   &gt; {log}
@@ -454,7 +452,7 @@ export default function TSOTPage() {
               ))}
 
               {isAuditing && <div className="animate-pulse text-amber-500">&gt; Parsing embeddings / running hybrid query...</div>}
-              
+
               {auditLogs.length === 0 && !isAuditing && (
                 <div className="p-8 text-center text-white/35 font-sans text-[13px] italic">
                   Select a bot configuration on the left and click "Audit Interface" to see compliance logs.
@@ -510,7 +508,7 @@ export default function TSOTPage() {
           <div className="md:col-span-8 text-left space-y-6">
             <h4 className="font-sans font-bold text-[13px] text-white uppercase tracking-wider font-serif">The expert black box problem</h4>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60">
-              Early versions summarized compliance findings without displaying underlying empirical metrics or citations. Designers felt it was an arbitrary "expert black box" and ignored audit recommendations. 
+              Early versions summarized compliance findings without displaying underlying empirical metrics or citations. Designers felt it was an arbitrary "expert black box" and ignored audit recommendations.
               Rebuilding the layout to display verified citations (e.g., [#SOT-COMP-3011]) directly alongside each design guideline restored the empirical weight required to steer product team behaviors.
             </p>
           </div>
@@ -566,7 +564,7 @@ export default function TSOTPage() {
 
         {showFullProcess && (
           <div className="w-full mt-12 pt-12 border-t border-white/10 text-left space-y-12 animate-fadeIn font-sans">
-            
+
             {/* SECTION 1: ARCHITECTURE DIAGRAM */}
             <div className="space-y-4">
               <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest block font-sans">01 / RETRIEVAL ENGINE & FLOW</span>
@@ -588,7 +586,7 @@ export default function TSOTPage() {
               <p className="font-sans text-[13px] text-white/60 leading-relaxed max-w-3xl">
                 To cross-match legal articles and semantics, PostgreSQL queries run hybrid vector-keyword matching:
               </p>
-              
+
               <div className="p-5 bg-neutral-950 rounded text-neutral-300 font-mono text-[11px] space-y-1 shadow-inner overflow-x-auto">
                 <div>CREATE OR REPLACE FUNCTION hybrid_search_registry(</div>
                 <div className="pl-4">query_embedding vector(768),</div>

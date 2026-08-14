@@ -128,10 +128,10 @@ const Waves = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const circleRef = useRef<HTMLAnchorElement>(null);
-    
+
     const [circleOffset, setCircleOffset] = useState({ x: 0, y: 0 });
     const [circleHovered, setCircleHovered] = useState(false);
-    
+
     const animationState = useRef<AnimationState>({
         ctx: null,
         mouse: { x: -10, y: 0, lx: 0, ly: 0, sx: 0, sy: 0, v: 0, vs: 0, a: 0, set: false },
@@ -141,7 +141,7 @@ const Waves = () => {
         animationFrameId: null,
         lineColor: 'rgba(255, 255, 255, 0.35)',
     });
-    
+
     const circleOffsetRef = useRef({ x: 0, y: 0 });
     useEffect(() => {
         circleOffsetRef.current = circleOffset;
@@ -161,7 +161,7 @@ const Waves = () => {
         coords.y = Math.round(coords.y * 10) / 10;
         return coords;
     }, []);
-    
+
     useEffect(() => {
         const state = animationState.current;
         const canvas = canvasRef.current;
@@ -180,9 +180,9 @@ const Waves = () => {
             if (!state.bounding) return;
             const { width, height } = state.bounding;
             state.lines = [];
-            
+
             const { NUM_RADIAL_LINES, POINTS_PER_LINE, CIRCLE_BASE_RADIUS } = animationConfig;
-            
+
             // Outer bounding radius of canvas
             const maxRadius = Math.max(width, height) * 0.85;
             const radiusGap = (maxRadius - CIRCLE_BASE_RADIUS) / POINTS_PER_LINE;
@@ -190,7 +190,7 @@ const Waves = () => {
             for (let i = 0; i < NUM_RADIAL_LINES; i++) {
                 const points: Point[] = [];
                 const angle = (i / NUM_RADIAL_LINES) * 2 * Math.PI;
-                
+
                 for (let j = 0; j <= POINTS_PER_LINE; j++) {
                     const r = CIRCLE_BASE_RADIUS + j * radiusGap;
                     points.push({
@@ -203,10 +203,10 @@ const Waves = () => {
                 state.lines.push(points);
             }
         };
-        
+
         const movePoints = (time: number) => {
             const { lines, mouse, noise, bounding } = state;
-            const { 
+            const {
                 WAVE_TIME_X_FACTOR, WAVE_NOISE_X_FACTOR, WAVE_TIME_Y_FACTOR, WAVE_NOISE_Y_FACTOR,
                 WAVE_NOISE_MAGNITUDE, WAVE_AMPLITUDE_X, WAVE_AMPLITUDE_Y, MOUSE_INFLUENCE_RADIUS,
                 MOUSE_FALLOFF_FACTOR, MOUSE_FORCE_FACTOR, TENSION_STRENGTH, FRICTION,
@@ -225,7 +225,7 @@ const Waves = () => {
                     const noiseInputX = (baseX + time * WAVE_TIME_X_FACTOR) * WAVE_NOISE_X_FACTOR;
                     const noiseInputY = (baseY + time * WAVE_TIME_Y_FACTOR) * WAVE_NOISE_Y_FACTOR;
                     const move = noise.perlin2(noiseInputX, noiseInputY) * WAVE_NOISE_MAGNITUDE;
-                    
+
                     // Anchor wave effect: first points at circle boundary have minimal waving to remain attached
                     const anchorFactor = Math.min(1, idx / 3);
                     p.wave.x = Math.cos(move) * WAVE_AMPLITUDE_X * anchorFactor;
@@ -261,7 +261,7 @@ const Waves = () => {
         const drawLines = () => {
             const { ctx, bounding, lines } = state;
             if (!bounding || !ctx) return;
-            
+
             const centerX = bounding.width / 2 + circleOffsetRef.current.x;
             const centerY = bounding.height / 2 + circleOffsetRef.current.y;
 
@@ -274,7 +274,7 @@ const Waves = () => {
                 // Lines originate exactly from the boundary of the floating circle (first point)
                 const p1 = moved(points[0], centerX, centerY, false);
                 ctx.moveTo(p1.x, p1.y);
-                
+
                 for (let i = 0; i < points.length - 1; i++) {
                     const currentPoint = moved(points[i], centerX, centerY, true);
                     const nextPoint = moved(points[i + 1], centerX, centerY, true);
@@ -296,12 +296,12 @@ const Waves = () => {
             const dx = mouse.sx - mouse.lx;
             const dy = mouse.sy - mouse.ly;
             const d = Math.hypot(dx, dy);
-            
+
             mouse.v = d;
             mouse.vs += (d - mouse.vs) * MOUSE_SMOOTHING_FACTOR;
             mouse.vs = Math.min(MAX_MOUSE_VELOCITY, mouse.vs);
             mouse.a = Math.atan2(dy, dx);
-            
+
             mouse.lx = mouse.sx;
             mouse.ly = mouse.sy;
 
@@ -320,13 +320,13 @@ const Waves = () => {
             const { mouse } = state;
             mouse.x = clientX - rect.left;
             mouse.y = clientY - rect.top;
-            
+
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             const dx = mouse.x - centerX;
             const dy = mouse.y - centerY;
             const dist = Math.hypot(dx, dy);
-            
+
             if (dist < 180) {
                 setCircleOffset({ x: dx * 0.18, y: dy * 0.18 });
                 setCircleHovered(true);
@@ -354,11 +354,10 @@ const Waves = () => {
                 mouse.set = true;
             }
         };
-        
+
         const onResize = () => { setSize(); setLines(); };
         const onMouseMove = (e: MouseEvent) => { updateMousePosition(e.clientX, e.clientY); };
         const onTouchMove = (e: TouchEvent) => {
-            e.preventDefault();
             updateMousePosition(e.touches[0].clientX, e.touches[0].clientY);
         };
 
@@ -370,12 +369,12 @@ const Waves = () => {
 
         setSize();
         setLines();
-        
+
         window.addEventListener("resize", onResize);
         window.addEventListener("mousemove", onMouseMove);
         container.addEventListener("touchmove", onTouchMove, { passive: false });
         container.addEventListener("mouseleave", onMouseLeave);
-        
+
         state.animationFrameId = requestAnimationFrame(tick);
 
         return () => {
@@ -390,14 +389,14 @@ const Waves = () => {
     }, [moved]);
 
     return (
-        <div 
-            ref={containerRef} 
+        <div
+            ref={containerRef}
             className="relative w-full h-[60vh] md:h-[70vh] bg-black overflow-hidden flex items-center justify-center select-none"
         >
             <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
-            
+
             {/* Center All Work Badge */}
-            <Link 
+            <Link
                 href="/all-work"
                 ref={circleRef}
                 className="relative z-10 w-36 h-36 md:w-40 md:h-40 rounded-full border border-white/20 bg-black flex items-center justify-center cursor-pointer select-none transition-all duration-300 ease-out shadow-[0_0_50px_rgba(0,0,0,0.8)] pointer-events-auto"
