@@ -168,6 +168,7 @@ export default function SelectedWork() {
                           loop 
                           muted 
                           playsInline 
+                          preload="none"
                           className="w-full h-full object-contain opacity-100 bg-white"
                         />
                       ) : (

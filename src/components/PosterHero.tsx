@@ -263,12 +263,16 @@ export default function PosterHero() {
             }}
           >
             {/* Concrete textured background poster */}
-            <div 
-              className="absolute inset-0 bg-[length:100%_100%] bg-center pointer-events-none"
-              style={{
-                backgroundImage: "url('/page.png')",
-              }}
-            />
+            <div className="absolute inset-0 pointer-events-none">
+              <Image
+                src="/page.png"
+                alt="Textured Background"
+                fill
+                className="object-fill"
+                priority
+                sizes="100vw"
+              />
+            </div>
 
             {/* 1. "SHRESTH" Name Text */}
             <motion.h1 
@@ -405,6 +409,9 @@ export default function PosterHero() {
               loop
               muted
               playsInline
+              preload="auto"
+              // @ts-expect-error fetchpriority might not be typed
+              fetchPriority="high"
               onLoadedData={() => {
                 if (typeof window !== "undefined") {
                   // @ts-expect-error - showcaseReelLoaded flag attached to window

@@ -398,6 +398,7 @@ const Waves = () => {
             {/* Center Archives Badge */}
             <Link
                 href="/archives"
+                prefetch={false}
                 ref={circleRef}
                 className="relative z-10 w-36 h-36 md:w-40 md:h-40 rounded-full border border-white/20 bg-black flex items-center justify-center cursor-pointer select-none transition-all duration-300 ease-out shadow-[0_0_50px_rgba(0,0,0,0.8)] pointer-events-auto"
                 style={{
