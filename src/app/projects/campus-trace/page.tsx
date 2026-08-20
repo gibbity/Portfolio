@@ -28,10 +28,8 @@ export default function CampusTracePage() {
   ];
 
   const [activeSection, setActiveSection] = useState("intro");
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [showFullProcess, setShowFullProcess] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [expandedDecision, setExpandedDecision] = useState<number | null>(0);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -158,26 +156,6 @@ export default function CampusTracePage() {
         </div>
       </div>
 
-      {/* LIGHTBOX OVERLAY */}
-      {lightboxImage && (
-        <div
-          onClick={() => setLightboxImage(null)}
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center cursor-zoom-out p-6"
-        >
-          <div className="relative w-full max-w-5xl h-[85vh]">
-            <Image
-              src={lightboxImage}
-              alt="Zoomed Graphic View"
-              fill
-              className="object-contain"
-            />
-          </div>
-          <span className="absolute top-8 right-8 font-sans text-white/50 text-[12px] uppercase tracking-widest">
-            Click anywhere to close
-          </span>
-        </div>
-      )}
-
       <CaseStudyHero
         title="Campus Trace"
         subtitle="Visualizing Mobility Friction"
@@ -195,6 +173,7 @@ export default function CampusTracePage() {
         }}
         theme="dark"
         fullMedia={true}
+        liveUrl="https://campus-trace-steel.vercel.app/"
       />
 
       {/* 1. THE HOOK */}
@@ -207,12 +186,16 @@ export default function CampusTracePage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <h3 className="font-sans font-normal text-[26px] md:text-[34px] leading-tight text-white tracking-tight font-serif">
-              Designing a collaborative map that clusters campus infrastructure reports into mobility hotspots.
+              When a broken streetlight or a blocked pathway goes unreported on a massive campus like VIT Vellore, the friction compounds daily.
             </h3>
             <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-white/70 font-sans">
-              Planners are overwhelmed by unstructured complaints, while students lack visibility into active issues. By clustering location reports dynamically within organic boundaries, CampusTrace converts raw coordinate point-clouds into clear, actionable spatial bottlenecks.
+              Students complain locally, but administration lacks visibility into the aggregate data to fix systemic problems. CampusTrace was built to bridge this gap by allowing students to drop location-based pins for immediate issues, while using AI to synthesize hundreds of individual complaints into actionable administrative hotspots.
             </p>
           </div>
+        </div>
+        
+        <div className="w-full mt-12 rounded-sm overflow-hidden border border-white/10 relative">
+          <video src="/projects/campus-trace/rush-hour.mp4" autoPlay loop muted playsInline className="w-full h-auto" />
         </div>
       </section>
 
@@ -225,9 +208,20 @@ export default function CampusTracePage() {
             </span>
           </div>
           <div className="md:col-span-8 text-left space-y-6">
-            <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/75 font-sans">
-              CampusTrace was created for the students and administrative staff of a high-density university campus (VIT Vellore) to report and analyze structural infrastructure issues. Before this system, students lacked a direct way to pinpoint physical barriers (like broken pathways or safety hazards), resulting in disconnected complaints that administrators couldn't locate or prioritize. As a solo designer and developer, I had to build a secure, lightweight, and clutter-free spatial reporting tool within a short production cycle.
-            </p>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <span className="font-sans font-bold text-white/60 w-24">Role:</span>
+                <span className="font-sans text-white/90">Full-stack Developer / Designer</span>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-sans font-bold text-white/60 w-24">Timeline:</span>
+                <span className="font-sans text-white/90">Solo build</span>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-sans font-bold text-white/60 w-24">Stack:</span>
+                <span className="font-sans text-white/90">React, Vite, Tailwind CSS, MapLibre GL, Supabase, Google Gemini 3.1 Flash Lite</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -242,10 +236,10 @@ export default function CampusTracePage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <h3 className="font-sans font-normal text-[26px] md:text-[34px] leading-tight text-white tracking-tight font-serif">
-              Raw coordinates and chaotic point clouds on a map create immediate decision fatigue.
+              The underlying issue wasn't that students didn't care about reporting problems; it was that standard reporting forms felt like screaming into a void.
             </h3>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60 font-sans">
-              Planners do not have time to trace a list of 100 scattered coordinates of "pavement damage" or "poor lighting". The challenge was not just letting users drop pins, but translating messy, unstructured student reports into distinct, high-severity "mobility hotspots" that represent systemic design flaws.
+              To get students to engage, the reporting mechanism needed to be as frictionless as dropping a pin on a map. For administration, the problem was the opposite: sorting through a hundred individual reports of "broken light" is overwhelming. They needed a way to see the systemic failure, not just the symptoms.
             </p>
           </div>
         </div>
@@ -257,59 +251,47 @@ export default function CampusTracePage() {
           <span className="font-sans font-semibold text-[11px] text-white/40 uppercase tracking-widest font-sans">
             04 / KEY DECISIONS
           </span>
-          <span className="font-sans font-medium text-[11px] text-white/30 uppercase tracking-widest font-sans">
-            CLICK TO EXPAND
-          </span>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-16">
           {[
             {
-              title: "Two-Step Drag-and-Confirm Pinning",
-              why: "First-generation mapping tools often submit reports instantly upon tapping the screen, causing high error rates and misplaced pins. By letting users drop a temporary marker and drag it to adjust coordinates before tapping a second time to confirm, we eliminated accidental submissions."
+              title: "Neo-brutalist \"Toon\" Aesthetic",
+              why: "Chose a minimal, high-contrast visual style (thick borders, offset shadows, pastel accents) over a standard corporate dashboard. Why: It makes the platform feel approachable and less intimidating for students, encouraging faster reporting.",
+              image: "/projects/campus-trace/key-decision-1.png"
             },
             {
-              title: "Defaulting to a Personal 'Private' Map View",
-              why: "Opening a map flooded with hundreds of community reports creates visual noise. Defaulting the home map view to show only the user's own reports creates a clean, focused starting state, while offering an explicit toggle to view 'Global Data'."
+              title: "Client-Side Clustering with MapLibre",
+              why: "Handled the heavy lifting of map rendering and pin clustering directly on the client. Why: Allowed for a snappy, interactive map experience without constantly querying the database for every pan and zoom, reducing backend load on Supabase.",
+              image: "/projects/campus-trace/key-decision-2.png"
             },
             {
-              title: "High-Contrast Swiss-Toon Cartography",
-              why: "Standard street maps are cluttered with commercial names and busy styles that distract from user reports. We stripped the style down to a custom high-contrast, monochrome palette (white roads, pastel grey land, thick outlines) to let status-coded pins stand out instantly."
-            },
-            {
-              title: "Dynamic Organic Boundaries (Convex Hulls)",
-              why: "Traditional clustering represents density using arbitrary circular rings, which obscure the physical geometry of the issue. By drawing organic boundaries directly enclosing the exact footprint of the reported pins, planners see the precise shape and flow of the bottleneck."
+              title: "LLM-Driven Synthesis over Simple Aggregation",
+              why: "Used Gemini 3.1 Flash Lite to process raw reports into thematic \"Hotspots\" instead of just grouping pins by radius. Why: A simple radius cluster can't tell the difference between a broken pipe and a security concern occurring in the same 50-meter area. The LLM extracts the actual friction from the text and groups logically.",
+              image: "/projects/campus-trace/key-decision-3.png",
+              smallImage: true
             }
-          ].map((item, idx) => {
-            const isExpanded = expandedDecision === idx;
-            return (
-              <div
-                key={idx}
-                className="border border-white/10 rounded bg-white/[0.02] transition-all"
-              >
-                <button
-                  onClick={() => setExpandedDecision(isExpanded ? null : idx)}
-                  className="w-full text-left p-6 flex justify-between items-center"
-                >
-                  <h4 className="font-sans font-semibold text-[15px] text-white uppercase tracking-tight font-sans">
-                    → {item.title}
-                  </h4>
-                  <span className="text-[18px] font-mono font-bold text-white/30">
-                    {isExpanded ? "–" : "+"}
-                  </span>
-                </button>
-
-                {isExpanded && (
-                  <div className="px-6 pb-6 pt-2 border-t border-white/10 text-left bg-black rounded-b font-sans">
-                    <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest block mb-2">Rationale</span>
-                    <p className="font-sans text-[14px] leading-relaxed text-white/70 font-light">
-                      {item.why}
-                    </p>
-                  </div>
-                )}
+          ].map((item, idx) => (
+            <div key={idx} className="flex flex-col gap-6">
+              <div className="text-left">
+                <h4 className="font-sans font-normal text-[22px] md:text-[26px] leading-tight text-white tracking-tight font-serif mb-3">
+                  {idx + 1}. {item.title}
+                </h4>
+                <div className="pl-6 border-l-2 border-white/10">
+                  <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest block mb-2 font-sans">Rationale</span>
+                  <p className="font-sans text-[14px] leading-relaxed text-white/70 font-light font-sans">
+                    {item.why}
+                  </p>
+                </div>
               </div>
-            );
-          })}
+              
+              {item.image && (
+                <div className={`rounded-sm overflow-hidden border border-white/10 bg-white/5 ${item.smallImage ? 'w-full max-w-xl' : 'w-full'}`}>
+                  <Image src={item.image} alt={item.title} width={1920} height={1080} className="w-full h-auto" />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -321,12 +303,25 @@ export default function CampusTracePage() {
               05 / WHAT DIDN'T WORK
             </span>
           </div>
-          <div className="md:col-span-8 text-left space-y-6">
-            <h4 className="font-sans font-bold text-[13px] text-white uppercase tracking-wider font-serif">The Global Clutter Overload</h4>
-            <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60 font-sans">
-              Early designs displayed every reported issue globally to all users on load. Testing showed this caused immediate confusion: users couldn't distinguish their own active reports from others, and the high concentration of pins in central campus areas made the map unreadable.
-              I resolved this by introducing the "Switch to Global Data" toggle, keeping the default state clean and personal, and utilizing severity-colored badges and status filters in the side drawer.
-            </p>
+          <div className="md:col-span-8 text-left space-y-8">
+            <div>
+              <h4 className="font-sans font-bold text-[13px] text-white uppercase tracking-wider font-serif mb-2">Tech-Heavy Landing Page</h4>
+              <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60 font-sans">
+                The first iteration of the landing page relied heavily on standard SaaS marketing tropes (gradients, complex feature grids). It felt completely disconnected from the minimal, playful aesthetic of the actual web app. I had to scrap the design and rewrite it to match the app's neo-brutalist style, which immediately made the brand feel cohesive.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-sans font-bold text-[13px] text-white uppercase tracking-wider font-serif mb-2">Narrow AI Scoping</h4>
+              <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60 font-sans">
+                Initially, the AI analysis was strictly prompted to act as a "Mobility Design" analyst, looking only for transportation and mobility friction. This resulted in the AI ignoring critical infrastructure or maintenance reports that didn't fit the mobility constraint. I had to pivot the prompt to a general "Campus Problem" analyst to ensure all systemic issues were captured.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-sans font-bold text-[13px] text-white uppercase tracking-wider font-serif mb-2">Vercel Build Limits</h4>
+              <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/60 font-sans">
+                During deployment, the application hit Vercel's chunk size limits due to heavy dependencies like MapLibre and Supabase. I had to introduce route-level lazy loading with React <code>Suspense</code> and configure manual chunking in Vite to split vendor libraries, stabilizing the build process.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -335,36 +330,21 @@ export default function CampusTracePage() {
       <section id="outcome" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-white/10">
         <div className="w-full flex justify-between items-baseline mb-12 border-b border-white/10 pb-4">
           <span className="font-sans font-semibold text-white/40 uppercase tracking-widest font-sans">
-            06 / OUTCOME
-          </span>
-          <span className="font-sans font-medium text-white/30 uppercase tracking-widest font-sans">
-            QUANTIFIED METRICS
+            06 / OUTCOME & RECONSIDERATIONS
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left font-sans">
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-white block tracking-tight leading-none font-serif">25 Hotspots</span>
-            <span className="font-sans text-[10px] text-white/40 uppercase tracking-wider font-semibold block mt-3">Thematic Clusters</span>
-            <p className="font-sans text-[12px] text-white/50 mt-1 leading-normal">Clustered 100+ raw reports into 25 high-priority mobility hotspots, turning chaotic point data into actionable design themes.</p>
-          </div>
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-white block tracking-tight leading-none font-serif">0 Errors</span>
-            <span className="font-sans text-[10px] text-white/40 uppercase tracking-wider font-semibold block mt-3">Accidental Inputs</span>
-            <p className="font-sans text-[12px] text-white/50 mt-1 leading-normal">Prevented input errors by implementing the two-step drag-and-adjust placement, resulting in zero accidental submissions.</p>
-          </div>
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-white block tracking-tight leading-none font-serif">Swiss-Toon</span>
-            <span className="font-sans text-[10px] text-white/40 uppercase tracking-wider font-semibold block mt-3">Map Readability</span>
-            <p className="font-sans text-[12px] text-white/50 mt-1 leading-normal">Custom Swiss-inspired high-contrast cartography where status-coded pins (open, resolved, personal) stand out immediately.</p>
-          </div>
+        <div className="text-left space-y-6 mb-12">
+          <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-white/70 font-sans">
+            The platform successfully provides a dual experience: a highly tactile, frictionless reporting interface for students, and an AI-synthesized dashboard for administrators that groups individual noise into actionable maintenance targets. During the initial data run, the platform captured 33 individual friction reports—ranging from broken lighting to unsafe pedestrian crossings. The AI engine successfully synthesized these into 25 discrete administrative hotspots, proving its ability to identify complex, overlapping systemic issues (like shared tunnel congestion) that simple radius clustering would have missed.
+          </p>
         </div>
 
         {/* Reflection */}
-        <div className="mt-12 p-6 border-l-2 border-[#00B4D8] text-left">
-          <span className="font-sans text-[11px] font-bold text-white/40 uppercase tracking-widest block mb-2 font-serif font-sans">Reflection</span>
+        <div className="p-6 border-l-2 border-[#00B4D8] text-left">
+          <span className="font-sans text-[11px] font-bold text-white/40 uppercase tracking-widest block mb-2 font-serif font-sans">What I'd Reconsider</span>
           <p className="font-sans text-[14px] leading-relaxed text-white/75 font-sans">
-            Building this project showed me that the value of spatial data isn't the data itself, but how it is synthesized. Translating individual, low-context submissions into unified thematic areas bridges the gap between raw student feedback and administrative action.
+            If I were to build this again, I would reconsider relying entirely on the LLM for spatial bounding. Currently, the AI groups the reports, and the app calculates a rough radius based on the grouped coordinates. This works for simple clusters but fails to accurately represent linear issues (like a long stretch of unlit pathway). A more robust geospatial clustering algorithm (like DBSCAN) applied *before* feeding the clusters to the LLM might yield more accurate physical boundaries.
           </p>
         </div>
       </section>
@@ -485,39 +465,9 @@ export default function CampusTracePage() {
               </ul>
             </div>
 
-            {/* SECTION 5: SCREENSHOTS & GALLERY */}
+            {/* SECTION 5: STAGING DEPLOY CHECKLIST */}
             <div className="space-y-6 pt-12 border-t border-white/10">
-              <span className="text-[10px] font-bold text-[#00B4D8] uppercase tracking-widest block">05 / GALLERY & VISUALS</span>
-              <h3 className="text-[20px] font-bold text-white uppercase tracking-tight font-sans font-bold">Heatmap Analysis & Screenshots</h3>
-              <p className="text-[14px] text-white/60 leading-relaxed max-w-3xl font-sans">
-                Visualizing student reports and heat zones on the custom Swiss-Toon map layouts:
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
-                <div
-                  onClick={() => setLightboxImage("/projects/campus-trace/ai-heatmap-1.png")}
-                  className="relative aspect-video border border-white/10 rounded overflow-hidden bg-white/5 cursor-zoom-in group"
-                >
-                  <Image src="/projects/campus-trace/ai-heatmap-1.png" alt="Report Cluster Analysis 01" fill className="object-contain p-4" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
-                  </div>
-                </div>
-
-                <div
-                  onClick={() => setLightboxImage("/projects/campus-trace/ai-heatmap-2.png")}
-                  className="relative aspect-video border border-white/10 rounded overflow-hidden bg-white/5 cursor-zoom-in group"
-                >
-                  <Image src="/projects/campus-trace/ai-heatmap-2.png" alt="Report Cluster Analysis 02" fill className="object-contain p-4" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION 6: STAGING DEPLOY CHECKLIST */}
-            <div className="space-y-6 pt-12 border-t border-white/10">
-              <span className="text-[10px] font-bold text-[#00B4D8] uppercase tracking-widest block font-sans">06 / VERIFICATION CHECKLIST</span>
+              <span className="text-[10px] font-bold text-[#00B4D8] uppercase tracking-widest block font-sans">05 / VERIFICATION CHECKLIST</span>
               <h3 className="text-[20px] font-bold text-white uppercase tracking-tight font-sans">Production Readiness Checklist</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans">
                 <div className="p-4 border border-white/10 rounded-sm bg-white/5">

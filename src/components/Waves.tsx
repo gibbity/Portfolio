@@ -395,9 +395,9 @@ const Waves = () => {
         >
             <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
 
-            {/* Center All Work Badge */}
+            {/* Center Archives Badge */}
             <Link
-                href="/all-work"
+                href="/archives"
                 ref={circleRef}
                 className="relative z-10 w-36 h-36 md:w-40 md:h-40 rounded-full border border-white/20 bg-black flex items-center justify-center cursor-pointer select-none transition-all duration-300 ease-out shadow-[0_0_50px_rgba(0,0,0,0.8)] pointer-events-auto"
                 style={{
@@ -406,7 +406,7 @@ const Waves = () => {
                 }}
             >
                 <span className="font-sans text-white text-[11px] md:text-[12px] font-semibold tracking-[0.25em] uppercase text-center pl-[0.25em]">
-                    All Work
+                    Archives
                 </span>
             </Link>
         </div>

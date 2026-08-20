@@ -18,6 +18,7 @@ interface CaseStudyHeroProps {
   isItalic?: boolean;
   fullMedia?: boolean;
   layout?: "grid" | "stacked";
+  liveUrl?: string;
 }
 
 export default function CaseStudyHero({
@@ -31,108 +32,91 @@ export default function CaseStudyHero({
   isItalic = true,
   fullMedia = false,
   layout = "grid",
+  liveUrl,
 }: CaseStudyHeroProps) {
   const isDark = theme === "dark";
 
+  const textColor = isDark ? "text-white" : "text-black";
+  const mutedColor = isDark ? "text-white/60" : "text-black/60";
+  const fadedColor = isDark ? "text-white/30" : "text-black/30";
+  const borderColor = isDark ? "border-white/10" : "border-black/5";
+  const btnBg = isDark ? "bg-white" : "bg-black";
+  const btnText = isDark ? "text-black" : "text-white";
+
   return (
-    <section className={`hero-section relative z-10 pt-32 md:pt-44 pb-20 md:pb-32 px-6 md:px-12 lg:px-20 max-w-[1600px] mx-auto min-h-[80vh] md:min-h-screen flex flex-col justify-center ${className} ${isDark ? 'text-white' : 'text-gray-900'}`}>
-      {layout === "stacked" ? (
-        <div className="flex flex-col gap-16 md:gap-24 mb-16 md:mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h1 className={`font-helvetica font-bold text-[52px] md:text-[140px] lg:text-[160px] leading-[0.85] tracking-tighter mb-8 md:mb-12 ${isItalic ? 'italic' : ''} break-words`}>
-              {title}
-            </h1>
-            <div className="flex gap-4 items-center">
-              <span className={`w-12 h-px ${isDark ? 'bg-white/20' : 'bg-black/20'}`}></span>
-              <p className={`text-[18px] md:text-[24px] font-normal tracking-wide uppercase ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
-                {subtitle}
-              </p>
-            </div>
-          </motion.div>
+    <section className={`hero-section relative z-10 pt-32 pb-16 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto ${className}`}>
+      {/* Title */}
+      <motion.h1 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className={`font-sans font-normal text-[36px] md:text-[54px] lg:text-[72px] leading-[1.05] tracking-tight ${textColor} text-left max-w-4xl font-serif`}
+      >
+        {title}
+      </motion.h1>
+      
+      {/* Description */}
+      <motion.p 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+        className={`font-sans text-[18px] md:text-[22px] leading-relaxed ${mutedColor} mt-8 max-w-3xl ${isItalic ? 'italic' : ''}`}
+      >
+        {description}
+      </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="grid grid-cols-1 lg:grid-cols-[1.5fr,1fr] gap-12 md:gap-24 items-start border-t border-white/5 pt-12 md:pt-16"
-          >
-            <p className={`text-[18px] md:text-[28px] leading-tight font-normal ${isItalic ? 'italic' : ''} ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
-              {description}
-            </p>
-            <div className={`flex flex-wrap gap-12 md:gap-16 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] ${isDark ? 'text-white/40' : 'text-black/40'}`}>
-              {Object.entries(meta).map(([key, value]) => (
-                <div key={key} className="space-y-4">
-                  <p className={`font-bold ${isDark ? 'text-white' : 'text-black'}`}>{key}</p>
-                  <p className="break-all opacity-60">
-                    {value.startsWith("http") ? (
-                      <a href={value} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-100 transition-opacity">
-                        {value.replace("https://", "").replace("www.", "")}
-                      </a>
-                    ) : (
-                      value
-                    )}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr,0.9fr] gap-12 md:gap-24 items-start mb-16 md:mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h1 className={`font-helvetica font-bold text-[48px] md:text-[110px] lg:text-[140px] leading-[0.85] tracking-tighter mb-8 md:mb-12 ${isItalic ? 'italic' : ''} break-words`}>
-              {title}
-            </h1>
-            <div className="flex gap-4 items-center">
-              <span className={`w-12 h-px ${isDark ? 'bg-white/20' : 'bg-black/20'}`}></span>
-              <p className={`text-[16px] md:text-[20px] font-normal tracking-wide uppercase ${isDark ? 'text-white/50' : 'text-gray-400'}`}>
-                {subtitle}
-              </p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="flex flex-col gap-8 md:gap-12 pt-4 md:pt-12"
-          >
-            <p className={`text-[18px] md:text-[22px] leading-relaxed font-normal ${isItalic ? 'italic' : ''} ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
-              {description}
-            </p>
-            <div className={`flex flex-wrap gap-8 md:gap-16 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] ${isDark ? 'text-white/40' : 'text-black/40'}`}>
-              {Object.entries(meta).map(([key, value]) => (
-                <div key={key}>
-                  <p className={`mb-3 font-bold ${isDark ? 'text-white' : 'text-black'}`}>{key}</p>
-                  <p className="break-all opacity-70">
-                    {value.startsWith("http") ? (
-                      <a href={value} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-100 transition-opacity">
-                        {value.replace("https://", "").replace("www.", "")}
-                      </a>
-                    ) : (
-                      value
-                    )}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+      {/* Role */}
+      {meta["Role"] && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="mt-8 font-sans"
+        >
+          <p className={`text-[10px] font-bold ${textColor} uppercase tracking-[0.3em] mb-3`}>Role</p>
+          <p className={`text-[11px] md:text-[12px] ${mutedColor} font-bold uppercase tracking-widest`}>
+            {meta["Role"]}
+          </p>
+        </motion.div>
       )}
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className={`hero-image-container relative w-full ${fullMedia ? 'aspect-auto md:min-h-[70vh]' : 'aspect-video md:aspect-[21/9] lg:aspect-[21/8]'} overflow-hidden rounded-sm shadow-2xl border ${isDark ? 'bg-neutral-900 border-white/5' : 'bg-[#E8E8E8] border-gray-100'}`}
+      {/* Actions */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="flex flex-wrap items-center gap-6 mt-12"
+      >
+        {liveUrl && (
+          <a 
+            href={liveUrl}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={`inline-flex items-center justify-center px-8 py-3 ${btnBg} ${btnText} text-[11px] font-bold uppercase tracking-[0.2em] hover:scale-105 transition-transform duration-300 rounded-sm`}
+          >
+            Visit Live Site
+          </a>
+        )}
+        <button 
+          onClick={() => {
+            const el = document.getElementById("outcome");
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }}
+          className={`font-sans font-semibold text-[12px] ${mutedColor} hover:${textColor} underline underline-offset-4 uppercase tracking-wider`}
+        >
+          Skip to outcome →
+        </button>
+        <span className={`font-sans text-[12px] ${fadedColor} font-medium uppercase tracking-wider`}>
+          3 min read / 45 sec skim
+        </span>
+      </motion.div>
+
+      {/* Hero Visual Video / Image */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        className={`hero-image-container relative w-full ${fullMedia ? 'aspect-auto md:min-h-[70vh]' : 'aspect-[16/9.5]'} border ${borderColor} rounded-sm overflow-hidden mt-12 shadow-sm ${isDark ? 'bg-neutral-950' : 'bg-[#E8E8E8]'}`}
       >
         {media.type === "video" ? (
           <video
@@ -151,7 +135,7 @@ export default function CaseStudyHero({
             fill
             sizes="(max-width: 1024px) 100vw, 80vw"
             unoptimized={media.src.endsWith(".gif")}
-            className={`${fullMedia ? 'object-contain p-0' : 'object-contain p-4 md:p-12'} opacity-95 transition-all duration-700`}
+            className={`${fullMedia ? 'object-contain p-0' : 'object-cover'} opacity-95 transition-all duration-700`}
             priority
           />
         )}

@@ -195,6 +195,7 @@ export default function OpenDesignStudioPage() {
         }}
         theme="light"
         fullMedia={true}
+        liveUrl="https://open-component.vercel.app/"
       />
 
       {/* 1. THE HOOK */}
@@ -258,59 +259,54 @@ export default function OpenDesignStudioPage() {
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
             04 / KEY DECISIONS
           </span>
-          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
-            CLICK TO EXPAND
-          </span>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-12">
           {[
             {
               title: "Storage Shift to Browser Database (Dexie.js)",
-              why: "Removed the need for installing local binaries and resolved driver setup errors by pivoting standard SQLite files into the browser's native IndexedDB layer."
+              why: "Removed the need for installing local binaries and resolved driver setup errors by pivoting standard SQLite files into the browser's native IndexedDB layer.",
+              image: "/projects/open-design-studio/decision-1.png"
             },
             {
               title: "Unified Multi-Model Bring-Your-Own-Key Integration",
-              why: "Created client-side API configuration nodes, allowing designers to hook up their own Anthropic, OpenAI, or Ollama endpoints, preserving privacy and custom tuning."
+              why: "Created client-side API configuration nodes, allowing designers to hook up their own Anthropic, OpenAI, or Ollama endpoints, preserving privacy and custom tuning.",
+              image: "/projects/open-design-studio/decision-2.png"
             },
             {
               title: "High-Density 4-Panel Cockpit Workspace",
-              why: "Minimonized layout-switching latency. Placed structural outlines, agent console feedback, active preview, and visual adjustments inside a single dense screen."
+              why: "Minimonized layout-switching latency. Placed structural outlines, agent console feedback, active preview, and visual adjustments inside a single dense screen.",
+              image: "/projects/open-design-studio/decision-3.png"
             },
             {
               title: "Direct Visual Editing Control Sliders",
-              why: "Eliminated the friction of typing repetitive prompts like 'increase padding by 4px'. Designed interactive sliders mapping custom properties directly into components."
+              why: "Eliminated the friction of typing repetitive prompts like 'increase padding by 4px'. Designed interactive sliders mapping custom properties directly into components.",
             }
-          ].map((item, idx) => {
-            const isExpanded = expandedDecision === idx;
-            return (
-              <div
-                key={idx}
-                className="border border-[#EDEDED] rounded bg-[#FAFAFA] transition-all"
-              >
-                <button
-                  onClick={() => setExpandedDecision(isExpanded ? null : idx)}
-                  className="w-full text-left p-6 flex justify-between items-center"
-                >
-                  <h4 className="font-sans font-semibold text-[15px] text-black uppercase tracking-tight font-sans">
-                    → {item.title}
-                  </h4>
-                  <span className="text-[18px] font-mono font-bold text-black/30">
-                    {isExpanded ? "–" : "+"}
-                  </span>
-                </button>
-
-                {isExpanded && (
-                  <div className="px-6 pb-6 pt-2 border-t border-gray-100 text-left bg-white rounded-b">
-                    <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block mb-2 font-sans">Rationale</span>
-                    <p className="font-sans text-[14px] leading-relaxed text-black/70 font-light">
-                      {item.why}
-                    </p>
-                  </div>
-                )}
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              className="border border-[#EDEDED] rounded bg-[#FAFAFA] flex flex-col gap-8 p-6 md:p-12 mb-8"
+            >
+              <div className="w-full text-left">
+                <h4 className="font-sans font-semibold text-[20px] text-black uppercase tracking-tight mb-4">
+                  0{idx + 1} // {item.title}
+                </h4>
+                <p className="font-sans text-[16px] leading-relaxed text-black/70 font-light">
+                  {item.why}
+                </p>
               </div>
-            );
-          })}
+              {item.image && (
+                <div className="w-full relative aspect-[4/3] md:aspect-[16/9] bg-[#E8E8E8] border border-black/5 rounded-sm overflow-hidden shadow-sm">
+                  <Image 
+                    src={item.image} 
+                    alt={item.title} 
+                    fill 
+                    className="object-contain p-2 md:p-4"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 

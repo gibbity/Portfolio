@@ -10,19 +10,22 @@ const projects = [
     id: "scribe",
     name: "Scribe",
     description: "Non-linear strategic intelligence platform for dissolving context-collapse through hierarchical spatialization.",
-    thumbnail: "/projects/scribe/preview.mp4"
+    thumbnail: "/projects/scribe/preview.mp4",
+    liveUrl: "https://scribe-neon.vercel.app/landing"
   },
   {
     id: "campus-trace",
     name: "CampusTrace",
     description: "A modern campus issue reporting system for VIT Vellore with real-time geospatial archival.",
-    thumbnail: "/projects/campus-trace/preview.mp4"
+    thumbnail: "/projects/campus-trace/preview.mp4",
+    liveUrl: "https://campus-trace-steel.vercel.app/"
   },
   {
     id: "open-design-studio",
     name: "Open Design Studio",
     description: "Web-native, local-first AI prototyping environment for enterprise design privacy and speed.",
-    thumbnail: "/projects/open-design-studio/open-component-main-video-3x4.mp4"
+    thumbnail: "/projects/open-design-studio/open-component-main-video-3x4.mp4",
+    liveUrl: "https://open-component.vercel.app/"
   }
 ];
 
@@ -127,7 +130,7 @@ export default function SelectedWork() {
           </div>
 
           {/* CENTER COLUMN: Vertical Ribbon Cards */}
-          <div className="relative w-[85vw] md:w-[40vw] max-w-[660px] aspect-[16/9.5] flex items-center justify-center overflow-visible">
+          <div className="relative w-[85vw] md:w-[40vw] max-w-[660px] aspect-[16/9] flex items-center justify-center overflow-visible">
             {projects.map((project, i) => {
               const offset = i - virtualIndex;
               const distance = Math.abs(offset);
@@ -165,7 +168,7 @@ export default function SelectedWork() {
                           loop 
                           muted 
                           playsInline 
-                          className="w-full h-full object-cover opacity-100 bg-white"
+                          className="w-full h-full object-contain opacity-100 bg-white"
                         />
                       ) : (
                         <Image 
@@ -191,18 +194,30 @@ export default function SelectedWork() {
           </div>
 
           {/* RIGHT PANEL: Active Project Description (Placed at z-30 in outer margin so it NEVER overlaps carousel) */}
-          <div className="absolute right-6 md:right-10 lg:right-14 w-[220px] md:w-[250px] text-left z-30 pointer-events-none hidden md:block">
+          <div className="absolute right-6 md:right-10 lg:right-14 w-[220px] md:w-[250px] text-left z-30 pointer-events-auto hidden md:block">
             <AnimatePresence mode="wait">
-              <motion.p
+              <motion.div
                 key={`desc-${activeIndex}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="font-sans font-normal text-[14px] md:text-[15px] leading-relaxed text-black/80"
+                className="flex flex-col gap-4 items-start"
               >
-                {projects[activeIndex].description}
-              </motion.p>
+                <p className="font-sans font-normal text-[14px] md:text-[15px] leading-relaxed text-black/80">
+                  {projects[activeIndex].description}
+                </p>
+                {projects[activeIndex].liveUrl && (
+                  <a 
+                    href={projects[activeIndex].liveUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="inline-flex items-center justify-center px-4 py-2 bg-black text-white text-[9px] font-bold uppercase tracking-[0.2em] hover:scale-105 transition-transform duration-300 rounded-sm"
+                  >
+                    Visit Live Site
+                  </a>
+                )}
+              </motion.div>
             </AnimatePresence>
           </div>
 
@@ -211,13 +226,23 @@ export default function SelectedWork() {
         {/* 3. BOTTOM FOOTER COUNTER (Decreased font size to text-[18px] md:text-[22px]) */}
         <div className="w-full flex justify-between items-end z-20 pb-2">
           {/* Mobile fallback title and description */}
-          <div className="md:hidden block text-left">
+          <div className="md:hidden block text-left pointer-events-auto">
             <h4 className="font-sans font-medium text-[18px] text-black">
               {projects[activeIndex].name}
             </h4>
-            <p className="font-sans text-[12px] text-black/70 max-w-[220px] mt-1 leading-snug">
+            <p className="font-sans text-[12px] text-black/70 max-w-[220px] mt-1 mb-3 leading-snug">
               {projects[activeIndex].description}
             </p>
+            {projects[activeIndex].liveUrl && (
+              <a 
+                href={projects[activeIndex].liveUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center justify-center px-4 py-2 bg-black text-white text-[9px] font-bold uppercase tracking-[0.2em] hover:scale-105 transition-transform duration-300 rounded-sm"
+              >
+                Visit Live Site
+              </a>
+            )}
           </div>
 
           <div className="ml-auto font-sans font-normal text-[18px] md:text-[22px] text-black/70 tracking-tight leading-none">

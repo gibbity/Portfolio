@@ -229,22 +229,23 @@ export default function ScribePage() {
 
       {/* 2. COVER / HERO BANNER */}
       <section id="intro" className="relative w-full pt-32 pb-16 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto">
-        <div className="flex flex-wrap gap-2 mb-6 font-sans">
-          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">Strategic Spatial Mapping</span>
-          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">React / D3 Engine</span>
-          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">IndexedDB Storage</span>
-          <span className="text-[10px] md:text-[11px] px-2.5 py-1 bg-black/5 text-black font-semibold rounded-sm uppercase tracking-wider">AI Strategy Audit</span>
-        </div>
-
         {/* Title */}
         <h1 className="font-sans font-normal text-[36px] md:text-[54px] lg:text-[72px] leading-[1.05] tracking-tight text-black text-left max-w-4xl font-serif">
-          Scribe — Spatial Strategy Mapping
+          Scribe
         </h1>
         
-        {/* Subtitle */}
-        <p className="font-sans text-[18px] md:text-[22px] leading-relaxed text-black/60 mt-4 max-w-3xl italic">
+        {/* Description */}
+        <p className="font-sans text-[18px] md:text-[22px] leading-relaxed text-black/60 mt-8 max-w-3xl italic">
           Designed an interactive spatial mapping interface that helps product teams spot critical strategic gaps and stress-test roadmaps without getting lost in flat document systems.
         </p>
+
+        {/* Role */}
+        <div className="mt-8 font-sans">
+          <p className="text-[10px] font-bold text-black uppercase tracking-[0.3em] mb-3">Role</p>
+          <p className="text-[11px] md:text-[12px] text-black/60 font-bold uppercase tracking-widest">
+            Solo Designer & Developer
+          </p>
+        </div>
 
         {/* Case Study Appendix Redirect Alert Card */}
         <div className="mt-6 p-4 bg-gray-50 border border-gray-150 rounded-sm flex items-start gap-4 text-left max-w-3xl font-sans">
@@ -257,7 +258,15 @@ export default function ScribePage() {
           </div>
         </div>
 
-        <div className="flex gap-6 mt-8">
+        <div className="flex flex-wrap items-center gap-6 mt-8">
+          <a 
+            href="https://scribe-neon.vercel.app/landing"
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-8 py-3 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:scale-105 transition-transform duration-300 rounded-sm"
+          >
+            Visit Live Site
+          </a>
           <button 
             onClick={() => handleJumpToSection("outcome")}
             className="font-sans font-semibold text-[12px] text-black/50 hover:text-black underline underline-offset-4 uppercase tracking-wider"
@@ -289,10 +298,10 @@ export default function ScribePage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-black/75">
-              Scribe was built for **product executives and strategic leaders** who need to pressure-test critical decisions under intense timeline constraints.
+              Scribe is a local-first, visual note-taking environment designed to solve this specific problem.
             </p>
             <p className="font-sans font-normal text-[15px] leading-relaxed text-black/50 border-l border-black/10 pl-6">
-              <strong>Constraints:</strong> Developed as a solo designer-developer project. The challenge was to create a tool that moves beyond the typical passive folder structure or flat chat threads to expose structural risks early while maintaining real-time client performance.
+              It was built as a solo project, meaning I needed a stack that allowed for rapid prototyping without heavy backend infrastructure (Next.js, Tailwind, D3.js, and local IndexedDB).
             </p>
           </div>
         </div>
@@ -308,83 +317,70 @@ export default function ScribePage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <h3 className="font-sans font-normal text-[26px] md:text-[34px] leading-tight text-black tracking-tight font-serif">
-              Traditional strategy documents create "ghost context"—hidden interdependencies and logic loops impossible to spot until they fail.
+              I was trying to reconcile a product roadmap across 30 different user interviews, technical constraints, and design requirements. I kept losing track of how a feature in Phase 2 would break a constraint we discovered in Phase 1.
             </h3>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60">
-              While flat chat interfaces generate passive advice, they fail to provide the structural resistance and visual hierarchy required to diagnose real strategic flaws. The challenge is exposing abstract concepts with physical distance, alignment, and color so that structural gaps become immediately apparent.
+              Linear documents (like Notion or Google Docs) hide interdependencies. You can link pages, but you can't *see* the connections. I needed a way to map out complex logic visually without it turning into an unreadable mess.
             </p>
+            <div className="w-full mt-8 rounded-sm overflow-hidden border border-gray-100 bg-gray-50">
+              <Image src="/projects/scribe/The problem.png" alt="The Problem" width={1920} height={1080} className="w-full h-auto" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 5. KEY DECISIONS (PROGRESSIVE DISCLOSURE) */}
+      {/* 5. KEY DECISIONS */}
       <section id="decisions" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
             03 / KEY DECISIONS
           </span>
-          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
-            CLICK TO EXPAND
-          </span>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-16">
           {[
             {
-              title: "Columnar Spatial Anchoring",
-              summary: "Keeps hundreds of strategic insights scannable and organized.",
-              why: "Anchored strategic nodes into a predictable column rhythm rather than letting them drift into an unreadable 'spaghetti graph' of floating circles."
+              title: "Forcing hierarchical columns over free-form graphs",
+              summary: "Most note-taking apps with graphs (like Obsidian) use force-directed layouts. They look cool, but they turn into useless 'hairballs' once you have more than 50 notes.",
+              why: "Decision: I constrained the D3 physics engine to snap nodes into fixed 300px columns based on their hierarchy (Pillars -> Clusters -> Leaves). Trade-off: Users lose the ability to place notes anywhere they want on an infinite canvas, but the structure remains legible and organized even with hundreds of nodes.",
+              image: "/projects/scribe/Key decision 1.png"
             },
             {
-              title: "Dynamic Chromatic Warning System",
-              why: "Directed the decision-maker's attention instantly to critical structural flaws by color-coding risks in high-contrast red and constructive opportunities in soft green.",
-              summary: "Directs attention instantly to critical structural flaws."
+              title: "Client-side storage over cloud databases",
+              summary: "Scribe stores all data in the browser using IndexedDB.",
+              why: "Trade-off: It prevents easy multi-device syncing out of the box, but it allowed me to bypass complex authentication flows, ship faster, and guarantee 100% privacy for users working with sensitive strategic data.",
+              image: "/projects/scribe/Key decision 2.png"
             },
             {
-              title: "Dual-Depth Navigation Scale",
-              why: "Allowed users to move seamlessly between a 10,000-foot view of major strategic pillars and ground-level specific insights without feeling disoriented or losing track of the surrounding context.",
-              summary: "Balances visual overview with atomic, granular details."
-            },
-            {
-              title: "Local Persistence Architecture",
-              why: "Guaranteed that strategic sessions remain fully intact and editable, preventing data loss during intensive focus sessions or sudden connection drops.",
-              summary: "Safeguards long working sessions from connection failures."
+              title: "Bring-Your-Own-Key (BYOK) for AI features",
+              summary: "Instead of charging a subscription for AI credits, users paste in their own OpenAI or Claude keys, or connect to a local Ollama instance.",
+              why: "Trade-off: It adds friction to the onboarding process, but it keeps the app free to host and ensures user data isn't being silently scraped by a middleman server.",
+              image: "/projects/scribe/Key decision 3.png"
             }
-          ].map((item, idx) => {
-            const isExpanded = expandedDecision === idx;
-            return (
-              <div 
-                key={idx}
-                className="border border-[#EDEDED] rounded bg-[#FAFAFA] transition-all"
-              >
-                <button
-                  onClick={() => setExpandedDecision(isExpanded ? null : idx)}
-                  className="w-full text-left p-6 flex justify-between items-center"
-                >
-                  <div>
-                    <h4 className="font-sans font-semibold text-[16px] text-black uppercase tracking-tight">
-                      → {item.title}
-                    </h4>
-                    <p className="font-sans text-[13px] text-black/50 mt-1 font-sans">
-                      {item.summary}
-                    </p>
-                  </div>
-                  <span className="text-[18px] font-mono font-bold text-black/30">
-                    {isExpanded ? "–" : "+"}
-                  </span>
-                </button>
-
-                {isExpanded && (
-                  <div className="px-6 pb-6 pt-2 border-t border-gray-100 text-left bg-white rounded-b">
-                    <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block mb-2 font-sans">Rationale</span>
-                    <p className="font-sans text-[14px] leading-relaxed text-black/70 font-light font-sans">
-                      {item.why}
-                    </p>
-                  </div>
-                )}
+          ].map((item, idx) => (
+            <div key={idx} className="flex flex-col gap-6">
+              <div className="text-left">
+                <h4 className="font-sans font-normal text-[22px] md:text-[26px] leading-tight text-black tracking-tight font-serif mb-3">
+                  {idx + 1}. {item.title}
+                </h4>
+                <p className="font-sans text-[15px] md:text-[16px] leading-relaxed text-black/60 mb-4">
+                  {item.summary}
+                </p>
+                <div className="pl-6 border-l-2 border-black/10">
+                  <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block mb-2 font-sans">Rationale</span>
+                  <p className="font-sans text-[14px] leading-relaxed text-black/70 font-light font-sans">
+                    {item.why}
+                  </p>
+                </div>
               </div>
-            );
-          })}
+              
+              {item.image && (
+                <div className="w-full rounded-sm overflow-hidden border border-gray-100 bg-gray-50">
+                  <Image src={item.image} alt={item.title} width={1920} height={1080} className="w-full h-auto" />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -502,13 +498,20 @@ export default function ScribePage() {
             </span>
           </div>
           <div className="md:col-span-8 text-left space-y-4">
-            <h4 className="font-sans font-bold text-[13px] text-black uppercase tracking-wider font-serif">The Information Spaghetti Trap</h4>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60 font-sans">
-              Early visual designs mapped strategic insights as a flat, uniform web of connected circles. During user testing, this created immediate cognitive overload—users could not tell which nodes were high-level pillars versus atomic details, and the canvas quickly became "information spaghetti."
+              My first attempt at the "Oracle" view used a standard physics simulation where notes repelled each other. When users tried to drag notes to group them, the physics engine fought back, causing the entire map to constantly jiggle and re-adjust. It was incredibly distracting.
             </p>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60 border-l-2 border-black/10 pl-6 italic font-sans">
-              <strong>The Pivot:</strong> The design had to be restructured around a strict hierarchical pillar-to-cluster column system that visually separates core strategic pillars from individual leaf nodes, locking coordinates to a snap grid to prevent drift.
+              I had to rip out the continuous simulation and write a custom collision-detection script that only calculates physics when a node is actively dropped, snapping it to a strict 40px grid.
             </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 w-full">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                <div key={num} className="w-full rounded-sm overflow-hidden border border-gray-100 bg-gray-50">
+                  <Image src={`/projects/scribe/what-didnt-work-${num}.png`} alt={`Iteration ${num}`} width={1920} height={1080} className="w-full h-auto" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -517,36 +520,22 @@ export default function ScribePage() {
       <section id="outcome" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
-            06 / OUTCOME
-          </span>
-          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
-            QUANTIFIED METRICS
+            06 / RECONSIDERATIONS & OUTCOME
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-          <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif font-sans">0ms</span>
-            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Synthesis Latency</span>
-            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal font-sans">Shifted strategy reviews from passive reading to active exploration, exposing gaps on a single screen.</p>
-          </div>
-          <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif font-sans">0</span>
-            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Data Loss</span>
-            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal font-sans">Maintained client-side state across long strategic editing sessions using IndexedDB cache layers.</p>
-          </div>
-          <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif font-sans">Snap Grid</span>
-            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Locked Spacings</span>
-            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal font-sans">Enabled rapid scanning of dozens of strategic nodes simultaneously using strict column intervals.</p>
-          </div>
+        <div className="text-left mb-12">
+          <h4 className="font-sans font-bold text-[18px] text-black uppercase tracking-wider font-serif mb-4">What I'd Reconsider</h4>
+          <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/75">
+            Right now, the app renders DOM elements on top of the D3 canvas for the notes. This works fine for ~200 notes, but it causes significant lag during dragging animations if the map gets too dense. If I were to rebuild the canvas today, I would bite the bullet and render the entire graph layer in WebGL or Canvas API to hit a strict 60fps at scale.
+          </p>
         </div>
 
         {/* Reflection */}
-        <div className="mt-12 p-6 border-l-2 border-black text-left">
+        <div className="p-6 border-l-2 border-black text-left bg-gray-50">
           <span className="font-sans text-[11px] font-bold text-black/40 uppercase tracking-widest block mb-2 font-serif font-sans">Reflection</span>
           <p className="font-sans text-[14px] leading-relaxed text-black/75 font-sans">
-            Building Scribe reinforced that strategic clarity is a spatial problem. When you give abstract concepts physical distance, alignment, and color, strategic flaws become immediately apparent.
+            Building a tool that challenges how people write forced me to realize that "Ease of Use" shouldn't always be the primary goal. Scribe has a steeper learning curve than a blank text document, but for mapping out complex strategies, that friction forces better thinking.
           </p>
         </div>
       </section>
