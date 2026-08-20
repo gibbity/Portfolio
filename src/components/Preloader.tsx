@@ -154,7 +154,7 @@ export default function Preloader() {
     }
   }, [phase]);
 
-  if (phase === "done" || !isMounted) return null;
+  if (phase === "done") return null;
 
   return (
     <>

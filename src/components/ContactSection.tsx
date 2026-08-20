@@ -43,14 +43,20 @@ export default function ContactSection() {
                transition={{ duration: 0.8, delay: 0.1 }}
                className="flex flex-col items-start md:items-end gap-8"
             >
-              <div className="relative group flex flex-col items-start md:items-end">
+              <div className="relative group flex flex-col items-start md:items-end gap-2">
+                <a 
+                  href="tel:6290168861"
+                  className="py-2 md:py-0 block text-[24px] md:text-[36px] font-bold tracking-tight hover:text-white/80 active:scale-[0.98] transition-all cursor-pointer text-left md:text-right leading-none"
+                >
+                  +91 6290168861
+                </a>
                 <button 
                   onClick={handleCopy}
                   className="py-2 md:py-0 block text-[24px] md:text-[36px] font-bold tracking-tight hover:text-white/80 active:scale-[0.98] transition-all cursor-pointer text-left md:text-right leading-none"
                 >
                   kshresth2151@gmail.com
                 </button>
-                <div className="h-6 mt-2 relative">
+                <div className="h-6 mt-1 relative">
                   <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 transition-opacity duration-300">
                     {copied ? "✓ Copied to clipboard!" : "Click to copy email"}
                   </span>
@@ -58,7 +64,7 @@ export default function ContactSection() {
               </div>
 
               <div className="flex gap-8">
-                <a href="https://linkedin.com/in/shresth-kushwaha-b67660277" target="_blank" rel="noopener noreferrer" className="py-2 md:py-0 block text-[11px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-white transition-colors">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/shresth-kushwaha-706060420/" target="_blank" rel="noopener noreferrer" className="py-2 md:py-0 block text-[11px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-white transition-colors">LinkedIn</a>
                 <a href="https://github.com/shresthkushwaha" target="_blank" rel="noopener noreferrer" className="py-2 md:py-0 block text-[11px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-white transition-colors">GitHub</a>
               </div>
             </motion.div>

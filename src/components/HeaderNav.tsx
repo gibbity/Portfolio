@@ -41,6 +41,13 @@ export default function HeaderNav() {
           About
         </Link>
         <Link 
+          href="/archives" 
+          prefetch={false}
+          className="font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-black/60 hover:text-black transition-colors pl-[0.25em]"
+        >
+          Archives
+        </Link>
+        <Link 
           href="/#contact" 
           onClick={(e) => handleScroll(e, "contact")}
           className="font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-black/60 hover:text-black transition-colors pl-[0.25em]"
@@ -51,6 +58,13 @@ export default function HeaderNav() {
 
       {/* Mobile Navigation Links (Figma Layout) */}
       <nav className="md:hidden flex items-center gap-5 ml-auto">
+        <Link 
+          href="/archives" 
+          prefetch={false}
+          className="font-sans font-normal text-[11px] text-black hover:opacity-75 transition-opacity"
+        >
+          Archives
+        </Link>
         <Link 
           href="/#work" 
           onClick={(e) => handleScroll(e, "work")}
