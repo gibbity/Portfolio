@@ -43,24 +43,24 @@ export default function ContactSection() {
                transition={{ duration: 0.8, delay: 0.1 }}
                className="flex flex-col items-start md:items-end gap-8"
             >
-              <div className="relative group flex flex-col items-start md:items-end gap-2">
-                <a 
-                  href="tel:6290168861"
-                  className="py-2 md:py-0 block text-[24px] md:text-[36px] font-bold tracking-tight hover:text-white/80 active:scale-[0.98] transition-all cursor-pointer text-left md:text-right leading-none"
-                >
-                  +91 6290168861
-                </a>
+              <div className="relative group flex flex-col items-start md:items-end">
                 <button 
                   onClick={handleCopy}
                   className="py-2 md:py-0 block text-[24px] md:text-[36px] font-bold tracking-tight hover:text-white/80 active:scale-[0.98] transition-all cursor-pointer text-left md:text-right leading-none"
                 >
                   kshresth2151@gmail.com
                 </button>
-                <div className="h-6 mt-1 relative">
+                <div className="h-6 mt-2 relative">
                   <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 transition-opacity duration-300">
                     {copied ? "✓ Copied to clipboard!" : "Click to copy email"}
                   </span>
                 </div>
+                <a 
+                  href="tel:6290168861"
+                  className="mt-2 block text-[15px] md:text-[17px] font-medium text-white/50 hover:text-white transition-colors cursor-pointer text-left md:text-right"
+                >
+                  +91 6290168861
+                </a>
               </div>
 
               <div className="flex gap-8">
