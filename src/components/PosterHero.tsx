@@ -412,6 +412,7 @@ export default function PosterHero() {
               preload="auto"
               // @ts-expect-error fetchpriority might not be typed
               fetchPriority="high"
+              poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
               onLoadedData={() => {
                 if (typeof window !== "undefined") {
                   // @ts-expect-error - showcaseReelLoaded flag attached to window
