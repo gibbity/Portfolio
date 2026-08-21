@@ -23,42 +23,45 @@ const satoshi = localFont({
     },
   ],
   variable: "--font-satoshi",
+  display: "swap",
 });
 
 const helvetica = localFont({
   src: [
     {
-      path: "../../Fonts/Helvetica.ttf",
+      path: "../../Fonts/Helvetica.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../Fonts/Helvetica-Bold.ttf",
+      path: "../../Fonts/Helvetica-Bold.woff2",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../../Fonts/Helvetica-Oblique.ttf",
+      path: "../../Fonts/Helvetica-Oblique.woff2",
       weight: "400",
       style: "italic",
     },
     {
-      path: "../../Fonts/Helvetica-BoldOblique.ttf",
+      path: "../../Fonts/Helvetica-BoldOblique.woff2",
       weight: "700",
       style: "italic",
     },
     {
-      path: "../../Fonts/helvetica-light-587ebe5a59211.ttf",
+      path: "../../Fonts/helvetica-light-587ebe5a59211.woff2",
       weight: "300",
       style: "normal",
     },
   ],
   variable: "--font-helvetica",
+  display: "swap",
 });
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {

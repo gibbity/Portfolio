@@ -265,7 +265,7 @@ export default function PosterHero() {
             {/* Concrete textured background poster */}
             <div className="absolute inset-0 pointer-events-none">
               <Image
-                src="/page.png"
+                src="/page.webp"
                 alt="Textured Background"
                 fill
                 className="object-fill"
@@ -409,17 +409,7 @@ export default function PosterHero() {
               loop
               muted
               playsInline
-              preload="auto"
-              // @ts-expect-error fetchpriority might not be typed
-              fetchPriority="high"
-              poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-              onLoadedData={() => {
-                if (typeof window !== "undefined") {
-                  // @ts-expect-error - showcaseReelLoaded flag attached to window
-                  window.__showcaseReelLoaded = true;
-                  window.dispatchEvent(new CustomEvent("showcase-reel-loaded"));
-                }
-              }}
+              preload="metadata"
               className="w-full h-full object-contain rounded-[1.2cqw]"
             />
           </motion.div>

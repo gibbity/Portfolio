@@ -28,8 +28,6 @@ export default function Preloader() {
   const isHomepage = pathname === "/";
 
   const [progress, setProgress] = useState(0);
-  const [realProgress, setRealProgress] = useState(0);
-  const [reelLoaded, setReelLoaded] = useState(false);
   const [currentLog, setCurrentLog] = useState(0);
   const [phase, setPhase] = useState<"loading" | "curtain" | "done">(isHomepage ? "loading" : "done");
   const [isMounted, setIsMounted] = useState(false);
@@ -39,94 +37,46 @@ export default function Preloader() {
     setIsMounted(true);
   }, []);
 
-  // Real Asset Tracking
+  // Background Route Prefetching (non-blocking)
   useEffect(() => {
     if (!isHomepage) return;
-
-    const criticalAssets = [
-      "/projects/scribe/Scribe- graph light theme.png",
-      "/projects/scribe/Scribe- graph dark theme.png",
-      "/projects/scribe/Scribe- graph light theme zoomed.png",
-      "/projects/scribe/Scribe - graph workbench.png"
-    ];
-
-    let loaded = 0;
-    const total = criticalAssets.length;
-
-    const updateRealProgress = () => {
-      loaded++;
-      setRealProgress((loaded / total) * 100);
-    };
-
-    criticalAssets.forEach(src => {
-      const img = new Image();
-      img.src = src;
-      img.onload = updateRealProgress;
-      img.onerror = updateRealProgress;
-    });
-
-    // Also prefetch routes
     router.prefetch("/projects/scribe");
     router.prefetch("/projects/campus-trace");
     router.prefetch("/projects/open-design-studio");
   }, [isHomepage, router]);
 
+  // Fast, fluid entrance progress (sub-second completion)
   useEffect(() => {
     if (!isHomepage) return;
-    if (typeof window !== "undefined") {
-      // @ts-expect-error - showcaseReelLoaded flag attached to window
-      if (window.__showcaseReelLoaded) {
-        setReelLoaded(true);
+
+    const startTime = performance.now();
+    const duration = 550; // 550ms total snappy intro
+
+    const animFrame = () => {
+      const now = performance.now();
+      const elapsed = now - startTime;
+      const pct = Math.min(100, Math.floor((elapsed / duration) * 100));
+      setProgress(pct);
+
+      if (pct < 100) {
+        requestAnimationFrame(animFrame);
       } else {
-        const handleReelLoaded = () => setReelLoaded(true);
-        window.addEventListener("showcase-reel-loaded", handleReelLoaded);
-        
-        // 8-second safety fallback
-        const fallback = setTimeout(() => {
-          setReelLoaded(true);
-        }, 8000);
-
-        return () => {
-          window.removeEventListener("showcase-reel-loaded", handleReelLoaded);
-          clearTimeout(fallback);
-        };
+        setTimeout(() => setPhase("curtain"), 100);
       }
-    }
-  }, [isHomepage]);
+    };
 
-  useEffect(() => {
-    if (!isHomepage) return;
+    const frameId = requestAnimationFrame(animFrame);
 
-    // Progress simulation logic
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setPhase("curtain"), 500);
-          return 100;
-        }
-
-        // Stall at 90% if showcase reel is not loaded yet
-        if (prev >= 90 && !reelLoaded) {
-          return prev;
-        }
-
-        const target = Math.max(realProgress, prev + 1);
-        const step = Math.random() * 4 + 1; // Controlled growth
-        return Math.min(prev + step, target, 100);
-      });
-    }, 150);
-
-    // Log message simulation
+    // Fast log message simulation
     const logInterval = setInterval(() => {
       setCurrentLog(prev => (prev + 1) % LOG_MESSAGES.length);
-    }, 800);
+    }, 120);
 
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(frameId);
       clearInterval(logInterval);
     };
-  }, [isHomepage, realProgress, reelLoaded]);
+  }, [isHomepage]);
 
   useEffect(() => {
     if (phase === "curtain" && pathRef.current) {

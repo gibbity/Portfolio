@@ -1,12 +1,29 @@
 "use client";
 
-import React from "react";
+import dynamic from "next/dynamic";
 import HeaderNav from "@/components/HeaderNav";
 import PosterHero from "@/components/PosterHero";
-import SelectedWork from "@/components/SelectedWork";
-import Waves from "@/components/Waves";
-import AboutSection from "@/components/AboutSection";
-import ContactSection from "@/components/ContactSection";
+
+// Code-split below-the-fold sections for instant initial paint
+const SelectedWork = dynamic(() => import("@/components/SelectedWork"), {
+  ssr: true,
+  loading: () => <div className="min-h-[600px] w-full bg-white" />
+});
+
+const Waves = dynamic(() => import("@/components/Waves"), {
+  ssr: false,
+  loading: () => <div className="min-h-[400px] w-full bg-black" />
+});
+
+const AboutSection = dynamic(() => import("@/components/AboutSection"), {
+  ssr: true,
+  loading: () => <div className="min-h-[400px] w-full bg-white" />
+});
+
+const ContactSection = dynamic(() => import("@/components/ContactSection"), {
+  ssr: true,
+  loading: () => <div className="min-h-[400px] w-full bg-black" />
+});
 
 export default function Home() {
   return (
