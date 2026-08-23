@@ -11,26 +11,13 @@ const MuxVideo = dynamic(() => import("@/components/MuxVideo"), { ssr: false });
 
 const sections = [
   { id: "intro", label: "Hook" },
+  { id: "origin", label: "Origin" },
   { id: "context", label: "Context" },
   { id: "problem", label: "The Real Problem" },
   { id: "decisions", label: "Key Decisions" },
-  { id: "simulation", label: "Live Simulation" },
   { id: "friction", label: "What Didn't Work" },
   { id: "outcome", label: "Outcome" }
 ];
-
-interface SimulationNode {
-  id: string;
-  label: string;
-  type: "pillar" | "cluster" | "leaf";
-  x: number;
-  y: number;
-}
-
-interface SimulationLink {
-  source: string;
-  target: string;
-}
 
 export default function ScribePage() {
   const [activeSection, setActiveSection] = useState("intro");
@@ -38,90 +25,6 @@ export default function ScribePage() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [expandedDecision, setExpandedDecision] = useState<number | null>(0);
   const [showFullProcess, setShowFullProcess] = useState(false);
-
-  // Interactive Live Node Simulation States
-  const [selectedPrompt, setSelectedPrompt] = useState<number>(0);
-  const [isSimulating, setIsSimulating] = useState(false);
-  const [simNodes, setSimNodes] = useState<SimulationNode[]>([]);
-  const [simLinks, setSimLinks] = useState<SimulationLink[]>([]);
-  const [simLogs, setSimLogs] = useState<string[]>([]);
-
-  const prompts = [
-    {
-      text: "Pivot from Enterprise SaaS to Open-Source Dev Tool",
-      pillars: ["Licensing Strategy", "Developer Marketing", "Self-Host Infrastructure"],
-      nodes: [
-        { id: "n1", label: "AGPLv3 License", type: "cluster" as const, x: 280, y: 150 },
-        { id: "n2", label: "Contributor Agreement", type: "leaf" as const, x: 200, y: 110 },
-        { id: "n3", label: "Enterprise Extensions", type: "leaf" as const, x: 360, y: 120 },
-        { id: "n4", label: "Self-Serve Registry", type: "cluster" as const, x: 520, y: 220 },
-        { id: "n5", label: "IndexedDB Local Cache", type: "leaf" as const, x: 600, y: 180 },
-        { id: "n6", label: "Developer Relations Swarm", type: "cluster" as const, x: 320, y: 320 },
-        { id: "n7", label: "Telemetry Opt-out Risk", type: "leaf" as const, x: 240, y: 360 }
-      ],
-      links: [
-        { source: "n1", target: "n2" },
-        { source: "n1", target: "n3" },
-        { source: "n4", target: "n5" },
-        { source: "n6", target: "n7" }
-      ],
-      logs: [
-        "Initializing adversarial PM swarm...",
-        "Advocate: Open-sourcing will spike contribution velocity by 40%.",
-        "Critic: Telemetry constraints make user-testing loops difficult.",
-        "Analyst: Contributor CLA agreement structured to handle scaling.",
-        "Golden path synthesized: AGPLv3 + Local IndexedDB caching."
-      ]
-    },
-    {
-      text: "Expand Scribe Map Into Medical Diagnostics HUD",
-      pillars: ["Rigid Telemetry Feeds", "FDA Compliance", "Clinician Urgency IA"],
-      nodes: [
-        { id: "m1", label: "ISO 13485 Standards", type: "cluster" as const, x: 300, y: 160 },
-        { id: "m2", label: "Patient Data Safety", type: "leaf" as const, x: 220, y: 120 },
-        { id: "m3", label: "Audit Log Persistence", type: "leaf" as const, x: 380, y: 130 },
-        { id: "m4", label: "HUD Triage Display", type: "cluster" as const, x: 500, y: 240 },
-        { id: "m5", label: "120ms Latency Cap", type: "leaf" as const, x: 580, y: 200 },
-        { id: "m6", label: "Triage Alert Matrix", type: "cluster" as const, x: 340, y: 340 },
-        { id: "m7", label: "Visual Noise Filtering", type: "leaf" as const, x: 260, y: 380 }
-      ],
-      links: [
-        { source: "m1", target: "m2" },
-        { source: "m1", target: "m3" },
-        { source: "m4", target: "m5" },
-        { source: "m6", target: "m7" }
-      ],
-      logs: [
-        "Initializing diagnostic simulation swarm...",
-        "Strategist: Clinician IA must prioritize alarm states over baseline logs.",
-        "User Advocate: Constant telemetry flashes cause cognitive fatigue.",
-        "Analyst: Local IndexedDB caching guarantees zero patient data loss.",
-        "Golden path synthesized: HUD Triage + 120ms local rendering engine."
-      ]
-    }
-  ];
-
-  const startSimulation = () => {
-    setIsSimulating(true);
-    setSimNodes([]);
-    setSimLinks([]);
-    setSimLogs([]);
-
-    const data = prompts[selectedPrompt];
-    let currentLogIndex = 0;
-    
-    const logInterval = setInterval(() => {
-      if (currentLogIndex < data.logs.length) {
-        setSimLogs(prev => [...prev, data.logs[currentLogIndex]]);
-        currentLogIndex++;
-      } else {
-        clearInterval(logInterval);
-        setSimNodes(data.nodes);
-        setSimLinks(data.links);
-        setIsSimulating(false);
-      }
-    }, 700);
-  };
 
   useEffect(() => {
     const handleScrollProgress = () => {
@@ -288,21 +191,273 @@ export default function ScribePage() {
         </div>
       </section>
 
-      {/* 3. CONTEXT SECTION */}
-      <section id="context" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      {/* 2.5. ORIGIN SECTION */}
+      <section id="origin" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mb-12">
           <div className="md:col-span-4">
             <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
-              01 / CONTEXT
+              01 / ORIGIN
             </span>
           </div>
-          <div className="md:col-span-8 text-left space-y-6">
-            <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-black/75">
-              Scribe is a local-first, visual note-taking environment designed to solve this specific problem.
+          <div className="md:col-span-8 text-left space-y-4">
+            <h2 className="font-serif text-[28px] md:text-[38px] leading-tight text-black tracking-tight">
+              The Evolution of Scribe: 3 MVP Iterations Before Context
+            </h2>
+            <p className="font-sans text-[16px] md:text-[18px] leading-relaxed text-black/60">
+              Before landing on rigid hierarchical columns, Scribe underwent three distinct design and product iterations. Each prototype tested a different mental model—from unconstrained AI connection graphs to qualitative storytelling, before focusing on rigid strategic hierarchy for decision-makers.
             </p>
-            <p className="font-sans font-normal text-[15px] leading-relaxed text-black/50 border-l border-black/10 pl-6">
-              It was built as a solo project, meaning I needed a stack that allowed for rapid prototyping without heavy backend infrastructure (Next.js, Tailwind, D3.js, and local IndexedDB).
+          </div>
+        </div>
+
+        {/* ITERATIONS ACCORDION / STACK */}
+        <div className="space-y-16">
+          {/* MVP 1 */}
+          <div className="border border-gray-100 bg-gray-50/50 rounded-sm p-6 md:p-10 text-left space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200/60 pb-6">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-black/40 block mb-1">Iteration 01</span>
+                <h3 className="font-serif text-[24px] md:text-[30px] text-black">MVP 1 — AI Connection Map Generator</h3>
+              </div>
+              <span className="text-[11px] font-mono bg-black/5 text-black/60 px-3 py-1 rounded-full self-start md:self-auto">
+                Unconstrained Force Graph
+              </span>
+            </div>
+
+            <p className="font-sans text-[15px] md:text-[16px] text-black/70 leading-relaxed max-w-3xl">
+              The initial concept was simple: input raw notes and let an automated AI engine construct a force-directed graph based on word co-occurrences and semantic links using simple logic.
             </p>
+
+            {/* Images Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div 
+                onClick={() => setLightboxImage("/projects/scribe/origin/mvp1-1.webp")}
+                className="relative aspect-[4/3] rounded-sm overflow-hidden border border-gray-200/80 bg-white cursor-zoom-in group shadow-sm"
+              >
+                <Image src="/projects/scribe/origin/mvp1-1.webp" alt="MVP 1 Light Theme Graph" fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+                <span className="absolute bottom-2 left-2 bg-black/70 text-white text-[9px] font-mono px-2 py-0.5 rounded">Light Graph View</span>
+              </div>
+              <div 
+                onClick={() => setLightboxImage("/projects/scribe/origin/mvp1-2.webp")}
+                className="relative aspect-[4/3] rounded-sm overflow-hidden border border-gray-200/80 bg-white cursor-zoom-in group shadow-sm"
+              >
+                <Image src="/projects/scribe/origin/mvp1-2.webp" alt="MVP 1 Dark Theme Graph" fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+                <span className="absolute bottom-2 left-2 bg-black/70 text-white text-[9px] font-mono px-2 py-0.5 rounded">Dark Graph View</span>
+              </div>
+            </div>
+
+            {/* User Feedback Pills */}
+            <div className="bg-white p-6 rounded-sm border border-gray-200/60 space-y-3">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-black/40 block">User Feedbacks & Initial Reactions</span>
+              <div className="flex flex-wrap gap-2.5">
+                {["What do I use it for?", "Wow, you made this?", "Looks cool", "Can I try it?", "How do I read all this?", "What are you using it for?", "Okay... (confusion personifies)"].map((fb, i) => (
+                  <span key={i} className="text-[11px] md:text-[12px] font-medium px-3 py-1.5 rounded-full border border-purple-200 bg-purple-50 text-purple-900 shadow-sm">
+                    💬 "{fb}"
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Takeaways & Pivot */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              <div className="pl-4 border-l-2 border-red-400/60">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-red-600 block mb-1">Conclusion</span>
+                <p className="text-[13px] text-black/70 leading-normal">
+                  The map looked visually impressive, but failed to serve a practical purpose. The UI provided no direction, turning navigation into an exhausting game of detective.
+                </p>
+              </div>
+              <div className="pl-4 border-l-2 border-emerald-500/60">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 block mb-1">New Direction</span>
+                <p className="text-[13px] text-black/70 leading-normal">
+                  The tool needed a specific purpose. The UI must drastically reduce cognitive load rather than increase it.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* MVP 2 */}
+          <div className="border border-gray-100 bg-gray-50/50 rounded-sm p-6 md:p-10 text-left space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200/60 pb-6">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-black/40 block mb-1">Iteration 02</span>
+                <h3 className="font-serif text-[24px] md:text-[30px] text-black">MVP 2 — Storytelling & Qualitative Journey Maps</h3>
+              </div>
+              <span className="text-[11px] font-mono bg-black/5 text-black/60 px-3 py-1 rounded-full self-start md:self-auto">
+                Story of the Little Match Girl
+              </span>
+            </div>
+
+            <p className="font-sans text-[15px] md:text-[16px] text-black/70 leading-relaxed max-w-3xl">
+              Chose storytelling as the core direction—taking complex qualitative data (like stories, user interview transcripts, and narrative arcs) and representing them as interactive cluster journey maps.
+            </p>
+
+            {/* Images Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { src: "/projects/scribe/origin/mvp2-1.webp", title: "Cluster View" },
+                { src: "/projects/scribe/origin/mvp2-2.webp", title: "Node Map" },
+                { src: "/projects/scribe/origin/mvp2-3.webp", title: "Document Analysis" },
+                { src: "/projects/scribe/origin/mvp2-4.webp", title: "Interview Cards" },
+              ].map((img, i) => (
+                <div 
+                  key={i}
+                  onClick={() => setLightboxImage(img.src)}
+                  className="relative aspect-[4/3] rounded-sm overflow-hidden border border-gray-200/80 bg-white cursor-zoom-in group shadow-sm"
+                >
+                  <Image src={img.src} alt={img.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <span className="absolute bottom-1.5 left-1.5 bg-black/70 text-white text-[8px] font-mono px-1.5 py-0.5 rounded">{img.title}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* User Feedback Pills */}
+            <div className="bg-neutral-900 text-white p-6 rounded-sm space-y-3">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/40 block">User Feedbacks (Dark Mode Test Batch)</span>
+              <div className="flex flex-wrap gap-2.5">
+                {["I am putting in more effort...", "Looks cool", "What are you using it for?", "Can I try it?"].map((fb, i) => (
+                  <span key={i} className="text-[11px] md:text-[12px] font-medium px-3 py-1.5 rounded-full border border-pink-500/40 bg-pink-500/10 text-pink-300 shadow-sm">
+                    💬 "{fb}"
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Takeaways & Pivot */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              <div className="pl-4 border-l-2 border-red-400/60">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-red-600 block mb-1">Conclusion</span>
+                <p className="text-[13px] text-black/70 leading-normal">
+                  Slightly more useful than MVP 1, but as a tool it still lacked a clear, indispensable purpose. Users felt they were putting in excessive effort decoding visual layouts.
+                </p>
+              </div>
+              <div className="pl-4 border-l-2 border-emerald-500/60">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 block mb-1">New Direction</span>
+                <p className="text-[13px] text-black/70 leading-normal">
+                  Scrap visual gimmicks entirely. Focus on a specific niche problem for users who need to make high-stakes decisions from dense data.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* MVP 3 */}
+          <div className="border border-gray-100 bg-gray-50/50 rounded-sm p-6 md:p-10 text-left space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200/60 pb-6">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-black/40 block mb-1">Iteration 03</span>
+                <h3 className="font-serif text-[24px] md:text-[30px] text-black">MVP 3 — Multi-Data Link & Connection Analyzer</h3>
+              </div>
+              <span className="text-[11px] font-mono bg-black/5 text-black/60 px-3 py-1 rounded-full self-start md:self-auto">
+                Targeting Thinkers & PMs
+              </span>
+            </div>
+
+            <p className="font-sans text-[15px] md:text-[16px] text-black/70 leading-relaxed max-w-3xl">
+              Pivoted away from creative writers toward thinkers, product managers, and researchers—synthesizing complex data inputs, 50-page research papers, and technical requirements into linked analytical graphs.
+            </p>
+
+            {/* Images Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div 
+                onClick={() => setLightboxImage("/projects/scribe/origin/mvp3-1.webp")}
+                className="relative aspect-[16/9] rounded-sm overflow-hidden border border-gray-200/80 bg-white cursor-zoom-in group shadow-sm"
+              >
+                <Image src="/projects/scribe/origin/mvp3-1.webp" alt="Analytical Clusters" fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+                <span className="absolute bottom-2 left-2 bg-black/70 text-white text-[9px] font-mono px-2 py-0.5 rounded">Multi-Cluster Analysis</span>
+              </div>
+              <div 
+                onClick={() => setLightboxImage("/projects/scribe/origin/mvp3-4.webp")}
+                className="relative aspect-[16/9] rounded-sm overflow-hidden border border-gray-200/80 bg-white cursor-zoom-in group shadow-sm"
+              >
+                <Image src="/projects/scribe/origin/mvp3-4.webp" alt="Dense Link Graph" fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+                <span className="absolute bottom-2 left-2 bg-black/70 text-white text-[9px] font-mono px-2 py-0.5 rounded">Dense Link Graph</span>
+              </div>
+            </div>
+
+            {/* Real User Interview Quotes */}
+            <div className="bg-white p-6 rounded-sm border border-gray-200/60 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">In-Depth User Interview Insights</span>
+                <span className="text-[10px] font-sans text-black/30 font-medium">(Targeted Stakeholder Testing)</span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 bg-gray-50 rounded border border-gray-150 space-y-2">
+                  <span className="text-[11px] font-bold text-black uppercase tracking-wider block">UX Professor</span>
+                  <p className="text-[12px] text-black/70 italic leading-relaxed">
+                    "This looks useful enough but you still need to find a better use case for it. Write a research paper on this..."
+                  </p>
+                </div>
+
+                <div className="p-4 bg-gray-50 rounded border border-gray-150 space-y-2">
+                  <span className="text-[11px] font-bold text-black uppercase tracking-wider block">IBM Product Manager</span>
+                  <p className="text-[12px] text-black/70 italic leading-relaxed">
+                    "I will use it if it reduces my effort and saves me time. I don't understand the specific context... I'd rather use normal AI."
+                  </p>
+                </div>
+
+                <div className="p-4 bg-gray-50 rounded border border-gray-150 space-y-2">
+                  <span className="text-[11px] font-bold text-black uppercase tracking-wider block">Automobile Designer</span>
+                  <span className="text-[9px] font-mono text-purple-600 block">(Tested on 50-page paper)</span>
+                  <p className="text-[12px] text-black/70 italic leading-relaxed">
+                    "I don't want to read all that and either way I don't feel like it helped me."
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Takeaways & Breakthrough */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              <div className="pl-4 border-l-2 border-red-400/60">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-red-600 block mb-1">Conclusion</span>
+                <p className="text-[13px] text-black/70 leading-normal">
+                  It was significantly better than previous iterations, but unconstrained graphs still lacked a singular focus to replace traditional AI chat windows in daily workflows.
+                </p>
+              </div>
+              <div className="pl-4 border-l-2 border-emerald-500/60">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 block mb-1">Final Breakthrough to Scribe</span>
+                <p className="text-[13px] text-black/70 leading-normal">
+                  Scrap free-form physics graphs entirely. Constrain D3 to snap nodes into fixed 300px hierarchical columns (Pillars → Clusters → Leaves) tailored specifically for strategic roadmap stress-testing.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. CONTEXT SECTION */}
+      <section id="context" className="py-16 md:pt-24 md:pb-0 border-t border-gray-100">
+        <div className="px-6 md:px-12 lg:px-20 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <div className="md:col-span-4">
+              <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
+                02 / CONTEXT
+              </span>
+            </div>
+            <div className="md:col-span-8 text-left space-y-6">
+              <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-black/75">
+                Scribe is a local-first, visual note-taking environment designed to solve this specific problem.
+              </p>
+              <p className="font-sans font-normal text-[15px] leading-relaxed text-black/50 border-l border-black/10 pl-6">
+                It was built as a solo project, meaning I needed a stack that allowed for rapid prototyping without heavy backend infrastructure (Next.js, Tailwind, D3.js, and local IndexedDB).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* EDGE-TO-EDGE FULL BLEED AFTER CONTEXT BANNER (Figma node 218:8636) */}
+        <div 
+          onClick={() => setLightboxImage("/projects/scribe/scribe-after-context.webp")}
+          className="w-full mt-12 md:mt-16 bg-gradient-to-b from-[#33013f] to-[#8402a5] py-8 md:py-16 lg:py-20 px-4 sm:px-8 md:px-12 overflow-hidden relative shadow-2xl flex items-center justify-center cursor-zoom-in group border-y border-purple-900/30"
+        >
+          <div className="w-full max-w-[1920px] mx-auto aspect-[2400/1315] relative">
+            <Image 
+              src="/projects/scribe/scribe-after-context.webp" 
+              alt="Scribe System Overview (MacBook & iPhone Mockups)" 
+              fill 
+              className="object-contain group-hover:scale-[1.015] transition-transform duration-500 ease-out"
+              sizes="100vw"
+              quality={90}
+              priority
+            />
           </div>
         </div>
       </section>
@@ -312,7 +467,7 @@ export default function ScribePage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           <div className="md:col-span-4">
             <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
-              02 / THE REAL PROBLEM
+              03 / THE REAL PROBLEM
             </span>
           </div>
           <div className="md:col-span-8 text-left space-y-6">
@@ -323,7 +478,7 @@ export default function ScribePage() {
               Linear documents (like Notion or Google Docs) hide interdependencies. You can link pages, but you can't *see* the connections. I needed a way to map out complex logic visually without it turning into an unreadable mess.
             </p>
             <div className="w-full mt-8 rounded-sm overflow-hidden border border-gray-100 bg-gray-50">
-              <Image src="/projects/scribe/The problem.png" alt="The Problem" width={1920} height={1080} className="w-full h-auto" />
+              <Image src="/projects/scribe/The problem.webp" alt="The Problem" width={1920} height={1080} className="w-full h-auto" />
             </div>
           </div>
         </div>
@@ -333,7 +488,7 @@ export default function ScribePage() {
       <section id="decisions" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
-            03 / KEY DECISIONS
+            04 / KEY DECISIONS
           </span>
         </div>
 
@@ -343,19 +498,19 @@ export default function ScribePage() {
               title: "Forcing hierarchical columns over free-form graphs",
               summary: "Most note-taking apps with graphs (like Obsidian) use force-directed layouts. They look cool, but they turn into useless 'hairballs' once you have more than 50 notes.",
               why: "Decision: I constrained the D3 physics engine to snap nodes into fixed 300px columns based on their hierarchy (Pillars -> Clusters -> Leaves). Trade-off: Users lose the ability to place notes anywhere they want on an infinite canvas, but the structure remains legible and organized even with hundreds of nodes.",
-              image: "/projects/scribe/Key decision 1.png"
+              image: "/projects/scribe/Key decision 1.webp"
             },
             {
               title: "Client-side storage over cloud databases",
               summary: "Scribe stores all data in the browser using IndexedDB.",
               why: "Trade-off: It prevents easy multi-device syncing out of the box, but it allowed me to bypass complex authentication flows, ship faster, and guarantee 100% privacy for users working with sensitive strategic data.",
-              image: "/projects/scribe/Key decision 2.png"
+              image: "/projects/scribe/Key decision 2.webp"
             },
             {
               title: "Bring-Your-Own-Key (BYOK) for AI features",
               summary: "Instead of charging a subscription for AI credits, users paste in their own OpenAI or Claude keys, or connect to a local Ollama instance.",
               why: "Trade-off: It adds friction to the onboarding process, but it keeps the app free to host and ensures user data isn't being silently scraped by a middleman server.",
-              image: "/projects/scribe/Key decision 3.png"
+              image: "/projects/scribe/Key decision 3.webp"
             }
           ].map((item, idx) => (
             <div key={idx} className="flex flex-col gap-6">
@@ -375,8 +530,16 @@ export default function ScribePage() {
               </div>
               
               {item.image && (
-                <div className="w-full rounded-sm overflow-hidden border border-gray-100 bg-gray-50">
-                  <Image src={item.image} alt={item.title} width={1920} height={1080} className="w-full h-auto" />
+                <div className={`w-full rounded-sm overflow-hidden border border-gray-100 bg-gray-50 ${
+                  idx === 2 ? "max-w-md md:max-w-lg mx-auto border-gray-200 shadow-sm" : ""
+                }`}>
+                  <Image 
+                    src={item.image} 
+                    alt={item.title} 
+                    width={1920} 
+                    height={1080} 
+                    className="w-full h-auto object-contain" 
+                  />
                 </div>
               )}
             </div>
@@ -384,112 +547,24 @@ export default function ScribePage() {
         </div>
       </section>
 
-      {/* 6. INTERACTIVE LIVE SIMULATION DEMO */}
-      <section id="simulation" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100 bg-[#FAFAFA] rounded-sm border border-black/5">
-        <div className="w-full flex justify-between items-baseline mb-8">
-          <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
-            04 / LIVE WORKSPACE SIMULATOR
-          </span>
-          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
-            REAL-TIME NODE SYNTHESIS
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Prompts Input Column */}
-          <div className="lg:col-span-4 text-left space-y-4">
-            <span className="text-[11px] font-bold text-black/40 uppercase tracking-wider block">Select Strategy Prompt</span>
-            
-            {prompts.map((p, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedPrompt(i)}
-                disabled={isSimulating}
-                className={`w-full text-left p-4 rounded text-[13px] border font-sans leading-relaxed transition-all ${
-                  selectedPrompt === i 
-                    ? "bg-black border-black text-white" 
-                    : "bg-white border-gray-200 hover:border-black/20 text-black/75"
-                }`}
-              >
-                {p.text}
-              </button>
-            ))}
-
-            <button
-              onClick={startSimulation}
-              disabled={isSimulating}
-              className="w-full py-3.5 bg-[#ef4444] text-white font-sans text-[12px] uppercase font-bold tracking-wider hover:bg-[#d93838] disabled:opacity-50 transition-all rounded-[3px] mt-2 cursor-pointer"
-            >
-              {isSimulating ? "Swarm Simulating..." : "Synthesize Map"}
-            </button>
-          </div>
-
-          {/* Interactive Dynamic Grid Output Column */}
-          <div className="lg:col-span-8 border border-gray-200 bg-white rounded p-4 relative min-h-[360px] flex flex-col justify-between overflow-hidden shadow-inner">
-            
-            {/* Live SVG Graph Canvas */}
-            <div className="absolute inset-0 z-10 select-none pointer-events-none">
-              <svg className="w-full h-full">
-                {simLinks.map((link, idx) => {
-                  const sNode = simNodes.find(n => n.id === link.source);
-                  const tNode = simNodes.find(n => n.id === link.target);
-                  if (!sNode || !tNode) return null;
-                  return (
-                    <line
-                      key={idx}
-                      x1={sNode.x}
-                      y1={sNode.y}
-                      x2={tNode.x}
-                      y2={tNode.y}
-                      stroke="black"
-                      strokeWidth="0.8"
-                      strokeDasharray="3 3"
-                    />
-                  );
-                })}
-              </svg>
-            </div>
-
-            {/* Simulated Nodes Overlay */}
-            <div className="absolute inset-0 z-20 pointer-events-none">
-              {simNodes.map((node) => (
-                <div
-                  key={node.id}
-                  style={{ left: `${node.x}px`, top: `${node.y}px` }}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 px-2.5 py-1.5 border rounded text-[11px] font-sans font-bold shadow-sm pointer-events-auto bg-white hover:scale-105 transition-transform ${
-                    node.type === "cluster" ? "border-black bg-black text-white" : "border-black/15 bg-white text-black"
-                  }`}
-                >
-                  {node.label}
-                </div>
-              ))}
-            </div>
-
-            {simNodes.length === 0 && !isSimulating && (
-              <div className="absolute inset-0 flex items-center justify-center p-8 text-center text-black/35 font-sans text-[13px] italic z-0">
-                Click "Synthesize Map" to run Scribe's Pillar-Cluster-Leaf layout simulation.
-              </div>
-            )}
-
-            {/* Live Terminal Log Feeds at Bottom */}
-            <div className="mt-auto w-full bg-neutral-900 text-green-400 font-mono text-[11px] p-4 rounded text-left z-30 shadow-lg space-y-1">
-              <div className="text-white/40 border-b border-white/5 pb-2 mb-2 uppercase text-[9px] tracking-widest font-sans flex justify-between items-center">
-                <span>Terminal Log Swarm</span>
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
-              </div>
-              {simLogs.map((log, idx) => (
-                <div key={idx} className="transition-all duration-300">
-                  &gt; {log}
-                </div>
-              ))}
-              {isSimulating && <div className="animate-pulse">&gt; Processing...</div>}
-            </div>
-
-          </div>
+      {/* EDGE-TO-EDGE BANNER BEFORE WHAT DIDN'T WORK */}
+      <section className="w-full my-12 md:my-20 bg-gray-50 border-y border-gray-100 overflow-hidden relative shadow-sm flex items-center justify-center">
+        <div 
+          onClick={() => setLightboxImage("/projects/scribe/before-what-didnt-work.webp")}
+          className="w-full max-w-[1920px] mx-auto aspect-[5776/2624] relative cursor-zoom-in group"
+        >
+          <Image 
+            src="/projects/scribe/before-what-didnt-work.webp" 
+            alt="Scribe System Iteration Pre-Physics" 
+            fill 
+            className="object-contain group-hover:scale-[1.01] transition-transform duration-500 ease-out"
+            sizes="100vw"
+            quality={85}
+          />
         </div>
       </section>
 
-      {/* 7. WHAT DIDN'T WORK SECTION */}
+      {/* 5. WHAT DIDN'T WORK SECTION */}
       <section id="friction" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           <div className="md:col-span-4">
@@ -508,7 +583,7 @@ export default function ScribePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 w-full">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
                 <div key={num} className="w-full rounded-sm overflow-hidden border border-gray-100 bg-gray-50">
-                  <Image src={`/projects/scribe/what-didnt-work-${num}.png`} alt={`Iteration ${num}`} width={1920} height={1080} className="w-full h-auto" />
+                  <Image src={`/projects/scribe/what-didnt-work-${num}.webp`} alt={`Iteration ${num}`} width={1920} height={1080} className="w-full h-auto" />
                 </div>
               ))}
             </div>
@@ -516,7 +591,7 @@ export default function ScribePage() {
         </div>
       </section>
 
-      {/* 8. OUTCOME SECTION */}
+      {/* 6. OUTCOME SECTION */}
       <section id="outcome" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
@@ -676,40 +751,40 @@ export default function ScribePage() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
                 <div 
-                  onClick={() => setLightboxImage("/projects/scribe/Scribe- graph light theme.png")}
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe- graph light theme.webp")}
                   className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
                 >
-                  <Image src="/projects/scribe/Scribe- graph light theme.png" alt="Light Theme Graph" fill className="object-cover" />
+                  <Image src="/projects/scribe/Scribe- graph light theme.webp" alt="Light Theme Graph" fill className="object-cover" />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
                   </div>
                 </div>
 
                 <div 
-                  onClick={() => setLightboxImage("/projects/scribe/Scribe- graph dark theme.png")}
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe- graph dark theme.webp")}
                   className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
                 >
-                  <Image src="/projects/scribe/Scribe- graph dark theme.png" alt="Dark Theme Graph" fill className="object-cover" />
+                  <Image src="/projects/scribe/Scribe- graph dark theme.webp" alt="Dark Theme Graph" fill className="object-cover" />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
                   </div>
                 </div>
 
                 <div 
-                  onClick={() => setLightboxImage("/projects/scribe/Scribe- home- dark.png")}
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe- home- dark.webp")}
                   className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
                 >
-                  <Image src="/projects/scribe/Scribe- home- dark.png" alt="Scribe Home Screen" fill className="object-cover" />
+                  <Image src="/projects/scribe/Scribe- home- dark.webp" alt="Scribe Home Screen" fill className="object-cover" />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
                   </div>
                 </div>
 
                 <div 
-                  onClick={() => setLightboxImage("/projects/scribe/Scribe-note editor.png")}
+                  onClick={() => setLightboxImage("/projects/scribe/Scribe-note editor.webp")}
                   className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in group"
                 >
-                  <Image src="/projects/scribe/Scribe-note editor.png" alt="Note Editor Workbench" fill className="object-cover" />
+                  <Image src="/projects/scribe/Scribe-note editor.webp" alt="Note Editor Workbench" fill className="object-cover" />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
                   </div>
