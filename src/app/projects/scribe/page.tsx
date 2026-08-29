@@ -600,10 +600,21 @@ export default function ScribePage() {
         </div>
 
         <div className="text-left mb-12">
-          <h4 className="font-sans font-bold text-[18px] text-black uppercase tracking-wider font-serif mb-4">What I'd Reconsider</h4>
-          <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/75">
-            Right now, the app renders DOM elements on top of the D3 canvas for the notes. This works fine for ~200 notes, but it causes significant lag during dragging animations if the map gets too dense. If I were to rebuild the canvas today, I would bite the bullet and render the entire graph layer in WebGL or Canvas API to hit a strict 60fps at scale.
-          </p>
+          <h4 className="font-sans font-bold text-[18px] text-black uppercase tracking-wider font-serif mb-6">What I&apos;d Reconsider</h4>
+          <div className="space-y-4 font-sans">
+            <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-sm">
+              <h5 className="text-[13px] font-bold text-black uppercase tracking-wider mb-1">01. Progressive Spatial Disclosure in Graph Density (Design)</h5>
+              <p className="text-[14px] text-black/70 leading-relaxed">
+                Presenting complex canvas node graphs all at once can induce cognitive overload during initial research reviews. I would refine the visual onboarding by implementing a progressive zoom-disclosure hierarchy that keeps macro strategy clusters clean at wide viewports and reveals individual leaf cards only as the user zooms into specific decision nodes.
+              </p>
+            </div>
+            <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-sm">
+              <h5 className="text-[13px] font-bold text-black uppercase tracking-wider mb-1">02. Canvas Render Engine Scalability (WebGL vs. SVG) (Technical)</h5>
+              <p className="text-[14px] text-black/70 leading-relaxed">
+                While SVG and D3 render crisply for moderate node counts, panning and zooming heavy graph clusters with over 500 interactive elements can introduce frame rate drops. Migrating the core canvas rendering layer to WebGL/Pixi.js would maintain smooth 60fps interaction during large-scale dataset navigation.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Reflection */}

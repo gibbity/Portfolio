@@ -340,12 +340,25 @@ export default function CampusTracePage() {
           </p>
         </div>
 
-        {/* Reflection */}
-        <div className="p-6 border-l-2 border-[#00B4D8] text-left">
-          <span className="font-sans text-[11px] font-bold text-white/40 uppercase tracking-widest block mb-2 font-serif font-sans">What I'd Reconsider</span>
-          <p className="font-sans text-[14px] leading-relaxed text-white/75 font-sans">
-            If I were to build this again, I would reconsider relying entirely on the LLM for spatial bounding. Currently, the AI groups the reports, and the app calculates a rough radius based on the grouped coordinates. This works for simple clusters but fails to accurately represent linear issues (like a long stretch of unlit pathway). A more robust geospatial clustering algorithm (like DBSCAN) applied *before* feeding the clusters to the LLM might yield more accurate physical boundaries.
-          </p>
+        {/* What I'd Reconsider */}
+        <div className="p-6 border border-white/10 bg-white/5 rounded-sm text-left space-y-4 font-sans">
+          <span className="font-sans text-[11px] font-bold text-[#00B4D8] uppercase tracking-widest block font-serif">What I&apos;d Reconsider</span>
+          
+          <div className="space-y-4">
+            <div className="p-4 bg-neutral-900 border border-white/10 rounded-sm">
+              <h5 className="text-[13px] font-bold text-white uppercase tracking-wider mb-1">01. Visual Hierarchy in High-Density Map Overlays (Design)</h5>
+              <p className="text-[14px] text-white/70 leading-relaxed">
+                Layering real-time transit telemetry, heatmaps, and route cards on top of interactive maps can crowd the screen on smaller mobile viewports. I would refine the map UI by introducing collapsible bottom-sheet drawers and context-aware legend filters to keep spatial data legible without obscuring active navigation paths.
+              </p>
+            </div>
+
+            <div className="p-4 bg-neutral-900 border border-white/10 rounded-sm">
+              <h5 className="text-[13px] font-bold text-white uppercase tracking-wider mb-1">02. Real-Time Telemetry Batching & Socket Throttling (Technical)</h5>
+              <p className="text-[14px] text-white/70 leading-relaxed">
+                Streaming continuous live location coordinates over WebSockets can cause unnecessary main-thread re-renders during high-traffic surges. Implementing client-side spatial indexing and `requestAnimationFrame` throttling would optimize map rendering performance on mobile browsers.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 

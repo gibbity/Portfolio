@@ -570,16 +570,16 @@ export default function OpenComponentStudioPage() {
           <div className="md:col-span-8 text-left space-y-6">
             <div className="space-y-4">
               <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-sm">
-                <h4 className="text-[13px] font-bold text-black uppercase tracking-wider font-sans mb-1">Local Storage Durability</h4>
+                <h4 className="text-[13px] font-bold text-black uppercase tracking-wider font-sans mb-1">01. Workspace Density vs. Focus Mode (Design)</h4>
                 <p className="text-[14px] text-black/70 font-sans leading-relaxed">
-                  Relying exclusively on IndexedDB means clearing browser site data deletes local component libraries unless explicitly exported. Implementing directory syncing via the browser&apos;s File System Access API would significantly improve data safety.
+                  The high-density 4-panel cockpit layout prioritizes power-user efficiency, but can introduce visual noise when fine-tuning a single UI element. I would redesign the workspace layout to offer an adaptive &quot;Focus Mode&quot; that automatically collapses control rails when editing micro-interactions, providing an uncluttered, distraction-free stage for visual refinement.
                 </p>
               </div>
 
               <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-sm">
-                <h4 className="text-[13px] font-bold text-black uppercase tracking-wider font-sans mb-1">State & Data Fetching Guardrails</h4>
+                <h4 className="text-[13px] font-bold text-black uppercase tracking-wider font-sans mb-1">02. IndexedDB Durability & Native File System Access (Technical)</h4>
                 <p className="text-[14px] text-black/70 font-sans leading-relaxed">
-                  While presentational UI and GSAP micro-interactions render cleanly, generating complex internal state (e.g., multi-step form hooks or async data fetchers) still occasionally requires manual code cleanup. Adding specialized logic prompt schemas would help bridge this gap.
+                  Relying strictly on browser IndexedDB means clearing site data or browser caches risks deleting local component libraries unless manually exported. I would integrate the native File System Access API to enable automatic, direct local directory syncing so generated components persist as real `.tsx` files directly on the user&apos;s local filesystem.
                 </p>
               </div>
             </div>

@@ -544,12 +544,32 @@ export default function TSOTPage() {
           </div>
         </div>
 
-        {/* Reflection */}
-        <div className="mt-12 p-6 border-l-2 border-[#ef4444] text-left">
-          <span className="font-sans text-[11px] font-bold text-white/40 uppercase tracking-widest block mb-2 font-serif">Reflection</span>
-          <p className="font-sans text-[14px] leading-relaxed text-white/75">
-            Designing conversational AI requires un-learning standard "zero-friction" frameworks. Interfaces aligned with human cognitive limits require adding deliberate friction strategically, making compliance a natural design byproduct.
-          </p>
+        {/* What I'd Reconsider */}
+        <div className="mt-12 p-6 border border-white/10 bg-white/[0.02] rounded-sm text-left space-y-4 font-sans">
+          <span className="font-sans text-[11px] font-bold text-[#ef4444] uppercase tracking-widest block font-serif">08 / WHAT I&apos;D RECONSIDER & REFLECTION</span>
+          
+          <div className="space-y-4">
+            <div className="p-4 bg-neutral-900 border border-white/10 rounded-sm">
+              <h5 className="text-[13px] font-bold text-white uppercase tracking-wider mb-1">01. Simplifying Compliance Terminology for Non-Legal Users (Design)</h5>
+              <p className="text-[14px] text-white/70 leading-relaxed">
+                The regulatory audit HUD relies heavily on strict EU AI Act legal citations and empirical HCI metrics, which can feel intimidating for frontend developers. I would introduce plain-language summary cards and visual compliance badges alongside statutory citations to make risk assessments immediately actionable for non-legal design teams.
+              </p>
+            </div>
+
+            <div className="p-4 bg-neutral-900 border border-white/10 rounded-sm">
+              <h5 className="text-[13px] font-bold text-white uppercase tracking-wider mb-1">02. Local Vector Search Indexing & Embedding Caching (Technical)</h5>
+              <p className="text-[14px] text-white/70 leading-relaxed">
+                Querying compliance ledgers and research papers via live vector lookups can introduce latency during offline auditing. Pre-building lightweight client-side vector indices and caching embeddings in local browser storage would enable instant, offline compliance scans.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-white/10">
+            <span className="font-sans text-[11px] font-bold text-white/40 uppercase tracking-widest block mb-1 font-serif">Reflection</span>
+            <p className="font-sans text-[14px] leading-relaxed text-white/75">
+              Designing conversational AI requires un-learning standard &quot;zero-friction&quot; frameworks. Interfaces aligned with human cognitive limits require adding deliberate friction strategically, making compliance a natural design byproduct.
+            </p>
+          </div>
         </div>
       </section>
 
