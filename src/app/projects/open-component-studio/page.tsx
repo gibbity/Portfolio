@@ -25,16 +25,13 @@ export default function OpenComponentStudioPage() {
     { id: "decisions", label: "Key Decisions" },
     { id: "sandbox", label: "Visual Sandbox" },
     { id: "friction", label: "What Didn't Work" },
-    { id: "outcome", label: "Outcome" }
+    { id: "outcome", label: "Outcome" },
+    { id: "reconsider", label: "Reconsideration" }
   ];
 
   const [activeSection, setActiveSection] = useState("intro");
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [showFullProcess, setShowFullProcess] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-
-  // Expanded decision toggle
-  const [expandedDecision, setExpandedDecision] = useState<number | null>(0);
 
   // Interactive Sandbox states
   const [cardPadding, setCardPadding] = useState(20); // 10px to 40px
@@ -146,7 +143,7 @@ export default function OpenComponentStudioPage() {
       />
 
       {/* Case Study Nav */}
-      <CaseStudyNav projectTitle="Open Component Studio" category="Local Prototyping Environment" />
+      <CaseStudyNav projectTitle="Open Component Studio" category="Local-First AI Design Workspace" />
 
       {/* LIVE SECTION LABEL (Wayfinding) */}
       <div className="fixed top-24 left-6 md:left-12 lg:left-16 hidden md:block z-30 pointer-events-none">
@@ -180,13 +177,13 @@ export default function OpenComponentStudioPage() {
 
       <CaseStudyHero
         title="Open Component Studio"
-        subtitle="Local-First Prototyping"
-        description="A web-native, client-side AI prototyping workspace allowing creators to generate, refine, and export interactive prototypes with complete data privacy."
+        subtitle="Crafting a Local-First, Component-Centric AI Workspace"
+        description="A local-first, component-focused workspace that turns LLMs into precise UI building-block generators without subscription paywalls or cloud lock-in."
         meta={{
-          "Role": "Solo Designer & Developer",
-          "Timeline": "2024",
-          "Focus": "Local-First UX / Browser DB",
-          "Engine": "Electron / Dexie.js / React 19",
+          "Role": "Solo Developer / Designer",
+          "Audience": "Frontend Devs & UI/UX Designers",
+          "Constraints": "$0 Budget / Privacy & BYOK",
+          "Stack": "React 18 / Vite / TS / Tailwind / GSAP",
           "Poster": "/projects/open-component-studio/hero.png"
         }}
         media={{
@@ -208,28 +205,48 @@ export default function OpenComponentStudioPage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <h3 className="font-sans font-normal text-[26px] md:text-[34px] leading-tight text-black tracking-tight font-serif">
-              Designers generate, refine, and export interactive prototypes entirely within their own web browser.
+              You want to generate a single, highly-refined UI widget—instead, mainstream AI site builders force a whole app lock-in.
             </h3>
             <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-black/70">
-              By leveraging client-side databases and sandboxed execution, Open Component Studio resolves the corporate tension between leveraging modern AI code generation and protecting sensitive internal design system source code.
+              When a generated button has the wrong padding or accent color, your only recourse in cloud-hosted site builders is re-prompting the model, spending API tokens, and hoping the LLM doesn&apos;t break surrounding layouts.
             </p>
+            <div className="p-6 bg-neutral-50 border border-neutral-200 rounded-sm">
+              <p className="font-sans font-semibold text-[15px] md:text-[16px] leading-relaxed text-black">
+                <strong>Open Component Studio</strong> was built to solve this exact frustration: a local-first, component-focused workspace that turns LLMs into precise UI building-block generators without subscription paywalls or cloud lock-in.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 2. CONTEXT */}
+      {/* 2. CONTEXT & CONSTRAINTS */}
       <section id="context" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           <div className="md:col-span-4">
             <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
-              02 / CONTEXT
+              02 / CONTEXT & CONSTRAINTS
             </span>
           </div>
           <div className="md:col-span-8 text-left space-y-6">
-            <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/75">
-              Open Component Studio was designed for designers and developers who want the speed of AI instrumentation without being locked into subscription silos or leaking client data.
-              The application started as a native desktop application but pivoted to run fully inside standard browsers. The primary design constraint was guaranteeing absolute client-side data privacy while maintaining instant preview capabilities.
-            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 bg-[#FAFAFA] border border-gray-150 rounded-sm">
+                <span className="text-[10px] font-bold text-black/40 uppercase tracking-wider block font-sans">Role</span>
+                <span className="text-[14px] font-medium text-black font-sans">Solo Developer / Designer</span>
+              </div>
+              <div className="p-4 bg-[#FAFAFA] border border-gray-150 rounded-sm">
+                <span className="text-[10px] font-bold text-black/40 uppercase tracking-wider block font-sans">Target Audience</span>
+                <span className="text-[14px] font-medium text-black font-sans">Frontend Devs & UI Designers</span>
+              </div>
+            </div>
+
+            <div className="space-y-3 pt-2">
+              <span className="text-[11px] font-bold text-black/40 uppercase tracking-wider block font-sans">Core Constraints</span>
+              <ul className="list-disc pl-5 space-y-2 text-[15px] leading-relaxed text-black/75">
+                <li><strong>$0 Backend Budget:</strong> Must run entirely client-side without recurring infrastructure fees.</li>
+                <li><strong>Zero Data Retention (Privacy & BYOK):</strong> No third-party proxy servers; API keys and prompts stay inside the browser.</li>
+                <li><strong>Fast Visual Iteration:</strong> Instant micro-adjustments without continuous LLM round-trips.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -244,63 +261,87 @@ export default function OpenComponentStudioPage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <h3 className="font-sans font-normal text-[26px] md:text-[34px] leading-tight text-black tracking-tight font-serif">
-              Cloud AI builders require pasting sensitive intellectual property, violating compliance guidelines.
+              An Abstraction Mismatch in General-Purpose AI Builders
             </h3>
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60">
-              Existing systems lock creators into proprietary clouds, requiring data to leak to third-party servers. While desktop clients solved this, installing binaries and libraries introduced setup friction, platform incompatibilities, and high crash rates on enterprise machines. The design challenge was establishing a zero-install browser workstation that provides sandboxed local code execution.
+              The primary issue with general-purpose AI web generators isn&apos;t just pricing—it&apos;s a fundamental mismatch in granularity and control:
             </p>
+
+            <div className="space-y-4 pt-2">
+              <div className="p-5 border border-gray-200 rounded-sm bg-gray-50/50">
+                <h4 className="text-[14px] font-bold text-black uppercase tracking-wide mb-1 font-sans">1. Scope Overreach</h4>
+                <p className="text-[14px] text-black/70 leading-relaxed font-sans">Full-app generators trade micro-interaction fidelity for macro structure. The resulting UIs often feel generic, bloated, and lack tactile polish.</p>
+              </div>
+              <div className="p-5 border border-gray-200 rounded-sm bg-gray-50/50">
+                <h4 className="text-[14px] font-bold text-black uppercase tracking-wide mb-1 font-sans">2. Feedback Latency</h4>
+                <p className="text-[14px] text-black/70 leading-relaxed font-sans">Tweaking small visual parameters (spacing, colors, border radii) via natural language re-prompts introduces non-deterministic layout drift and unnecessary latency.</p>
+              </div>
+              <div className="p-5 border border-gray-200 rounded-sm bg-gray-50/50">
+                <h4 className="text-[14px] font-bold text-black uppercase tracking-wide mb-1 font-sans">3. Data & Key Ownership</h4>
+                <p className="text-[14px] text-black/70 leading-relaxed font-sans">Developers are hesitant to send proprietary design tokens or credentials through third-party proxy servers when they possess direct API access to Gemini, Claude, or local Ollama instances.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 4. KEY DECISIONS */}
+      {/* 4. KEY ENGINEERING & DESIGN DECISIONS */}
       <section id="decisions" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
-            04 / KEY DECISIONS
+            04 / KEY ENGINEERING & DESIGN DECISIONS
           </span>
         </div>
 
         <div className="space-y-12">
           {[
             {
-              title: "Storage Shift to Browser Database (Dexie.js)",
-              why: "Removed the need for installing local binaries and resolved driver setup errors by pivoting standard SQLite files into the browser's native IndexedDB layer.",
+              title: "Client-Side BYOK & IndexedDB Storage",
+              mechanism: "All API keys, prompt histories, and custom design system configurations are stored locally in IndexedDB. Requests to AI providers (Gemini, Claude, OpenAI, Ollama) are dispatched directly from the client browser.",
+              tradeoff: "Eliminates backend infrastructure costs and guarantees privacy. However, users are responsible for managing their API keys and component backups.",
               image: "/projects/open-component-studio/decision-1.png"
             },
             {
-              title: "Unified Multi-Model Bring-Your-Own-Key Integration",
-              why: "Created client-side API configuration nodes, allowing designers to hook up their own Anthropic, OpenAI, or Ollama endpoints, preserving privacy and custom tuning.",
+              title: "Component-First Scope over Full-App Generation",
+              mechanism: "Restricts LLM generation outputs to self-contained, modular React components with standardized prop interfaces and scoped CSS variables.",
+              tradeoff: "The workspace cannot automatically generate complex multi-page routing out-of-the-box. In exchange, it achieves significantly higher visual fidelity and micro-animation control.",
               image: "/projects/open-component-studio/decision-2.png"
             },
             {
-              title: "High-Density 4-Panel Cockpit Workspace",
-              why: "Minimonized layout-switching latency. Placed structural outlines, agent console feedback, active preview, and visual adjustments inside a single dense screen.",
+              title: "Client-Side \"Magic Tweaks\" (DOM Style Patching)",
+              mechanism: "Generated components consume CSS variables for design tokens. A visual control panel lets users modify accent colors, spacing, and typography tokens by directly patching DOM CSS variables without triggering an LLM re-prompt.",
+              tradeoff: "Requires generation prompts to strictly format styles using CSS variables. In return, visual tweaks execute with 0ms API latency and zero token consumption.",
               image: "/projects/open-component-studio/decision-3.png"
             },
             {
-              title: "Direct Visual Editing Control Sliders",
-              why: "Eliminated the friction of typing repetitive prompts like 'increase padding by 4px'. Designed interactive sliders mapping custom properties directly into components.",
+              title: "Upfront Design System Token Orchestration",
+              mechanism: "Before generating individual components, users specify or auto-generate a global design system token set (color palettes, typography pairs, GSAP motion presets). These tokens are injected as system context into subsequent prompts.",
+              tradeoff: "Adds an explicit setup step before generating the first UI element, but guarantees visual coherence across an entire generated component library."
             }
           ].map((item, idx) => (
             <div
               key={idx}
-              className="border border-[#EDEDED] rounded bg-[#FAFAFA] flex flex-col gap-8 p-6 md:p-12 mb-8"
+              className="border border-[#EDEDED] rounded bg-[#FAFAFA] flex flex-col gap-6 p-6 md:p-10"
             >
-              <div className="w-full text-left">
-                <h4 className="font-sans font-semibold text-[20px] text-black uppercase tracking-tight mb-4">
-                  0{idx + 1} // {item.title}
+              <div className="w-full text-left space-y-3">
+                <h4 className="font-sans font-semibold text-[18px] md:text-[20px] text-black uppercase tracking-tight">
+                  Decision 0{idx + 1}: {item.title}
                 </h4>
-                <p className="font-sans text-[16px] leading-relaxed text-black/70 font-light">
-                  {item.why}
-                </p>
+                <div className="space-y-2">
+                  <p className="font-sans text-[15px] leading-relaxed text-black/80 font-normal">
+                    <strong>Mechanism:</strong> {item.mechanism}
+                  </p>
+                  <p className="font-sans text-[14px] leading-relaxed text-black/60 font-light">
+                    <strong>Trade-off:</strong> {item.tradeoff}
+                  </p>
+                </div>
               </div>
               {item.image && (
-                <div className="w-full relative aspect-[4/3] md:aspect-[16/9] bg-[#E8E8E8] border border-black/5 rounded-sm overflow-hidden shadow-sm">
-                  <Image 
-                    src={item.image} 
-                    alt={item.title} 
-                    fill 
+                <div className="w-full relative aspect-[4/3] md:aspect-[16/9] bg-[#E8E8E8] border border-black/5 rounded-sm overflow-hidden shadow-sm mt-2">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
                     className="object-contain p-2 md:p-4"
                   />
                 </div>
@@ -310,21 +351,21 @@ export default function OpenComponentStudioPage() {
         </div>
       </section>
 
-      {/* 5. INTERACTIVE VISUAL SANDBOX DEMO */}
+      {/* 5. INTERACTIVE WORKBENCH / VISUAL SANDBOX DEMO */}
       <section id="sandbox" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100 bg-[#FAFAFA] rounded border border-black/5">
         <div className="w-full flex justify-between items-baseline mb-8">
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
             05 / INTERACTIVE WORKBENCH
           </span>
           <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
-            LIVE SANDBOX REFLEX
+            MAGIC TWEAKS SANDBOX
           </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Controls Left Column */}
           <div className="lg:col-span-4 text-left space-y-6 bg-white p-6 border border-gray-200 rounded-sm">
-            <span className="text-[11px] font-bold text-black/40 uppercase tracking-wider block border-b pb-2 font-sans">Visual Parameters</span>
+            <span className="text-[11px] font-bold text-black/40 uppercase tracking-wider block border-b pb-2 font-sans">CSS Variable Patching</span>
 
             {/* Aspect Ratio Toggle */}
             <div className="space-y-2">
@@ -348,7 +389,7 @@ export default function OpenComponentStudioPage() {
             {/* Padding Slider */}
             <div className="space-y-2">
               <div className="flex justify-between text-[11px] font-bold uppercase text-black/60 font-sans">
-                <span>Padding</span>
+                <span>Padding (`--card-padding`)</span>
                 <span>{cardPadding}px</span>
               </div>
               <input
@@ -361,7 +402,7 @@ export default function OpenComponentStudioPage() {
             {/* Gap Slider */}
             <div className="space-y-2">
               <div className="flex justify-between text-[11px] font-bold uppercase text-black/60 font-sans">
-                <span>Vertical Gap</span>
+                <span>Vertical Gap (`--item-gap`)</span>
                 <span>{itemGap}px</span>
               </div>
               <input
@@ -374,7 +415,7 @@ export default function OpenComponentStudioPage() {
             {/* Rounded Radius Slider */}
             <div className="space-y-2">
               <div className="flex justify-between text-[11px] font-bold uppercase text-black/60 font-sans">
-                <span>Border Radius</span>
+                <span>Border Radius (`--radius`)</span>
                 <span>{borderRadius}px</span>
               </div>
               <input
@@ -386,7 +427,7 @@ export default function OpenComponentStudioPage() {
 
             {/* Accent Color Pickers */}
             <div className="space-y-2">
-              <label className="text-[11px] font-bold uppercase text-black/60 block font-sans">Accent Color</label>
+              <label className="text-[11px] font-bold uppercase text-black/60 block font-sans">Accent Color (`--accent`)</label>
               <div className="flex gap-3">
                 {["#3b82f6", "#22c55e", "#f97316", "#8b5cf6"].map((color) => (
                   <button
@@ -405,7 +446,7 @@ export default function OpenComponentStudioPage() {
           {/* Interactive Screen Right Column */}
           <div className="lg:col-span-8 border border-gray-200 bg-white rounded p-8 flex items-center justify-center min-h-[420px] overflow-hidden shadow-inner relative">
             <div className="absolute top-4 left-4 text-[10px] text-black/25 uppercase font-mono tracking-widest">
-              Preview Sandbox (Fluid Reflow)
+              Live DOM Patch (0ms API Latency)
             </div>
 
             {/* The reflowing viewport */}
@@ -416,7 +457,7 @@ export default function OpenComponentStudioPage() {
             >
               {/* Mock Header */}
               <div className="flex justify-between items-center border-b border-gray-100 pb-3 mb-2 shrink-0">
-                <span className="text-[10px] font-black tracking-widest text-black/30 uppercase font-sans">Open Design Workspace</span>
+                <span className="text-[10px] font-black tracking-widest text-black/30 uppercase font-sans">Open Component Studio</span>
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: accentColor }} />
               </div>
 
@@ -433,15 +474,15 @@ export default function OpenComponentStudioPage() {
                   className="flex flex-col text-left"
                 >
                   <div className="w-12 h-2 rounded-sm animate-pulse" style={{ backgroundColor: accentColor }} />
-                  <h4 className="text-[16px] font-bold text-black uppercase tracking-tight leading-none font-sans">Interactive Sandbox</h4>
+                  <h4 className="text-[16px] font-bold text-black uppercase tracking-tight leading-none font-sans">Magic Tweaks Panel</h4>
                   <p className="text-[11px] text-black/45 leading-normal font-sans">
-                    This component reflows dynamically as you adjust spacing sliders and viewport constraints, demonstrating our direct visual adjustments sandbox.
+                    Visual attributes map directly to standard CSS custom properties, allowing instant DOM variable patching without re-prompting the LLM.
                   </p>
                   <button
                     style={{ borderRadius: `${Math.min(borderRadius, 8)}px` }}
                     className="w-full py-2 bg-neutral-900 hover:bg-black text-white text-[10px] uppercase font-bold tracking-wider transition-all mt-1 font-sans cursor-pointer"
                   >
-                    Action Trigger
+                    Export Component
                   </button>
                 </div>
               </div>
@@ -451,63 +492,110 @@ export default function OpenComponentStudioPage() {
         </div>
       </section>
 
-      {/* 6. WHAT DIDN'T WORK AT FIRST */}
+      {/* 6. WHAT DIDN'T WORK FIRST (Iterative Failures) */}
       <section id="friction" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           <div className="md:col-span-4">
             <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
-              06 / WHAT DIDN&apos;T WORK
+              06 / WHAT DIDN&apos;T WORK FIRST
             </span>
           </div>
-          <div className="md:col-span-8 text-left space-y-6">
-            <h4 className="font-sans font-bold text-[13px] text-black uppercase tracking-wider font-serif">The Local Database Installation Friction</h4>
-            <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/60">
-              The initial version stored user history using a native desktop database. However, this required platforms-specific desktop compilers, causing failures during corporate updates and locking users out of designs.
-              We pivoted the storage to browser IndexedDB (Dexie.js). To prevent legacy users from losing historical sessions, we engineered an automatic background migration utility that silently extracts SQLite files and puts them into IndexedDB on first launch.
-            </p>
+          <div className="md:col-span-8 text-left space-y-8">
+            {/* Attempt 1 */}
+            <div className="p-6 border border-gray-200 rounded-sm bg-neutral-50/50 space-y-3">
+              <span className="text-[11px] font-bold text-red-600 uppercase tracking-wider block font-sans">Attempt 1 // Unstructured Full-Code Re-prompting</span>
+              <p className="text-[14px] text-black/80 font-normal leading-relaxed font-sans">
+                <strong>The Approach:</strong> Visual adjustments were handled by sending full component code back to the LLM with instructions like <em>&quot;increase border radius to 12px and change primary accent to violet&quot;</em>.
+              </p>
+              <p className="text-[14px] text-black/60 font-light leading-relaxed font-sans">
+                <strong>Why it Failed:</strong> The LLM frequently refactored unrelated component logic, stripped GSAP spring physics parameters, or introduced TypeScript type discrepancies.
+              </p>
+              <p className="text-[14px] text-black/90 font-medium leading-relaxed font-sans">
+                <strong>The Pivot:</strong> Decoupled visual styling from code regeneration. Visual properties were mapped to standard CSS custom properties (`--accent`, `--radius`, `--font-main`), enabling client-side DOM patching while reserving LLM re-prompts for structural changes.
+              </p>
+            </div>
+
+            {/* Attempt 2 */}
+            <div className="p-6 border border-gray-200 rounded-sm bg-neutral-50/50 space-y-3">
+              <span className="text-[11px] font-bold text-red-600 uppercase tracking-wider block font-sans">Attempt 2 // Unconstrained Typography Generation</span>
+              <p className="text-[14px] text-black/80 font-normal leading-relaxed font-sans">
+                <strong>The Approach:</strong> Allowed the LLM to specify any font-family string in generated inline styles or CSS classes.
+              </p>
+              <p className="text-[14px] text-black/60 font-light leading-relaxed font-sans">
+                <strong>Why it Failed:</strong> Previews rendered fallback system fonts (Times New Roman) or suffered layout shifts when custom fonts failed to load inside the preview sandbox.
+              </p>
+              <p className="text-[14px] text-black/90 font-medium leading-relaxed font-sans">
+                <strong>The Pivot:</strong> Constrained typography generation to a curated font registry (Syne, Inter, Outfit, Space Grotesk). The preview sandbox automatically injects Google Fonts link tags prior to rendering.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 7. OUTCOME */}
+      {/* 7. REALIZED OUTCOMES & OPERATIONAL REALITY */}
       <section id="outcome" className="py-20 md:py-28 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
         <div className="w-full flex justify-between items-baseline mb-12 border-b border-gray-100 pb-4">
           <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest">
-            07 / OUTCOME
-          </span>
-          <span className="font-sans font-medium text-[11px] text-black/30 uppercase tracking-widest">
-            QUANTIFIED METRICS
+            07 / REALIZED OUTCOMES & OPERATIONAL REALITY
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
           <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif">0 Setup</span>
-            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Local Execution</span>
-            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal">Start generating component code instantly in the browser with zero installers.</p>
+            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif">$0/mo</span>
+            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Infrastructure Overhead</span>
+            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal">Deploys as a static PWA bundle on Vercel/GitHub Pages with zero server compute or database costs.</p>
           </div>
           <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif">Sub-100ms</span>
-            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Sandbox Render</span>
-            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal">Safe iframe-based execution renders UI modules instantly without bundler lag.</p>
+            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif">0ms</span>
+            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Visual Tweaks Latency</span>
+            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal">Attribute tweaks execute instantly via client-side CSS variable manipulation, bypassing model inference waits.</p>
           </div>
           <div className="p-6 bg-[#FAFAFA] border border-black/5 rounded">
-            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif">IndexedDB</span>
-            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Version Restore</span>
-            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal">Fast local snapshots allow infinite history rollback without page reloads.</p>
+            <span className="font-sans text-[36px] md:text-[48px] font-bold text-black block tracking-tight leading-none font-serif">100%</span>
+            <span className="font-sans text-[10px] text-black/40 uppercase tracking-wider font-semibold block mt-3">Local Privacy</span>
+            <p className="font-sans text-[12px] text-black/50 mt-1 leading-normal">User prompts, design tokens, and generated React code remain strictly inside local IndexedDB.</p>
           </div>
-        </div>
-
-        {/* Reflection */}
-        <div className="mt-12 p-6 border-l-2 border-black text-left">
-          <span className="font-sans text-[11px] font-bold text-black/40 uppercase tracking-widest block mb-2 font-serif">Reflection</span>
-          <p className="font-sans text-[14px] leading-relaxed text-black/75">
-            Pivoting storage to IndexedDB demonstrated that web-native tools can match native file accessibility and safety, proving that the best user setup experience is often the one you completely eliminate.
-          </p>
         </div>
       </section>
 
-      {/* 8. COLLAPSIBLE DEEP PROCESS DRAWER */}
+      {/* 8. WHAT I'D RECONSIDER & REFLECTION */}
+      <section id="reconsider" className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto border-t border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div className="md:col-span-4">
+            <span className="font-sans font-semibold text-[11px] text-black/40 uppercase tracking-widest block">
+              08 / WHAT I&apos;D RECONSIDER & REFLECTION
+            </span>
+          </div>
+          <div className="md:col-span-8 text-left space-y-6">
+            <div className="space-y-4">
+              <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-sm">
+                <h4 className="text-[13px] font-bold text-black uppercase tracking-wider font-sans mb-1">Local Storage Durability</h4>
+                <p className="text-[14px] text-black/70 font-sans leading-relaxed">
+                  Relying exclusively on IndexedDB means clearing browser site data deletes local component libraries unless explicitly exported. Implementing directory syncing via the browser&apos;s File System Access API would significantly improve data safety.
+                </p>
+              </div>
+
+              <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-sm">
+                <h4 className="text-[13px] font-bold text-black uppercase tracking-wider font-sans mb-1">State & Data Fetching Guardrails</h4>
+                <p className="text-[14px] text-black/70 font-sans leading-relaxed">
+                  While presentational UI and GSAP micro-interactions render cleanly, generating complex internal state (e.g., multi-step form hooks or async data fetchers) still occasionally requires manual code cleanup. Adding specialized logic prompt schemas would help bridge this gap.
+                </p>
+              </div>
+            </div>
+
+            {/* Reflection quote */}
+            <div className="mt-8 p-6 border-l-2 border-black text-left bg-neutral-50/50">
+              <span className="font-sans text-[11px] font-bold text-black/40 uppercase tracking-widest block mb-2">Reflection</span>
+              <p className="font-sans text-[15px] leading-relaxed text-black/85 font-medium">
+                Focusing on component-level craft rather than trying to build a generic full-app generator transformed Open Component Studio into a precise tool for developers. The primary takeaway: AI UI utilities are most effective when they respect developer control—delegating initial high-entropy layout creation to the model, while providing deterministic, instant levers for visual refinement.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DETAILED PROCESS DRAWER */}
       <section className="py-12 px-6 md:px-12 lg:px-20 max-w-5xl mx-auto flex flex-col items-center">
         <button
           onClick={() => setShowFullProcess(!showFullProcess)}
@@ -519,55 +607,33 @@ export default function OpenComponentStudioPage() {
         {showFullProcess && (
           <div className="w-full mt-12 pt-12 border-t border-gray-100 text-left space-y-12 animate-fadeIn font-sans text-black">
 
-            {/* SECTION 1: ARCHITECTURE DIAGRAM */}
+            {/* SECTION 1: ARCHITECTURE */}
             <div className="space-y-4">
-              <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block font-sans">01 / REPO STRUCTURE & FLOW</span>
-              <h4 className="text-[16px] font-semibold text-black uppercase tracking-tight">Monorepo Modules</h4>
-              <p className="font-sans text-[13px] text-black/60 leading-relaxed max-w-3xl">
-                The Open Component Studio codebase is configured as a monorepo structured via pnpm and Turborepo:
-              </p>
-              <ul className="list-disc pl-5 text-[13px] text-black/60 space-y-1">
-                <li><code>apps/desktop</code>: Electron-based wrapper acting as a shell.</li>
-                <li><code>packages/core</code>: Generation orchestrator calling the adapter layer.</li>
-                <li><code>packages/runtime</code>: Sandboxed execution iframe runtime.</li>
-                <li><code>packages/ui</code>: React 19 visual design layout and customization components.</li>
+              <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block font-sans">01 / ARCHITECTURE & TECH STACK</span>
+              <h4 className="text-[16px] font-semibold text-black uppercase tracking-tight">Technical Stack Summary</h4>
+              <ul className="list-disc pl-5 text-[13px] text-black/70 space-y-1.5">
+                <li><strong>Core UI:</strong> React 18, Vite, TypeScript, Tailwind CSS</li>
+                <li><strong>Animations:</strong> GSAP (GreenSock Physics & Motion Presets)</li>
+                <li><strong>AI Orchestration:</strong> Vercel AI SDK (Direct BYOK client streams)</li>
+                <li><strong>Local Persistence:</strong> IndexedDB (Zero backend operational cost)</li>
               </ul>
             </div>
 
-            {/* SECTION 2: STORAGE MIGRATION SCRIPT */}
+            {/* SECTION 2: CSS VARIABLE PATCHING MECHANISM */}
             <div className="space-y-4 pt-10 border-t border-gray-100">
-              <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block font-sans">02 / DATABASE MIGRATION MECHANICS</span>
-              <h4 className="text-[16px] font-semibold text-black uppercase tracking-tight font-sans">SQLite-to-Dexie.js Transition Utility</h4>
+              <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block font-sans">02 / DOM VARIABLE PATCHING CODE</span>
+              <h4 className="text-[16px] font-semibold text-black uppercase tracking-tight font-sans">Magic Tweaks CSS Variable Engine</h4>
               <p className="font-sans text-[13px] text-black/60 leading-relaxed max-w-3xl">
-                To run fully in the browser, version <code>v0.2.0</code> migrates data from the Electron SQLite layer to IndexedDB via this utility:
+                Visual style adjustments update CSS variables directly on the preview sandbox wrapper without re-rendering component ASTs or dispatching LLM API calls:
               </p>
 
               <div className="p-5 bg-neutral-950 rounded text-neutral-300 font-mono text-[12px] space-y-1 shadow-inner overflow-x-auto">
-                <div>async function migrateFromSqlite(electronStudio: any) &#123;</div>
-                <div className="pl-4">{"const isMigrated = await db.preferences.get('migration_done');"}</div>
-                <div className="pl-4">if (isMigrated?.value) return;</div>
-                <div className="pl-4">try &#123;</div>
-                <div className="pl-8">const sqliteDesigns = await electronStudio.snapshots.listDesigns();</div>
-                <div className="pl-8">if (sqliteDesigns && sqliteDesigns.length &gt; 0) &#123;</div>
-                <div className="pl-12">await db.designs.bulkPut(sqliteDesigns);</div>
-                <div className="pl-12">for (const d of sqliteDesigns) &#123;</div>
-                <div className="pl-16">const sqliteSnaps = await electronStudio.snapshots.list(d.id);</div>
-                <div className="pl-16">if (sqliteSnaps &amp;&amp; sqliteSnaps.length &gt; 0) await db.snapshots.bulkPut(sqliteSnaps);</div>
-                <div className="pl-12">&#125;</div>
-                <div className="pl-8">&#125;</div>
-                <div className="pl-8">{"await db.preferences.put({ key: 'migration_done', value: true });"}</div>
-                <div className="pl-4">&#125; catch (err) &#123; console.error(err); &#125;</div>
-                <div>&#125;</div>
+                <div>const applyStylePatch = (propertyName: string, value: string) =&#123;</div>
+                <div className="pl-4">{"const previewFrame = document.getElementById('component-sandbox-iframe');"}</div>
+                <div className="pl-4">if (!previewFrame || !previewFrame.contentDocument) return;</div>
+                <div className="pl-4">{"previewFrame.contentDocument.documentElement.style.setProperty(propertyName, value);"}</div>
+                <div>&#125;;</div>
               </div>
-            </div>
-
-            {/* SECTION 3: PERFORMANCE AND BENCHMARKS */}
-            <div className="space-y-4 pt-10 border-t border-gray-100">
-              <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block font-sans">03 / PERF & OPTIMIZATIONS</span>
-              <h4 className="text-[16px] font-semibold text-black uppercase tracking-tight font-sans">Lazy loading & Sub-second Painting</h4>
-              <p className="font-sans text-[13px] text-black/60 leading-relaxed max-w-3xl">
-                To guarantee lightning fast startup times, heavy export components (such as PDF and PPTX generators) are partitioned into lazy-loaded chunks. This allows initial paint latency to stay below 100ms.
-              </p>
             </div>
 
           </div>
