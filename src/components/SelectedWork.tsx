@@ -21,10 +21,10 @@ const projects = [
     liveUrl: "https://campus-trace-steel.vercel.app/"
   },
   {
-    id: "open-design-studio",
-    name: "Open Design Studio",
+    id: "open-component-studio",
+    name: "Open Component Studio",
     description: "Web-native, local-first AI prototyping environment for enterprise design privacy and speed.",
-    thumbnail: "/projects/open-design-studio/open-component-main-video-3x4.mp4",
+    thumbnail: "/projects/open-component-studio/open-component-main-video-3x4.mp4",
     liveUrl: "https://open-component.vercel.app/"
   }
 ];

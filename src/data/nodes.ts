@@ -70,14 +70,14 @@ export const portfolioData: NodeData = {
           description: 'Forensic geospatial provenance system for real-time incident archival and thematic cluster analysis.'
         },
         {
-          id: 'open-design-studio',
-          label: 'Open Design Studio',
+          id: 'open-component-studio',
+          label: 'Open Component Studio',
           type: 'project',
           shape: 'hexagon',
           innerContent: '3',
-          image: '/projects/open-design-studio/hero.png',
-          video: '/projects/open-design-studio/open-component-main-video-3x4.mp4',
-          url: '/projects/open-design-studio',
+          image: '/projects/open-component-studio/hero.png',
+          video: '/projects/open-component-studio/open-component-main-video-3x4.mp4',
+          url: '/projects/open-component-studio',
           description: 'Web-native, local-first AI prototyping environment for enterprise design privacy and speed.'
         }
       ]

@@ -42,7 +42,7 @@ export default function Preloader() {
     if (!isHomepage) return;
     router.prefetch("/projects/scribe");
     router.prefetch("/projects/campus-trace");
-    router.prefetch("/projects/open-design-studio");
+    router.prefetch("/projects/open-component-studio");
   }, [isHomepage, router]);
 
   // Fast, fluid entrance progress (sub-second completion)

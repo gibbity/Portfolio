@@ -490,7 +490,7 @@ export default function CampusTracePage() {
       </section>
 
       {/* FOOTER */}
-      <CaseStudyFooter nextProject={{ name: "Open Design Studio", href: "/projects/open-design-studio" }} theme="dark" />
+      <CaseStudyFooter nextProject={{ name: "Open Component Studio", href: "/projects/open-component-studio" }} theme="dark" />
     </main>
   );
 }

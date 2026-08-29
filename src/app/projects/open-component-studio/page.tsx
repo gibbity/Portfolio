@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function OpenDesignStudioPage() {
+export default function OpenComponentStudioPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Section definitions for Side Progress Rail & Wayfinding
@@ -146,7 +146,7 @@ export default function OpenDesignStudioPage() {
       />
 
       {/* Case Study Nav */}
-      <CaseStudyNav projectTitle="Open Design Studio" category="Local Prototyping Environment" />
+      <CaseStudyNav projectTitle="Open Component Studio" category="Local Prototyping Environment" />
 
       {/* LIVE SECTION LABEL (Wayfinding) */}
       <div className="fixed top-24 left-6 md:left-12 lg:left-16 hidden md:block z-30 pointer-events-none">
@@ -179,7 +179,7 @@ export default function OpenDesignStudioPage() {
       </div>
 
       <CaseStudyHero
-        title="Open Design Studio"
+        title="Open Component Studio"
         subtitle="Local-First Prototyping"
         description="A web-native, client-side AI prototyping workspace allowing creators to generate, refine, and export interactive prototypes with complete data privacy."
         meta={{
@@ -187,11 +187,11 @@ export default function OpenDesignStudioPage() {
           "Timeline": "2024",
           "Focus": "Local-First UX / Browser DB",
           "Engine": "Electron / Dexie.js / React 19",
-          "Poster": "/projects/open-design-studio/hero.png"
+          "Poster": "/projects/open-component-studio/hero.png"
         }}
         media={{
           type: "video",
-          src: "/projects/open-design-studio/open-component-main-video-3x4.mp4"
+          src: "/projects/open-component-studio/open-component-main-video-3x4.mp4"
         }}
         theme="light"
         fullMedia={true}
@@ -211,7 +211,7 @@ export default function OpenDesignStudioPage() {
               Designers generate, refine, and export interactive prototypes entirely within their own web browser.
             </h3>
             <p className="font-sans font-normal text-[17px] md:text-[19px] leading-relaxed text-black/70">
-              By leveraging client-side databases and sandboxed execution, Open Design Studio resolves the corporate tension between leveraging modern AI code generation and protecting sensitive internal design system source code.
+              By leveraging client-side databases and sandboxed execution, Open Component Studio resolves the corporate tension between leveraging modern AI code generation and protecting sensitive internal design system source code.
             </p>
           </div>
         </div>
@@ -227,7 +227,7 @@ export default function OpenDesignStudioPage() {
           </div>
           <div className="md:col-span-8 text-left space-y-6">
             <p className="font-sans font-normal text-[15px] md:text-[16px] leading-relaxed text-black/75">
-              Open Design Studio was designed for designers and developers who want the speed of AI instrumentation without being locked into subscription silos or leaking client data.
+              Open Component Studio was designed for designers and developers who want the speed of AI instrumentation without being locked into subscription silos or leaking client data.
               The application started as a native desktop application but pivoted to run fully inside standard browsers. The primary design constraint was guaranteeing absolute client-side data privacy while maintaining instant preview capabilities.
             </p>
           </div>
@@ -266,17 +266,17 @@ export default function OpenDesignStudioPage() {
             {
               title: "Storage Shift to Browser Database (Dexie.js)",
               why: "Removed the need for installing local binaries and resolved driver setup errors by pivoting standard SQLite files into the browser's native IndexedDB layer.",
-              image: "/projects/open-design-studio/decision-1.png"
+              image: "/projects/open-component-studio/decision-1.png"
             },
             {
               title: "Unified Multi-Model Bring-Your-Own-Key Integration",
               why: "Created client-side API configuration nodes, allowing designers to hook up their own Anthropic, OpenAI, or Ollama endpoints, preserving privacy and custom tuning.",
-              image: "/projects/open-design-studio/decision-2.png"
+              image: "/projects/open-component-studio/decision-2.png"
             },
             {
               title: "High-Density 4-Panel Cockpit Workspace",
               why: "Minimonized layout-switching latency. Placed structural outlines, agent console feedback, active preview, and visual adjustments inside a single dense screen.",
-              image: "/projects/open-design-studio/decision-3.png"
+              image: "/projects/open-component-studio/decision-3.png"
             },
             {
               title: "Direct Visual Editing Control Sliders",
@@ -524,7 +524,7 @@ export default function OpenDesignStudioPage() {
               <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest block font-sans">01 / REPO STRUCTURE & FLOW</span>
               <h4 className="text-[16px] font-semibold text-black uppercase tracking-tight">Monorepo Modules</h4>
               <p className="font-sans text-[13px] text-black/60 leading-relaxed max-w-3xl">
-                The Open Design Studio codebase is configured as a monorepo structured via pnpm and Turborepo:
+                The Open Component Studio codebase is configured as a monorepo structured via pnpm and Turborepo:
               </p>
               <ul className="list-disc pl-5 text-[13px] text-black/60 space-y-1">
                 <li><code>apps/desktop</code>: Electron-based wrapper acting as a shell.</li>
