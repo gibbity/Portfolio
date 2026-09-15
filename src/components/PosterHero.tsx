@@ -339,17 +339,18 @@ export default function PosterHero() {
             </div>
           </motion.div>
 
-          {/* 2. EXPANDING SHOWREEL VIDEO MOCKUP - Full Viewport Cinema Frame */}
+          {/* 2. EXPANDING SHOWREEL VIDEO MOCKUP - Strict 16:9 Cinema Frame (No Cropping) */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="absolute overflow-hidden rounded-[1.2cqw] border border-black/10 origin-center will-change-transform"
+            className="absolute overflow-hidden rounded-[1.2cqw] border border-black/10 origin-center will-change-transform aspect-[16/9] bg-black"
             style={{
               left: "var(--video-left)",
               top: "var(--video-top)",
               width: "var(--video-width)",
               height: "var(--video-height)",
+              aspectRatio: "16 / 9",
               scale: activeScale,
               y: activeY,
               zIndex: activeZIndex,
@@ -363,7 +364,7 @@ export default function PosterHero() {
               muted
               playsInline
               preload="metadata"
-              className="w-full h-full object-cover rounded-[1.2cqw]"
+              className="w-full h-full object-contain aspect-[16/9] rounded-[1.2cqw]"
             />
           </motion.div>
 
