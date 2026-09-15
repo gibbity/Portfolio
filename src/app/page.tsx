@@ -22,7 +22,12 @@ const AboutSection = dynamic(() => import("@/components/AboutSection"), {
 
 const ContactSection = dynamic(() => import("@/components/ContactSection"), {
   ssr: true,
-  loading: () => <div className="min-h-[400px] w-full bg-black" />
+  loading: () => <div className="min-h-[400px] w-full bg-white" />
+});
+
+const SandPlayground = dynamic(() => import("@/components/SandPlayground"), {
+  ssr: false,
+  loading: () => <div className="min-h-[400px] w-full bg-[#FAF8F5]" />
 });
 
 export default function Home() {
@@ -54,7 +59,11 @@ export default function Home() {
       <section id="contact" className="relative">
         <ContactSection />
       </section>
+
+      {/* Sand Art Game Playground Section */}
+      <section id="sand-game" className="relative">
+        <SandPlayground />
+      </section>
     </main>
   );
 }
-

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Newsreader, Averia_Serif_Libre, Rock_Salt } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
@@ -65,6 +65,27 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const averia = Averia_Serif_Libre({
+  weight: ["300", "400", "700"],
+  subsets: ["latin"],
+  variable: "--font-averia",
+  display: "swap",
+});
+
+const rockSalt = Rock_Salt({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-rock-salt",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Shresth Kushwaha - AI Product Designer",
   description: "AI Product Designer focused on stripping noise and shipping features and usable products.",
@@ -108,7 +129,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${satoshi.variable} ${helvetica.variable} ${dmSans.variable} antialiased bg-black text-white font-satoshi`}
+        className={`${satoshi.variable} ${helvetica.variable} ${dmSans.variable} ${newsreader.variable} ${averia.variable} ${rockSalt.variable} antialiased bg-black text-white font-satoshi`}
         suppressHydrationWarning={true}
       >
         <Preloader />

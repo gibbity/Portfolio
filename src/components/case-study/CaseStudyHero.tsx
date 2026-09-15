@@ -1,16 +1,17 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 
-interface CaseStudyHeroProps {
+export interface CaseStudyHeroProps {
   title: string;
-  subtitle: string;
-  description: string;
-  meta: Record<string, string>;
-  media: {
-    type: "image" | "video" | "gif";
+  subtitle?: string;
+  titleAccent?: string;
+  metaBadges?: string[];
+  meta?: Record<string, string>;
+  description?: string;
+  media?: {
+    type: "image" | "video" | "gif" | string;
     src: string;
   };
   theme?: "dark" | "light";
@@ -19,127 +20,137 @@ interface CaseStudyHeroProps {
   fullMedia?: boolean;
   layout?: "grid" | "stacked";
   liveUrl?: string;
+  readTime?: string;
+  children?: React.ReactNode;
 }
 
 export default function CaseStudyHero({
   title,
   subtitle,
-  description,
+  titleAccent,
+  metaBadges,
   meta,
+  description,
   media,
   theme = "light",
   className = "",
-  isItalic = true,
   fullMedia = false,
-  layout = "grid",
   liveUrl,
+  readTime = "3 min read • 45 sec skim",
+  children,
 }: CaseStudyHeroProps) {
   const isDark = theme === "dark";
 
-  const textColor = isDark ? "text-white" : "text-black";
-  const mutedColor = isDark ? "text-white/60" : "text-black/60";
-  const fadedColor = isDark ? "text-white/30" : "text-black/30";
-  const borderColor = isDark ? "border-white/10" : "border-black/5";
-  const btnBg = isDark ? "bg-white" : "bg-black";
-  const btnText = isDark ? "text-black" : "text-white";
+  const textColor = isDark ? "text-white" : "text-neutral-900";
+  const mutedColor = isDark ? "text-white/70" : "text-neutral-600";
+  const fadedColor = isDark ? "text-white/40" : "text-neutral-400";
+  const badgeBg = isDark ? "bg-white/10 border-white/15 text-white/80" : "bg-neutral-100/90 border-neutral-200/80 text-neutral-700";
+  const btnBg = isDark ? "bg-white text-black hover:bg-neutral-200" : "bg-black text-white hover:bg-neutral-800";
+  const mediaBorder = isDark ? "border-white/10 bg-neutral-950" : "border-neutral-200/80 bg-neutral-100";
+
+  // Derive badges from meta if metaBadges is not provided
+  const computedBadges: string[] = metaBadges || (
+    meta ? Object.entries(meta).filter(([k]) => k !== "Poster").map(([k, v]) => `${k}: ${v}`) : ["0 to 1 Product Design", "Design Systems", "Strategy", "Shipped"]
+  );
+
+  const displayAccent = titleAccent || subtitle;
 
   return (
-    <section className={`hero-section relative z-10 pt-32 pb-16 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto ${className}`}>
-      {/* Title */}
-      <motion.h1 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className={`font-sans font-normal text-[36px] md:text-[54px] lg:text-[72px] leading-[1.05] tracking-tight ${textColor} text-left max-w-4xl font-serif`}
-      >
-        {title}
-      </motion.h1>
+    <section className={`hero-section relative z-10 pt-32 sm:pt-36 md:pt-40 pb-12 px-5 sm:px-8 md:px-12 lg:px-16 max-w-6xl mx-auto text-center ${className}`}>
       
-      {/* Description */}
-      <motion.p 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className={`font-sans text-[18px] md:text-[22px] leading-relaxed ${mutedColor} mt-8 max-w-3xl ${isItalic ? 'italic' : ''}`}
-      >
-        {description}
-      </motion.p>
+      {/* Editorial Headline */}
+      <h1 className={`font-serif text-[34px] sm:text-[46px] md:text-[58px] lg:text-[68px] leading-[1.12] ${textColor} tracking-tight max-w-5xl mx-auto font-normal`}>
+        {title}{" "}
+        {displayAccent && (
+          <span className={`italic font-serif ${isDark ? "text-white/90 decoration-white/30" : "text-neutral-800 decoration-neutral-300"} underline decoration-1 underline-offset-4`}>
+            {displayAccent}
+          </span>
+        )}
+      </h1>
 
-      {/* Role */}
-      {meta["Role"] && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="mt-8 font-sans"
-        >
-          <p className={`text-[10px] font-bold ${textColor} uppercase tracking-[0.3em] mb-3`}>Role</p>
-          <p className={`text-[11px] md:text-[12px] ${mutedColor} font-bold uppercase tracking-widest`}>
-            {meta["Role"]}
-          </p>
-        </motion.div>
+      {/* Metadata Pill Badges */}
+      {computedBadges && computedBadges.length > 0 && (
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
+          <div className={`inline-flex flex-wrap items-center justify-center gap-2 px-4 py-1.5 rounded-full border text-[11px] sm:text-[12px] font-sans font-medium shadow-xs ${badgeBg}`}>
+            {computedBadges.map((badge, idx) => (
+              <React.Fragment key={idx}>
+                <span>{badge}</span>
+                {idx < computedBadges.length - 1 && (
+                  <span className={`${fadedColor} select-none`}>•</span>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
       )}
 
-      {/* Actions */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-        className="flex flex-wrap items-center gap-6 mt-12"
-      >
-        {liveUrl && (
-          <a 
-            href={liveUrl}
-            target="_blank" 
-            rel="noopener noreferrer"
-            className={`inline-flex items-center justify-center px-8 py-3 ${btnBg} ${btnText} text-[11px] font-bold uppercase tracking-[0.2em] hover:scale-105 transition-transform duration-300 rounded-sm`}
-          >
-            Visit Live Site
-          </a>
-        )}
-        <button 
-          onClick={() => {
-            const el = document.getElementById("outcome");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-          className={`font-sans font-semibold text-[12px] ${mutedColor} hover:${textColor} underline underline-offset-4 uppercase tracking-wider`}
-        >
-          Skip to outcome →
-        </button>
-        <span className={`font-sans text-[12px] ${fadedColor} font-medium uppercase tracking-wider`}>
-          3 min read / 45 sec skim
-        </span>
-      </motion.div>
+      {/* Optional Description */}
+      {description && (
+        <p className={`font-sans text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed ${mutedColor} max-w-3xl mx-auto mt-6`}>
+          {description}
+        </p>
+      )}
 
-      {/* Hero Visual Video / Image */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        className={`hero-image-container relative w-full ${fullMedia ? 'aspect-auto md:min-h-[70vh]' : 'aspect-[16/9.5]'} border ${borderColor} rounded-sm overflow-hidden mt-12 shadow-sm ${isDark ? 'bg-neutral-950' : 'bg-[#E8E8E8]'}`}
-      >
-        {media.type === "video" ? (
-          <video
-            src={media.src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={meta["Poster"] || ""}
-            className={`w-full h-full ${fullMedia ? 'object-contain' : 'object-cover'}`}
-          />
-        ) : (
-          <Image
-            src={media.src}
-            alt={title}
-            fill
-            sizes="(max-width: 1024px) 100vw, 80vw"
-            unoptimized={media.src.endsWith(".gif")}
-            className={`${fullMedia ? 'object-contain p-0' : 'object-cover'} opacity-95 transition-all duration-700`}
-            priority
-          />
-        )}
-      </motion.div>
+      {/* Action / Skim Buttons */}
+      {(liveUrl || readTime) && (
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8">
+          {liveUrl && (
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`inline-flex items-center justify-center px-6 py-2.5 rounded-full ${btnBg} text-[11px] sm:text-[12px] font-sans font-medium uppercase tracking-wider hover:scale-[1.02] transition-all shadow-sm`}
+            >
+              Visit Live App ↗
+            </a>
+          )}
+          <button
+            onClick={() => {
+              const el = document.getElementById("outcome");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+            className={`font-sans text-[12px] sm:text-[13px] ${mutedColor} hover:${textColor} underline underline-offset-4 font-medium transition-colors cursor-pointer`}
+          >
+            Skip to outcome →
+          </button>
+          {readTime && (
+            <span className={`font-sans text-[11px] sm:text-[12px] ${fadedColor} font-normal`}>
+              {readTime}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Hero Visual Container without bulky nested frames */}
+      {(children || media) && (
+        <div className={`mt-12 sm:mt-16 w-full rounded-xl overflow-hidden border ${mediaBorder} shadow-sm relative`}>
+          {children ? (
+            children
+          ) : media?.type === "video" ? (
+            <video
+              src={media.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={meta?.["Poster"] || ""}
+              className={`w-full h-full ${fullMedia ? "object-contain" : "object-cover"}`}
+            />
+          ) : media?.src ? (
+            <div className="relative w-full aspect-[16/9.5]">
+              <Image
+                src={media.src}
+                alt={title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 80vw"
+                unoptimized={media.src.endsWith(".gif")}
+                className={`${fullMedia ? "object-contain" : "object-cover"} opacity-95 transition-all duration-700`}
+                priority
+              />
+            </div>
+          ) : null}
+        </div>
+      )}
     </section>
   );
 }

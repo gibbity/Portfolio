@@ -4,7 +4,8 @@ import MuxPlayer from "@mux/mux-player-react";
 import React from "react";
 
 interface MuxVideoProps {
-  playbackId: string;
+  playbackId?: string;
+  videoSrc?: string;
   className?: string;
   metadata?: {
     video_id?: string;
@@ -20,6 +21,7 @@ interface MuxVideoProps {
 
 export default function MuxVideo({
   playbackId,
+  videoSrc,
   className = "",
   metadata,
   autoPlay = false,
@@ -30,14 +32,9 @@ export default function MuxVideo({
 }: MuxVideoProps) {
   const [isStarted, setIsStarted] = React.useState(false);
 
-  // If autoPlay is true, we might want to start immediately, 
-  // but for bandwidth optimization, we prioritize the click.
-  // However, if the user explicitly passed autoPlay, they might want it.
-  // We'll stick to Click-to-Play as requested.
-
   return (
     <div 
-      className={`relative w-full overflow-hidden rounded-sm shadow-xl border border-black/5 bg-black ${className}`}
+      className={`relative w-full overflow-hidden rounded-xl shadow-xs border border-neutral-200/90 bg-black ${className}`}
       style={{ aspectRatio }}
     >
       {!isStarted ? (
@@ -47,27 +44,37 @@ export default function MuxVideo({
         >
           {/* Use custom poster if available, otherwise Mux thumbnail */}
           <img 
-            src={poster || `https://image.mux.com/${playbackId}/thumbnail.jpg?time=0`} 
+            src={poster || (playbackId ? `https://image.mux.com/${playbackId}/thumbnail.jpg?time=0` : "/projects/scribe/thumbnail.webp")} 
             alt="Video Thumbnail"
-            className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-all duration-1000"
+            className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-all duration-700"
           />
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
+          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
           
-          {/* Prominent Play Button - Forced Middle Centering */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 md:w-32 md:h-32 flex items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-2xl group-hover:scale-110 group-hover:border-white/100 group-hover:bg-white/20 transition-all duration-500 ease-out shadow-[0_0_50px_rgba(0,0,0,0.5)] z-30">
-            <div className="w-0 h-0 border-t-[14px] border-t-transparent border-l-[24px] border-l-white border-b-[14px] border-b-transparent ml-2 drop-shadow-2xl" />
+          {/* Prominent Play Button */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-md group-hover:scale-110 group-hover:border-white/90 group-hover:bg-white/25 transition-all duration-300 ease-out shadow-2xl z-30">
+            <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1.5 drop-shadow-md" />
           </div>
         </div>
+      ) : videoSrc ? (
+        <video
+          src={videoSrc}
+          autoPlay
+          controls
+          muted={muted}
+          loop={loop}
+          playsInline
+          className="w-full h-full object-contain bg-black"
+        />
       ) : (
         <MuxPlayer
-          playbackId={playbackId}
+          playbackId={playbackId || ""}
           streamType="on-demand"
-          preload="auto" // Load immediately once started
+          preload="auto"
           autoPlay={true}
           muted={muted}
           loop={loop}
           metadata={metadata}
-          primaryColor="#64172d"
+          primaryColor="#000000"
           secondaryColor="#ffffff"
           className="w-full h-full object-cover"
           style={{
@@ -79,3 +86,4 @@ export default function MuxVideo({
     </div>
   );
 }
+

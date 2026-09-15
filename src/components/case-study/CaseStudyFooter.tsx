@@ -2,12 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
-interface CaseStudyFooterProps {
-  nextProject: {
+export interface CaseStudyFooterProps {
+  nextProject?: {
     name: string;
     href: string;
+    category?: string;
   };
   theme?: "dark" | "light";
 }
@@ -16,34 +16,84 @@ export default function CaseStudyFooter({ nextProject, theme = "light" }: CaseSt
   const isDark = theme === "dark";
 
   return (
-    <footer className={`relative z-10 py-24 md:py-40 px-6 md:px-12 lg:px-24 border-t ${isDark ? 'bg-black border-white/5 text-white' : 'bg-white border-gray-100 text-black'} overflow-hidden`}>
-      <div className="flex flex-col md:flex-row justify-between items-end gap-16 md:gap-20">
-        <div className="group">
-          <span className={`text-[11px] font-black uppercase tracking-[0.5em] block mb-8 md:mb-10 ${isDark ? 'text-white/20' : 'text-black/20'}`}>
-            I am moving to...
-          </span>
-          <Link href={nextProject.href} className="relative block group">
-            <h2 className="text-[56px] md:text-[160px] font-helvetica font-bold tracking-tighter hover:italic transition-all duration-700 leading-none uppercase">
-              {nextProject.name}
-            </h2>
-            <div className={`absolute bottom-4 left-0 h-[2px] w-0 transition-all duration-1000 group-hover:w-full ${isDark ? 'bg-white' : 'bg-black'}`} />
-          </Link>
-        </div>
+    <footer className={`relative z-10 py-16 sm:py-24 px-5 sm:px-8 md:px-12 lg:px-16 border-t ${
+      isDark 
+        ? "bg-neutral-950 border-white/10 text-white" 
+        : "bg-white border-neutral-200/80 text-black"
+    } overflow-hidden`}>
+      <div className="max-w-6xl mx-auto space-y-16 sm:space-y-20">
         
-        <div className="text-right max-w-[200px]">
+        {/* Next Project CTA (if provided) */}
+        {nextProject && (
+          <div className={`text-left pb-12 sm:pb-16 border-b ${isDark ? "border-white/10" : "border-neutral-200/60"}`}>
+            <span className={`text-[11px] font-sans font-bold uppercase tracking-[0.3em] block mb-4 ${isDark ? "text-white/40" : "text-neutral-400"}`}>
+              Next Case Study
+            </span>
+            <Link href={nextProject.href} className="group inline-block">
+              <h2 className={`font-serif text-[38px] sm:text-[56px] md:text-[72px] font-normal leading-[1.05] tracking-tight group-hover:italic group-hover:underline decoration-1 underline-offset-8 transition-all ${
+                isDark ? "text-white" : "text-neutral-900"
+              }`}>
+                {nextProject.name} →
+              </h2>
+              {nextProject.category && (
+                <span className={`font-sans text-[12px] sm:text-[13px] uppercase tracking-widest block mt-2 ${
+                  isDark ? "text-white/40" : "text-neutral-400"
+                }`}>
+                  {nextProject.category}
+                </span>
+              )}
+            </Link>
+          </div>
+        )}
 
-          <p className={`text-[11px] font-medium leading-relaxed italic ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
-            Project documentation and design system complete.
-          </p>
-          <p className={`text-[10px] font-black uppercase mt-6 tracking-widest ${isDark ? 'text-white/20' : 'text-black/20'}`}>
-            © 2026 Product Design Portfolio
+        {/* Minimal Social & Contact Links Row (Page 7 style) */}
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-[13px] sm:text-[14px] font-sans font-medium">
+          <a
+            href="mailto:kushwaha.shresth@gmail.com"
+            className={`inline-flex items-center hover:underline underline-offset-4 transition-colors ${
+              isDark ? "text-white/80 hover:text-white" : "text-neutral-700 hover:text-black"
+            }`}
+          >
+            email
+          </a>
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center hover:underline underline-offset-4 transition-colors ${
+              isDark ? "text-white/80 hover:text-white" : "text-neutral-700 hover:text-black"
+            }`}
+          >
+            résumé
+          </a>
+          <a
+            href="https://linkedin.com/in/shresthkushwaha"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center hover:underline underline-offset-4 transition-colors ${
+              isDark ? "text-white/80 hover:text-white" : "text-neutral-700 hover:text-black"
+            }`}
+          >
+            linkedin
+          </a>
+          <a
+            href="https://x.com/kushwaha_shresh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center hover:underline underline-offset-4 transition-colors ${
+              isDark ? "text-white/80 hover:text-white" : "text-neutral-700 hover:text-black"
+            }`}
+          >
+            twitter
+          </a>
+        </div>
+
+        {/* Copyright & Meta Note */}
+        <div className={`text-center pt-8 border-t space-y-2 ${isDark ? "border-white/5" : "border-neutral-100"}`}>
+          <p className={`font-sans text-[11px] sm:text-[12px] tracking-wide ${isDark ? "text-white/30" : "text-neutral-400"}`}>
+            © Shresth Kushwaha 2026. All rights reserved • Human-crafted design & engineering
           </p>
         </div>
-      </div>
-      
-      {/* Visual background number for depth */}
-      <div className={`absolute top-[20%] right-[-5%] font-helvetica font-bold text-[300px] md:text-[500px] pointer-events-none select-none -z-10 opacity-[0.03] ${isDark ? 'text-white' : 'text-black'}`}>
-        0X
       </div>
     </footer>
   );

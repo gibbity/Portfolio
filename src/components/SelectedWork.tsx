@@ -10,24 +10,108 @@ const projects = [
     id: "scribe",
     name: "Scribe",
     description: "Non-linear strategic intelligence platform for dissolving context-collapse through hierarchical spatialization.",
-    thumbnail: "/projects/scribe/preview.mp4",
+    thumbnail: "/projects/scribe/thumbnail.webp",
+    video: "/projects/scribe/preview.mp4",
     liveUrl: "https://scribe-neon.vercel.app/landing"
   },
   {
     id: "campus-trace",
     name: "CampusTrace",
     description: "A modern campus issue reporting system for VIT Vellore with real-time geospatial archival.",
-    thumbnail: "/projects/campus-trace/preview.mp4",
+    thumbnail: "/projects/campus-trace/thumbnail.webp",
+    video: "/projects/campus-trace/camp-finale.mp4",
     liveUrl: "https://campus-trace-steel.vercel.app/"
   },
   {
     id: "open-component-studio",
     name: "Open Component Studio",
     description: "Web-native, local-first AI prototyping environment for enterprise design privacy and speed.",
-    thumbnail: "/projects/open-component-studio/open-component-main-video-3x4.mp4",
+    thumbnail: "/projects/open-component-studio/thumbnail.webp",
+    video: "/projects/open-component-studio/open-component-main-video-3x4.mp4",
     liveUrl: "https://open-component.vercel.app/"
   }
 ];
+
+function CardMedia({
+  thumbnail,
+  video,
+  name,
+}: {
+  thumbnail: string;
+  video: string;
+  name: string;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileScreen = window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+      setIsMobile(isMobileScreen);
+      if (isMobileScreen && videoRef.current) {
+        videoRef.current.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+      }
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
+    const v = videoRef.current;
+    if (!v) return;
+
+    if (isHovered) {
+      const playPromise = v.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsVideoPlaying(true))
+          .catch(() => {});
+      }
+    } else {
+      v.pause();
+      setIsVideoPlaying(false);
+    }
+  }, [isHovered, isMobile]);
+
+  const shouldPlayVideo = isMobile || (isHovered && isVideoPlaying);
+
+  return (
+    <div
+      onMouseEnter={() => { if (!isMobile) setIsHovered(true); }}
+      onMouseLeave={() => { if (!isMobile) setIsHovered(false); }}
+      className="relative w-full h-full bg-white overflow-hidden"
+    >
+      <Image
+        src={thumbnail}
+        alt={name}
+        fill
+        sizes="(max-width: 768px) 85vw, 40vw"
+        className={`object-cover w-full h-full transition-opacity duration-300 ${
+          shouldPlayVideo ? "opacity-0" : "opacity-100"
+        }`}
+      />
+      {video && (
+        <video
+          ref={videoRef}
+          src={video}
+          autoPlay={isMobile}
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className={`w-full h-full object-cover transition-opacity duration-300 ${
+            shouldPlayVideo ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function SelectedWork() {
   const outerSectionRef = useRef<HTMLDivElement>(null);
@@ -161,28 +245,14 @@ export default function SelectedWork() {
                       href={`/projects/${project.id}`}
                       className="block w-full h-full relative group bg-white"
                     >
-                      {project.thumbnail.endsWith(".mp4") ? (
-                        <video 
-                          src={project.thumbnail} 
-                          autoPlay 
-                          loop 
-                          muted 
-                          playsInline 
-                          preload="none"
-                          className="w-full h-full object-contain opacity-100 bg-white"
-                        />
-                      ) : (
-                        <Image 
-                          src={project.thumbnail} 
-                          alt={project.name} 
-                          fill 
-                          sizes="(max-width: 768px) 85vw, 40vw"
-                          className="object-contain opacity-100 bg-white" 
-                        />
-                      )}
+                      <CardMedia 
+                        thumbnail={project.thumbnail}
+                        video={project.video}
+                        name={project.name}
+                      />
 
                       {/* Minimal View Case Study Hover Badge */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/5 transition-all duration-500">
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/5 transition-all duration-500 pointer-events-none">
                         <div className="px-5 py-2.5 bg-white/95 backdrop-blur-md rounded shadow-md opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 font-sans font-medium text-[10px] tracking-[0.2em] text-black">
                           VIEW CASE
                         </div>
