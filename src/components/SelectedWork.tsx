@@ -91,7 +91,7 @@ function CardMedia({
         alt={name}
         fill
         sizes="(max-width: 768px) 85vw, 40vw"
-        className={`object-contain w-full h-full transition-opacity duration-300 ${
+        className={`object-cover w-full h-full transition-opacity duration-300 ${
           shouldPlayVideo ? "opacity-0" : "opacity-100"
         }`}
       />
@@ -104,7 +104,7 @@ function CardMedia({
           muted
           playsInline
           preload="auto"
-          className={`w-full h-full object-contain transition-opacity duration-300 ${
+          className={`w-full h-full object-cover transition-opacity duration-300 ${
             shouldPlayVideo ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         />
@@ -214,7 +214,7 @@ export default function SelectedWork() {
           </div>
 
           {/* CENTER COLUMN: Vertical Ribbon Cards */}
-          <div className="relative w-[85vw] md:w-[40vw] max-w-[660px] aspect-[16/9] flex items-center justify-center overflow-visible">
+          <div className="relative w-[85vw] md:w-[40vw] max-w-[660px] aspect-video flex items-center justify-center overflow-visible">
             {projects.map((project, i) => {
               const offset = i - virtualIndex;
               const distance = Math.abs(offset);

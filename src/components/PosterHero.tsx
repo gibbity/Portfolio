@@ -109,6 +109,36 @@ export default function PosterHero() {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
+  // Physics loop for mouse hover wave ripple / cloth waving effect (Desktop Only)
+  useEffect(() => {
+    if (!isDesktop) return;
+    let animId: number;
+
+    const updateFilter = () => {
+      const isScrolling = scrollYProgress.get() > 0.005;
+      const targetScale = (hovered && !isScrolling) ? 22 : 0;
+      scaleVal.current += (targetScale - scaleVal.current) * 0.15;
+
+      if (dispRef.current) {
+        dispRef.current.setAttribute("scale", scaleVal.current.toFixed(2));
+      }
+
+      if (scaleVal.current > 0.05) {
+        phase.current += 0.025;
+        if (turbRef.current) {
+          const freqX = 0.004 + Math.sin(phase.current) * 0.001;
+          const freqY = 0.007 + Math.cos(phase.current * 0.7) * 0.0015;
+          turbRef.current.setAttribute("baseFrequency", `${freqX} ${freqY}`);
+        }
+      }
+
+      animId = requestAnimationFrame(updateFilter);
+    };
+
+    updateFilter();
+    return () => cancelAnimationFrame(animId);
+  }, [hovered, isDesktop, scrollYProgress]);
+
   // Mouse move handler - Desktop only
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDesktop || scrollYProgress.get() > 0.005) return;
@@ -132,7 +162,7 @@ export default function PosterHero() {
     setTilt({ x: 0, y: 0 });
   };
 
-  // On Mobile: locked static values (0 interaction/expansion). On Desktop: dynamic scroll transforms.
+  // On Mobile: locked static values & no filter. On Desktop: dynamic scroll transforms & cloth wave filter.
   const activeScale = (mounted && isDesktop) ? videoScale : 1;
   const activeY = (mounted && isDesktop) ? videoY : "0%";
   const activeZIndex = (mounted && isDesktop) ? videoZIndex : 10;
@@ -140,6 +170,7 @@ export default function PosterHero() {
   const activePosterOpacity = (mounted && isDesktop) ? posterOpacity : 1;
   const activeSideLabelsOpacity = (mounted && isDesktop) ? sideLabelsOpacity : 1;
   const activeVideoShadow = (mounted && isDesktop) ? videoShadow : "0px 0px 0px rgba(0,0,0,0)";
+  const activeCardFilter = (mounted && isDesktop) ? "url(#wind-waving-filter)" : "none";
 
   return (
     <section ref={outerSectionRef} className="relative w-full h-[100dvh] min-h-[100dvh] lg:h-[200vh]">
@@ -189,7 +220,7 @@ export default function PosterHero() {
         {/* Outer Poster Container */}
         <div 
           ref={containerRef}
-          onMouseEnter={() => setHovered(true)}
+          onMouseEnter={() => { if (isDesktop) setHovered(true); }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className="poster-card relative aspect-[352/450] lg:aspect-[988/1256] h-[75vh] sm:h-[80vh] lg:h-full max-h-[calc(100dvh-135px)] sm:max-h-[calc(100dvh-150px)] lg:max-h-[calc(100vh-140px)] w-auto max-w-[92vw] sm:max-w-[85vw] lg:max-w-[90vw] my-auto flex-shrink-0 cursor-pointer"
@@ -204,7 +235,7 @@ export default function PosterHero() {
           <motion.div 
             className="absolute inset-0 w-full h-full pointer-events-auto rounded-[6px] lg:rounded-none"
             style={{
-              filter: "url(#wind-waving-filter)",
+              filter: activeCardFilter,
               y: activePosterY,
               opacity: activePosterOpacity,
               boxShadow: "var(--card-shadow)",

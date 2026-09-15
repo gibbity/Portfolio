@@ -139,7 +139,8 @@ export default function ScribePage() {
             thumbnailSrc="/projects/scribe/thumbnail.webp"
             videoSrc="/projects/scribe/preview.mp4"
             alt="Scribe System Overview"
-            aspectRatioClass="aspect-[16/9.5]"
+            aspectRatioClass="aspect-video"
+            objectFit="cover"
             priority
           />
         </div>
