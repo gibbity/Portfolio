@@ -54,7 +54,7 @@ const ResumeSpatialPanel: React.FC<ResumeSpatialPanelProps> = ({ panelX, panelY,
         border: '1px solid #F0F0F0'
       }} className="hide-scrollbar">
         <img 
-          src="/resume.jpg" 
+          src="/resume.webp" 
           alt="Shresth Kushwaha Resume" 
           style={{ width: '100%', height: 'auto', display: 'block' }} 
         />

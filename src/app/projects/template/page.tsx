@@ -596,20 +596,20 @@ export default function CaseStudyTemplatePage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div 
-                onClick={() => setLightboxImage("/projects/context/Extension active.png")}
+                onClick={() => setLightboxImage("/archives/Context-Extension.webp")}
                 className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in"
               >
-                <Image src="/projects/context/Extension active.png" alt="Research Log" fill className="object-cover" />
+                <Image src="/archives/Context-Extension.webp" alt="Research Log" fill className="object-cover" />
                 <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
                 </div>
               </div>
 
               <div 
-                onClick={() => setLightboxImage("/projects/context/Import context.png")}
+                onClick={() => setLightboxImage("/archives/context-showcase.webp")}
                 className="relative aspect-video border border-gray-100 rounded overflow-hidden bg-gray-50 cursor-zoom-in"
               >
-                <Image src="/projects/context/Import context.png" alt="Wireframe flow" fill className="object-cover" />
+                <Image src="/archives/context-showcase.webp" alt="Wireframe flow" fill className="object-cover" />
                 <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span className="text-[12px] font-semibold text-white uppercase bg-black/60 px-3 py-1 rounded">Click to expand</span>
                 </div>

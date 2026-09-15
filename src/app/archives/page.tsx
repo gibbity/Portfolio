@@ -9,8 +9,8 @@ const archiveProjects = [
   { 
     id: "trace",
     title: "Trace", 
-    thumbnailSrc: "/archives/Trace-timelapse.png",
-    showcaseSrc: "/archives/trace-showcase.png",
+    thumbnailSrc: "/archives/Trace-timelapse.webp",
+    showcaseSrc: "/archives/trace-showcase.webp",
     description: "An automated, cross-platform timelapse screen recording tool built to document creative workflows. Designed with a focus on precision and user intent, the interface relies on a manual control trigger to capture progress rather than automated expansion windows.",
     titleColor: "#f97316",
     githubUrl: "https://github.com/shresthkushwaha/Trace-Timelapse"
@@ -18,16 +18,16 @@ const archiveProjects = [
   { 
     id: "spandhika",
     title: "Spandhika UI", 
-    thumbnailSrc: "/archives/Spandhika.png",
-    showcaseSrc: "/archives/spandhika-showcase.png",
+    thumbnailSrc: "/archives/Spandhika.webp",
+    showcaseSrc: "/archives/spandhika-showcase.webp",
     description: "A comprehensive UX/UI overhaul for a patented data visualization dashboard. This professional internship project involved restructuring 15 complex medical diagnostic screens to enhance usability and data comprehension for healthcare professionals.",
     titleColor: "#8b5cf6" 
   },
   { 
     id: "lattice",
     title: "Lattice", 
-    thumbnailSrc: "/archives/Lattice.png",
-    showcaseSrc: "/archives/lattice-showcase.png",
+    thumbnailSrc: "/archives/Lattice.webp",
+    showcaseSrc: "/archives/lattice-showcase.webp",
     description: "A calendar application engineered to streamline scheduling and time management. Originally developed using a cross-platform desktop framework, its architecture is currently being adapted to scale into a fully-fledged web product.",
     titleColor: "#000000",
     githubUrl: "https://github.com/shresthkushwaha/Lattice"
@@ -35,16 +35,16 @@ const archiveProjects = [
   { 
     id: "csea",
     title: "Csea", 
-    thumbnailSrc: "/archives/CSEA.png",
-    showcaseSrc: "/archives/csea-showcase.png",
+    thumbnailSrc: "/archives/CSEA.webp",
+    showcaseSrc: "/archives/csea-showcase.webp",
     description: "A desktop utility engineered to visually organize, store, and retrieve custom UI components. Built to streamline front-end development workflows, it features a robust categorization system utilizing custom tags and folders, alongside a split-view detail environment that pairs a live visual preview with its underlying HTML and React code.",
     titleColor: "#115e59"
   },
   { 
     id: "context",
     title: "Context", 
-    thumbnailSrc: "/archives/Context-Extension.png",
-    showcaseSrc: "/archives/context-showcase.png",
+    thumbnailSrc: "/archives/Context-Extension.webp",
+    showcaseSrc: "/archives/context-showcase.webp",
     description: "A productivity-focused browser extension that visually maps open tabs to help users organize their digital workspace. The project encompasses complete functional specifications and a tailored interface design for seamless web navigation.",
     titleColor: "#4d7c0f",
     githubUrl: "https://github.com/shresthkushwaha/Context-extension"
@@ -52,8 +52,8 @@ const archiveProjects = [
   { 
     id: "ira",
     title: "IRA UI", 
-    thumbnailSrc: "/archives/IRA.png",
-    showcaseSrc: "/archives/ira-showcase.png",
+    thumbnailSrc: "/archives/IRA.webp",
+    showcaseSrc: "/archives/ira-showcase.webp",
     description: "An award-winning, intelligence-driven safety application concept. The interface prioritizes rapid response, intuitive navigation, and user-centric protection, serving as a successful competition entry and a core case study in adaptive design.",
     titleColor: "#7155e8"
   }

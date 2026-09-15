@@ -308,7 +308,7 @@ export default function OpenComponentStudioPage() {
               subtitle: "zero backend infrastructure overhead and total data privacy",
               summary: "All API keys, prompt histories, and custom design tokens are stored locally in IndexedDB. API calls to Gemini, Claude, and local Ollama dispatch directly from the browser.",
               why: "Trade-off: Eliminates server costs and guarantees 100% privacy, though users manage their own local key backups.",
-              image: "/projects/open-component-studio/decision-1.png"
+              image: "/projects/open-component-studio/decision-1.webp"
             },
             {
               index: "DESIGN 2/3",
@@ -316,7 +316,7 @@ export default function OpenComponentStudioPage() {
               subtitle: "modular UI building blocks with high visual fidelity",
               summary: "Restricts LLM outputs to self-contained, modular React components with standardized prop interfaces and scoped CSS variables.",
               why: "Trade-off: Sacrifices multi-page routing in exchange for vastly superior micro-interaction polish and GSAP motion presets.",
-              image: "/projects/open-component-studio/decision-2.png"
+              image: "/projects/open-component-studio/decision-2.webp"
             },
             {
               index: "DESIGN 3/3",
@@ -324,7 +324,7 @@ export default function OpenComponentStudioPage() {
               subtitle: "instant visual attribute tuning with 0ms model latency",
               summary: "Generated components consume CSS variables for design tokens. A visual control panel patches DOM styles in real-time without re-prompting the LLM.",
               why: "Trade-off: Requires prompts to strictly format styles using CSS variables. In return, visual tweaks execute with zero latency and zero token cost.",
-              image: "/projects/open-component-studio/decision-3.png"
+              image: "/projects/open-component-studio/decision-3.webp"
             }
           ].map((item, idx) => (
             <div key={idx} className="space-y-8 pt-14 border-t border-neutral-200/80 first:border-t-0 first:pt-0">

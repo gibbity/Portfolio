@@ -53,7 +53,7 @@ export const portfolioData: NodeData = {
           type: 'project',
           shape: 'hexagon',
           innerContent: '1',
-          image: '/projects/scribe/Scribe- home- dark.png',
+          image: '/projects/scribe/Scribe- home- dark.webp',
           video: '/projects/scribe/preview.mp4',
           url: '/projects/scribe',
           description: 'Non-linear strategic intelligence platform for dissolving context-collapse through hierarchical spatialization.'
@@ -64,7 +64,7 @@ export const portfolioData: NodeData = {
           type: 'project',
           shape: 'hexagon',
           innerContent: '2',
-          image: '/projects/campus-trace/hero.png',
+          image: '/projects/campus-trace/hero.webp',
           video: '/projects/campus-trace/preview.mp4',
           url: '/projects/campus-trace',
           description: 'Forensic geospatial provenance system for real-time incident archival and thematic cluster analysis.'
@@ -75,7 +75,7 @@ export const portfolioData: NodeData = {
           type: 'project',
           shape: 'hexagon',
           innerContent: '3',
-          image: '/projects/open-component-studio/hero.png',
+          image: '/projects/open-component-studio/hero.webp',
           video: '/projects/open-component-studio/open-component-main-video-3x4.mp4',
           url: '/projects/open-component-studio',
           description: 'Web-native, local-first AI prototyping environment for enterprise design privacy and speed.'
@@ -108,7 +108,7 @@ export const portfolioData: NodeData = {
           label: '',
           type: 'project',
           shape: 'triangle',
-          image: '/resume-preview.jpg',
+          image: '/resume-preview.webp',
           url: 'https://drive.google.com/file/d/1M-Vv8jiUz4WKqM2yksYqWPbD6Lb_2Br4/view?usp=sharing',
           description: 'High-fidelity product design resume highlighting specialized work in UX and AI instrumentation.'
         }

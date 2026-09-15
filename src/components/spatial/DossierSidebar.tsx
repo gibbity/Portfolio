@@ -350,7 +350,7 @@ const DossierSidebar: React.FC<DossierSidebarProps> = ({ node, expandedIds, onCl
             boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
           }}>
             <img 
-              src="/resume.jpg" 
+              src="/resume.webp" 
               alt="Shresth Kushwaha Resume" 
               style={{ width: '100%', height: 'auto', display: 'block' }} 
             />

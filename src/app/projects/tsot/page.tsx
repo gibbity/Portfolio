@@ -260,11 +260,11 @@ export default function TSOTPage() {
           "Timeline": "2024",
           "Focus": "AI Compliance / Cognitive Safety",
           "Backend": "Next.js / Supabase / Gemini Embeddings",
-          "Poster": "/projects/tsot/hero.png"
+          "Poster": "/projects/tsot/hero.webp"
         }}
         media={{
           type: "image",
-          src: "/projects/tsot/hero.png"
+          src: "/projects/tsot/hero.webp"
         }}
         theme="dark"
         fullMedia={true}

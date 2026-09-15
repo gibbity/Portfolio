@@ -3,16 +3,16 @@
 import { motion } from "framer-motion";
 
 const projects = [
-    { name: "Scribe Admin", img: "/images/hero/admin-page.png" },
-    { name: "AI Heat Map", img: "/images/hero/ai-heat-map-1.png" },
-    { name: "Mockup Full", img: "/images/hero/mockup-dark-full-screen.png" },
-    { name: "System State", img: "/images/hero/screenshot-1.png" },
-    { name: "Logic Graph", img: "/images/hero/screenshot-2.png" },
-    { name: "Interface Probe", img: "/images/hero/screenshot-3.png" },
-    { name: "Scribe Graph Dark", img: "/images/hero/scribe-graph-dark.png" },
-    { name: "Scribe Graph Light", img: "/images/hero/scribe-graph-light-zoomed.png" },
-    { name: "Scribe Home", img: "/images/hero/scribe-home-dark.png" },
-    { name: "Shelved Index", img: "/images/hero/shelved-extensions.png" },
+    { name: "Scribe Admin", img: "/images/hero/admin-page.webp" },
+    { name: "AI Heat Map", img: "/images/hero/ai-heat-map-1.webp" },
+    { name: "Mockup Full", img: "/images/hero/mockup-dark-full-screen.webp" },
+    { name: "System State", img: "/images/hero/screenshot-1.webp" },
+    { name: "Logic Graph", img: "/images/hero/screenshot-2.webp" },
+    { name: "Interface Probe", img: "/images/hero/screenshot-3.webp" },
+    { name: "Scribe Graph Dark", img: "/images/hero/scribe-graph-dark.webp" },
+    { name: "Scribe Graph Light", img: "/images/hero/scribe-graph-light-zoomed.webp" },
+    { name: "Scribe Home", img: "/images/hero/scribe-home-dark.webp" },
+    { name: "Shelved Index", img: "/images/hero/shelved-extensions.webp" },
 ];
 
 export default function VerticalTicker() {

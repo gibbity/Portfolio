@@ -275,7 +275,7 @@ export default function CampusTracePage() {
               subtitle: "approachable, high-contrast clarity for rapid student reporting",
               summary: "Chose a minimal, high-contrast visual style (thick borders, offset drop shadows, vibrant accents) over a sterile corporate dashboard.",
               why: "Rationale: Approachable aesthetics reduced psychological friction for students, drastically improving submission completion rates during rush hours.",
-              image: "/projects/campus-trace/key-decision-1.png"
+              image: "/projects/campus-trace/key-decision-1.webp"
             },
             {
               index: "DESIGN 2/3",
@@ -283,7 +283,7 @@ export default function CampusTracePage() {
               subtitle: "zero server bottlenecks during high-concurrency peak hours",
               summary: "Handled geospatial rendering and spatial point clustering directly on the client thread using WebGL and MapLibre GL.",
               why: "Rationale: Provided a responsive, 60fps pan/zoom experience without burdening Supabase with thousands of spatial queries during campus rush hours.",
-              image: "/projects/campus-trace/key-decision-2.png"
+              image: "/projects/campus-trace/key-decision-2.webp"
             },
             {
               index: "DESIGN 3/3",
@@ -291,7 +291,7 @@ export default function CampusTracePage() {
               subtitle: "grouping issues by thematic friction rather than dumb radius proximity",
               summary: "Utilized Google Gemini Flash to evaluate report text semantics and synthesize them into cohesive operational hotspots.",
               why: "Rationale: Standard radius clustering fails to differentiate between an electrical hazard and pedestrian congestion in the same 50m zone. Semantic grouping extracted the actual structural cause.",
-              image: "/projects/campus-trace/key-decision-3.png",
+              image: "/projects/campus-trace/key-decision-3.webp",
               compactImage: true
             }
           ].map((item, idx) => (

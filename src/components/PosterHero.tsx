@@ -331,7 +331,7 @@ export default function PosterHero() {
               }}
             >
               <Image
-                src="/profile-pic.png"
+                src="/profile-pic.webp"
                 alt="Shresth Kushwaha Cutout"
                 fill
                 sizes="(max-width: 768px) 50vw, 300px"

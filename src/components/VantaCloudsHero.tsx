@@ -216,7 +216,7 @@ export default function VantaCloudsHero() {
           className="group transition-transform duration-300 hover:scale-110 focus:outline-none"
         >
           <img
-            src="/hero-assets/Selectod work heart icon.png"
+            src="/hero-assets/Selectod work heart icon.webp"
             alt="Selected Work"
             className="h-5 sm:h-5.5 w-auto object-contain opacity-90 group-hover:opacity-100"
           />
@@ -228,7 +228,7 @@ export default function VantaCloudsHero() {
           className="group transition-transform duration-300 hover:scale-110 focus:outline-none"
         >
           <img
-            src="/hero-assets/Fun smily icon.png"
+            src="/hero-assets/Fun smily icon.webp"
             alt="Fun / About"
             className="h-5 sm:h-5.5 w-auto object-contain opacity-90 group-hover:opacity-100"
           />
@@ -240,7 +240,7 @@ export default function VantaCloudsHero() {
           className="group transition-transform duration-300 hover:scale-110 focus:outline-none"
         >
           <img
-            src="/hero-assets/Contact envelop icon.png"
+            src="/hero-assets/Contact envelop icon.webp"
             alt="Contact"
             className="h-5 sm:h-5.5 w-auto object-contain opacity-90 group-hover:opacity-100"
           />
@@ -252,7 +252,7 @@ export default function VantaCloudsHero() {
         {/* Raw Profile Portrait Cutout Image */}
         <div className="relative mb-3 sm:mb-4 flex justify-center">
           <img
-            src="/hero-assets/profile face icon.png"
+            src="/hero-assets/profile face icon.webp"
             alt="Shresth Kushwaha"
             className="w-11 sm:w-13 md:w-16 h-auto object-contain max-h-[90px] drop-shadow-[0_6px_16px_rgba(0,0,0,0.85)]"
           />
@@ -261,7 +261,7 @@ export default function VantaCloudsHero() {
         {/* Liquid Chrome "Shresth Kushwaha" Hero Text Graphic */}
         <div className="relative mb-4 sm:mb-5 w-full flex justify-center">
           <img
-            src="/hero-assets/Shresth kushwaha hero text.png"
+            src="/hero-assets/Shresth kushwaha hero text.webp"
             alt="Shresth Kushwaha"
             className="w-full max-w-[240px] sm:max-w-[330px] md:max-w-[390px] lg:max-w-[420px] h-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)]"
           />
