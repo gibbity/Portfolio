@@ -14,12 +14,65 @@ const LOG_MESSAGES = [
   "System ready."
 ];
 
+// Inlined high-performance SVG vectors (0 external HTTP requests)
 const ICONS = [
-  { id: "figma", name: "Figma", url: "https://images.shadcnspace.com/assets/svgs/figma.svg", threshold: 15 },
-  { id: "supabase", name: "Supabase", url: "https://images.shadcnspace.com/assets/svgs/supabase.svg", threshold: 35 },
-  { id: "claude", name: "Claude", url: "https://images.shadcnspace.com/assets/svgs/clude.svg", threshold: 55 },
-  { id: "antigravity", name: "Antigravity", isCustom: true, threshold: 75 },
-  { id: "gemini", name: "Gemini", url: "https://images.shadcnspace.com/assets/svgs/gemini.svg", threshold: 95 }
+  {
+    id: "figma",
+    name: "Figma",
+    threshold: 15,
+    svg: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M8 24c2.2 0 4-1.8 4-4v-4H8c-2.2 0-4 1.8-4 4s1.8 4 4 4z" fill="#0ACF83"/>
+        <path d="M4 12c0-2.2 1.8-4 4-4h4v8H8c-2.2 0-4-1.8-4-4z" fill="#A259FF"/>
+        <path d="M4 4c0-2.2 1.8-4 4-4h4v8H8C5.8 8 4 6.2 4 4z" fill="#F24E1E"/>
+        <path d="M12 0h4c2.2 0 4 1.8 4 4s-1.8 4-4 4h-4V0z" fill="#FF7262"/>
+        <path d="M20 12c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4z" fill="#1ABCFE"/>
+      </svg>
+    )
+  },
+  {
+    id: "supabase",
+    name: "Supabase",
+    threshold: 35,
+    svg: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M13.35 22.06c-.66.8-1.92.35-1.95-.71l-.34-10.45 9.07-1.1c.97-.12 1.5 1.05.85 1.77L13.35 22.06z" fill="#3ECF8E"/>
+        <path d="M10.65 1.94c.66-.8 1.92-.35 1.95.71l.34 10.45-9.07 1.1c-.97.12-1.5-1.05-.85-1.77L10.65 1.94z" fill="#3ECF8E" fillOpacity="0.7"/>
+      </svg>
+    )
+  },
+  {
+    id: "claude",
+    name: "Claude",
+    threshold: 55,
+    svg: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#D97706">
+        <path d="M12 2L9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5L12 2z"/>
+      </svg>
+    )
+  },
+  {
+    id: "antigravity",
+    name: "Antigravity",
+    threshold: 75,
+    svg: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A5EBF" strokeWidth="2">
+        <circle cx="12" cy="7" r="3" fill="#4A5EBF" />
+        <path d="M5 17q7 3 14 0" strokeLinecap="round" />
+        <path d="M8 20q4 2 8 0" strokeLinecap="round" opacity="0.5" />
+      </svg>
+    )
+  },
+  {
+    id: "gemini",
+    name: "Gemini",
+    threshold: 95,
+    svg: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z" fill="#4A5EBF"/>
+      </svg>
+    )
+  }
 ];
 
 export default function Preloader() {
@@ -29,13 +82,15 @@ export default function Preloader() {
 
   const [progress, setProgress] = useState(0);
   const [currentLog, setCurrentLog] = useState(0);
-  const [phase, setPhase] = useState<"loading" | "curtain" | "done">(isHomepage ? "loading" : "done");
-  const [isMounted, setIsMounted] = useState(false);
+  const [phase, setPhase] = useState<"loading" | "curtain" | "done">(() => {
+    if (typeof window !== "undefined") {
+      if (sessionStorage.getItem("portfolio_has_seen_preloader") === "1" || !isHomepage) {
+        return "done";
+      }
+    }
+    return isHomepage ? "loading" : "done";
+  });
   const pathRef = useRef<SVGPathElement>(null);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   // Background Route Prefetching (non-blocking)
   useEffect(() => {
@@ -45,13 +100,19 @@ export default function Preloader() {
     router.prefetch("/projects/open-component-studio");
   }, [isHomepage, router]);
 
-  // Fast, fluid entrance progress (sub-second completion)
+  // Snappy entrance progress (sub-400ms completion for high Core Web Vitals score)
   useEffect(() => {
-    if (!isHomepage) return;
+    if (!isHomepage || phase === "done") return;
+
+    if (sessionStorage.getItem("portfolio_has_seen_preloader") === "1") {
+      setPhase("done");
+      return;
+    }
 
     const startTime = performance.now();
-    const duration = 550; // 550ms total snappy intro
+    const duration = 380; // 380ms total snappy intro
 
+    let frameId: number;
     const animFrame = () => {
       const now = performance.now();
       const elapsed = now - startTime;
@@ -59,24 +120,24 @@ export default function Preloader() {
       setProgress(pct);
 
       if (pct < 100) {
-        requestAnimationFrame(animFrame);
+        frameId = requestAnimationFrame(animFrame);
       } else {
-        setTimeout(() => setPhase("curtain"), 100);
+        setTimeout(() => setPhase("curtain"), 50);
       }
     };
 
-    const frameId = requestAnimationFrame(animFrame);
+    frameId = requestAnimationFrame(animFrame);
 
     // Fast log message simulation
     const logInterval = setInterval(() => {
       setCurrentLog(prev => (prev + 1) % LOG_MESSAGES.length);
-    }, 120);
+    }, 90);
 
     return () => {
       cancelAnimationFrame(frameId);
       clearInterval(logInterval);
     };
-  }, [isHomepage]);
+  }, [isHomepage, phase]);
 
   useEffect(() => {
     if (phase === "curtain" && pathRef.current) {
@@ -86,6 +147,9 @@ export default function Preloader() {
 
       const tl = gsap.timeline({
         onComplete: () => {
+          try {
+            sessionStorage.setItem("portfolio_has_seen_preloader", "1");
+          } catch {}
           setPhase("done");
         }
       });
@@ -93,12 +157,12 @@ export default function Preloader() {
       tl.set(pathRef.current, { attr: { d: full } })
         .to(pathRef.current, {
           attr: { d: mid },
-          duration: 0.5,
+          duration: 0.35,
           ease: "power3.in"
         })
         .to(pathRef.current, {
           attr: { d: empty },
-          duration: 0.4,
+          duration: 0.28,
           ease: "power3.out"
         });
     }
@@ -114,7 +178,7 @@ export default function Preloader() {
             key="preloader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#080808] overflow-hidden"
           >
             {/* Background Grid */}
@@ -123,13 +187,13 @@ export default function Preloader() {
             
             <div className="relative flex flex-col items-center">
               {/* Tech Icons Row */}
-              <div className="flex items-center gap-6 mb-12 mt-4">
+              <div className="flex items-center gap-4 sm:gap-6 mb-10 mt-4">
                 {ICONS.map((icon) => {
                   const isActive = Math.floor(progress) >= icon.threshold;
                   return (
                     <div 
                       key={icon.id}
-                      className="transition-all duration-500 p-3 rounded-lg border flex items-center justify-center"
+                      className="transition-all duration-300 p-2.5 sm:p-3 rounded-lg border flex items-center justify-center"
                       style={{
                         backgroundColor: isActive ? "rgba(74, 94, 191, 0.12)" : "transparent",
                         borderColor: isActive ? "rgba(74, 94, 191, 0.45)" : "rgba(255, 255, 255, 0.05)",
@@ -139,30 +203,15 @@ export default function Preloader() {
                       }}
                       title={icon.name}
                     >
-                      {icon.isCustom ? (
-                        /* Antigravity Custom SVG */
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A5EBF" strokeWidth="2" className={isActive ? "animate-pulse" : ""}>
-                          <circle cx="12" cy="7" r="3" fill="#4A5EBF" />
-                          <path d="M5 17q7 3 14 0" strokeLinecap="round" />
-                          <path d="M8 20q4 2 8 0" strokeLinecap="round" opacity="0.5" />
-                        </svg>
-                      ) : (
-                        <img 
-                          src={icon.url} 
-                          alt={icon.name} 
-                          width={24}
-                          height={24}
-                          className="w-6 h-6 object-contain"
-                        />
-                      )}
+                      {icon.svg}
                     </div>
                   );
                 })}
               </div>
 
               {/* Counter */}
-              <div className="mb-4">
-                <span className="font-helvetica text-[48px] font-bold tracking-tighter tabular-nums text-white">
+              <div className="mb-3">
+                <span className="font-helvetica text-[42px] sm:text-[48px] font-bold tracking-tighter tabular-nums text-white">
                   {Math.min(100, Math.floor(progress))}
                 </span>
                 <span className="font-helvetica text-[14px] font-medium text-[#4A5EBF] ml-1">%</span>
@@ -173,10 +222,10 @@ export default function Preloader() {
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={currentLog}
-                    initial={{ y: 10, opacity: 0 }}
+                    initial={{ y: 8, opacity: 0 }}
                     animate={{ y: 0, opacity: 0.4 }}
-                    exit={{ y: -10, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                    exit={{ y: -8, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
                     className="font-mono text-[9px] uppercase tracking-[0.2em] text-white"
                   >
                     {LOG_MESSAGES[currentLog]}
@@ -185,22 +234,22 @@ export default function Preloader() {
               </div>
 
               {/* Progress Bar */}
-              <div className="absolute -bottom-24 w-64 h-[1px] bg-[#E0E0E0]">
+              <div className="absolute -bottom-20 w-56 sm:w-64 h-[1px] bg-[#222222]">
                 <motion.div 
                   className="h-full bg-[#4A5EBF]" 
                   style={{ width: `${progress}%` }}
-                  transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+                  transition={{ type: "spring", bounce: 0, duration: 0.3 }}
                 />
               </div>
             </div>
 
             {/* Decorative Corner Accents */}
-            <div className="absolute top-12 left-12 w-8 h-8 border-t border-l border-[#4A5EBF] opacity-20" />
-            <div className="absolute top-12 right-12 w-8 h-8 border-t border-r border-[#4A5EBF] opacity-20" />
-            <div className="absolute bottom-12 left-12 w-8 h-8 border-b border-l border-[#4A5EBF] opacity-20" />
-            <div className="absolute bottom-12 right-12 w-8 h-8 border-b border-r border-[#4A5EBF] opacity-20" />
+            <div className="absolute top-8 left-8 sm:top-12 sm:left-12 w-6 h-6 sm:w-8 sm:h-8 border-t border-l border-[#4A5EBF] opacity-20" />
+            <div className="absolute top-8 right-8 sm:top-12 sm:right-12 w-6 h-6 sm:w-8 sm:h-8 border-t border-r border-[#4A5EBF] opacity-20" />
+            <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12 w-6 h-6 sm:w-8 sm:h-8 border-b border-l border-[#4A5EBF] opacity-20" />
+            <div className="absolute bottom-8 right-8 sm:bottom-12 sm:right-12 w-6 h-6 sm:w-8 sm:h-8 border-b border-r border-[#4A5EBF] opacity-20" />
             
-            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center">
               <span className="font-mono text-[8px] uppercase tracking-[0.4em] opacity-20">Secure Link Established</span>
             </div>
           </motion.div>

@@ -103,7 +103,7 @@ function CardMedia({
           loop
           muted
           playsInline
-          preload="auto"
+          preload="none"
           className={`w-full h-full object-cover transition-opacity duration-300 ${
             shouldPlayVideo ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
