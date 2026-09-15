@@ -49,9 +49,10 @@ export default function PosterHero() {
       if (rect.height > 50 && rect.width > 50) {
         const isDesk = window.innerWidth >= 1024;
         const videoRatioW = isDesk ? 0.7702 : 0.855;
+        const videoRatioH = isDesk ? 0.3408 : 0.3762;
         
         const initialVideoWidth = rect.width * videoRatioW;
-        const initialVideoHeight = initialVideoWidth * (9 / 16);
+        const initialVideoHeight = rect.height * videoRatioH;
 
         // Occupy >= 88% width or 85% height of the screen viewport
         const targetWidth = window.innerWidth * (isDesk ? 0.90 : 0.94);
@@ -338,7 +339,7 @@ export default function PosterHero() {
             </div>
           </motion.div>
 
-          {/* 2. SHOWREEL VIDEO MOCKUP - Strict 16:9 Cinema Frame (No Letterboxing/Cropping) */}
+          {/* 2. SHOWREEL VIDEO MOCKUP */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -348,7 +349,7 @@ export default function PosterHero() {
               left: "var(--video-left)",
               top: "var(--video-top)",
               width: "var(--video-width)",
-              aspectRatio: "16 / 9",
+              height: "var(--video-height)",
               scale: activeScale,
               y: activeY,
               zIndex: activeZIndex,
@@ -362,7 +363,7 @@ export default function PosterHero() {
               muted
               playsInline
               preload="metadata"
-              className="w-full h-full object-cover rounded-[1.2cqw]"
+              className="w-full h-full object-contain rounded-[1.2cqw]"
             />
           </motion.div>
 
