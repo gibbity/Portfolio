@@ -15,13 +15,19 @@ export default function PosterHero() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [calculatedScale, setCalculatedScale] = useState(2.2);
+  const [isDesktop, setIsDesktop] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const updateDesktop = () => setIsDesktop(mediaQuery.matches);
+    updateDesktop();
+    mediaQuery.addEventListener("change", updateDesktop);
+    return () => mediaQuery.removeEventListener("change", updateDesktop);
   }, []);
 
-  // Scroll Progress tracking for sticky expansion section
+  // Scroll Progress tracking for sticky expansion section (only active on desktop)
   const { scrollYProgress } = useScroll({
     target: outerSectionRef,
     offset: ["start start", "end end"]
@@ -41,16 +47,16 @@ export default function PosterHero() {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       if (rect.height > 50 && rect.width > 50) {
-        const isDesktop = window.innerWidth >= 1024;
-        const videoRatioW = isDesktop ? 0.7702 : 0.855;
-        const videoRatioH = isDesktop ? 0.3408 : 0.3762;
+        const isDesk = window.innerWidth >= 1024;
+        const videoRatioW = isDesk ? 0.7702 : 0.855;
+        const videoRatioH = isDesk ? 0.3408 : 0.3762;
         
         const initialVideoWidth = rect.width * videoRatioW;
         const initialVideoHeight = rect.height * videoRatioH;
 
         // Occupy >= 88% width or 85% height of the screen viewport
-        const targetWidth = window.innerWidth * (isDesktop ? 0.90 : 0.94);
-        const targetHeight = window.innerHeight * (isDesktop ? 0.86 : 0.88);
+        const targetWidth = window.innerWidth * (isDesk ? 0.90 : 0.94);
+        const targetHeight = window.innerHeight * (isDesk ? 0.86 : 0.88);
 
         const scaleX = targetWidth / Math.max(initialVideoWidth, 1);
         const scaleY = targetHeight / Math.max(initialVideoHeight, 1);
@@ -66,12 +72,12 @@ export default function PosterHero() {
     return () => window.removeEventListener("resize", calculateTargetDimensions);
   }, []);
 
-  // 1. Poster background and text slide UP out of visibility smoothly
+  // 1. Poster background and text slide UP out of visibility smoothly (Desktop Only)
   const posterY = useTransform(smoothProgress, [0, 0.6], ["0%", "-115%"]);
   const posterOpacity = useTransform(smoothProgress, [0, 0.45], [1, 0]);
   const sideLabelsOpacity = useTransform(smoothProgress, [0, 0.3], [1, 0]);
   
-  // 2. Showreel expands smoothly from 1 to calculatedScale and centers perfectly in viewport
+  // 2. Showreel expands smoothly from 1 to calculatedScale and centers perfectly in viewport (Desktop Only)
   const videoScale = useTransform(smoothProgress, [0, 0.65], [1, calculatedScale]);
   const videoY = useTransform(smoothProgress, [0, 0.65], ["0%", "10.74%"]);
   const videoZIndex = useTransform(smoothProgress, [0, 0.02], [10, 80]);
@@ -103,78 +109,9 @@ export default function PosterHero() {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  // Gyroscopic Tilt Listener for Mobile View
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const targetTilt = { x: 0, y: 0 };
-    const currentTilt = { x: 0, y: 0 };
-    let gyroAnimId: number;
-
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-      if (e.gamma === null || e.beta === null) return;
-      if (scrollYProgress.get() > 0.005) return;
-
-      const clampedGamma = Math.min(35, Math.max(-35, e.gamma));
-      const clampedBeta = Math.min(35, Math.max(-35, e.beta - 45));
-
-      targetTilt.y = (clampedGamma / 35) * 8.5;
-      targetTilt.x = -(clampedBeta / 35) * 8.5;
-    };
-
-    const smoothGyroLoop = () => {
-      if (window.innerWidth < 1024) {
-        currentTilt.x += (targetTilt.x - currentTilt.x) * 0.12;
-        currentTilt.y += (targetTilt.y - currentTilt.y) * 0.12;
-        setTilt({ x: currentTilt.x, y: currentTilt.y });
-      }
-      gyroAnimId = requestAnimationFrame(smoothGyroLoop);
-    };
-
-    if (typeof window.DeviceOrientationEvent !== "undefined") {
-      window.addEventListener("deviceorientation", handleOrientation, { passive: true });
-      gyroAnimId = requestAnimationFrame(smoothGyroLoop);
-    }
-
-    return () => {
-      if (typeof window.DeviceOrientationEvent !== "undefined") {
-        window.removeEventListener("deviceorientation", handleOrientation);
-      }
-      cancelAnimationFrame(gyroAnimId);
-    };
-  }, [scrollYProgress]);
-
-  // Physics loop for mouse hover wave ripple effect
-  useEffect(() => {
-    let animId: number;
-
-    const updateFilter = () => {
-      const isScrolling = scrollYProgress.get() > 0.005;
-      const targetScale = (hovered && !isScrolling) ? 22 : 0;
-      scaleVal.current += (targetScale - scaleVal.current) * 0.15;
-
-      if (dispRef.current) {
-        dispRef.current.setAttribute("scale", scaleVal.current.toFixed(2));
-      }
-
-      if (scaleVal.current > 0.05) {
-        phase.current += 0.025;
-        if (turbRef.current) {
-          const freqX = 0.004 + Math.sin(phase.current) * 0.001;
-          const freqY = 0.007 + Math.cos(phase.current * 0.7) * 0.0015;
-          turbRef.current.setAttribute("baseFrequency", `${freqX} ${freqY}`);
-        }
-      }
-
-      animId = requestAnimationFrame(updateFilter);
-    };
-
-    updateFilter();
-    return () => cancelAnimationFrame(animId);
-  }, [hovered, scrollYProgress]);
-
+  // Mouse move handler - Desktop only
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (scrollYProgress.get() > 0.005) return;
+    if (!isDesktop || scrollYProgress.get() > 0.005) return;
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -195,14 +132,17 @@ export default function PosterHero() {
     setTilt({ x: 0, y: 0 });
   };
 
-  const activeScale = mounted ? videoScale : 1;
-  const activeY = mounted ? videoY : "0%";
-  const activeZIndex = mounted ? videoZIndex : 10;
-  const activePosterY = mounted ? posterY : "0%";
-  const activePosterOpacity = mounted ? posterOpacity : 1;
+  // On Mobile: locked static values (0 interaction/expansion). On Desktop: dynamic scroll transforms.
+  const activeScale = (mounted && isDesktop) ? videoScale : 1;
+  const activeY = (mounted && isDesktop) ? videoY : "0%";
+  const activeZIndex = (mounted && isDesktop) ? videoZIndex : 10;
+  const activePosterY = (mounted && isDesktop) ? posterY : "0%";
+  const activePosterOpacity = (mounted && isDesktop) ? posterOpacity : 1;
+  const activeSideLabelsOpacity = (mounted && isDesktop) ? sideLabelsOpacity : 1;
+  const activeVideoShadow = (mounted && isDesktop) ? videoShadow : "0px 0px 0px rgba(0,0,0,0)";
 
   return (
-    <section ref={outerSectionRef} className="relative w-full h-screen min-h-screen min-h-[100dvh] lg:h-[200vh]">
+    <section ref={outerSectionRef} className="relative w-full h-[100dvh] min-h-[100dvh] lg:h-[200vh]">
       {/* SVG Displacement Filter Definition */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
@@ -413,7 +353,7 @@ export default function PosterHero() {
               scale: activeScale,
               y: activeY,
               zIndex: activeZIndex,
-              boxShadow: videoShadow,
+              boxShadow: activeVideoShadow,
             }}
           >
             <video
@@ -437,7 +377,7 @@ export default function PosterHero() {
               top: "43.39%",
               width: "15%",
               fontSize: "2.43cqw",
-              opacity: sideLabelsOpacity,
+              opacity: activeSideLabelsOpacity,
             }}
           >
             <motion.p
@@ -458,7 +398,7 @@ export default function PosterHero() {
               top: "42.11%",
               width: "25%",
               fontSize: "2.43cqw",
-              opacity: sideLabelsOpacity,
+              opacity: activeSideLabelsOpacity,
             }}
           >
             <motion.p
