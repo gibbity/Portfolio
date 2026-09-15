@@ -286,7 +286,13 @@ const Waves = () => {
             ctx.stroke();
         };
 
+        let isVisible = true;
         const tick = (time: number) => {
+            if (!isVisible) {
+                state.animationFrameId = 0;
+                return;
+            }
+
             const { mouse } = state;
             const { MOUSE_SMOOTHING_FACTOR, MAX_MOUSE_VELOCITY } = animationConfig;
 
@@ -370,6 +376,16 @@ const Waves = () => {
         setSize();
         setLines();
 
+        // IntersectionObserver pauses rendering when off-screen for 100% CPU savings
+        const observer = new IntersectionObserver(([entry]) => {
+            isVisible = entry.isIntersecting;
+            if (isVisible && !state.animationFrameId) {
+                state.animationFrameId = requestAnimationFrame(tick);
+            }
+        }, { threshold: 0.05 });
+
+        if (container) observer.observe(container);
+
         window.addEventListener("resize", onResize);
         window.addEventListener("mousemove", onMouseMove);
         container.addEventListener("touchmove", onTouchMove, { passive: false });
@@ -378,6 +394,7 @@ const Waves = () => {
         state.animationFrameId = requestAnimationFrame(tick);
 
         return () => {
+            observer.disconnect();
             window.removeEventListener("resize", onResize);
             window.removeEventListener("mousemove", onMouseMove);
             container.removeEventListener("touchmove", onTouchMove);

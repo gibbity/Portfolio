@@ -109,7 +109,7 @@ export default function PosterHero() {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  // Physics loop for mouse hover wave ripple / cloth waving effect (Desktop Only)
+  // Physics loop for mouse hover wave ripple / cloth waving effect (Desktop Only - Sleeps when idle)
   useEffect(() => {
     if (!isDesktop) return;
     let animId: number;
@@ -132,14 +132,22 @@ export default function PosterHero() {
         }
       }
 
-      animId = requestAnimationFrame(updateFilter);
+      // ONLY continue RAF loop if actively hovered OR scale is settling back to 0
+      if (hovered || scaleVal.current > 0.05) {
+        animId = requestAnimationFrame(updateFilter);
+      } else {
+        if (dispRef.current) dispRef.current.setAttribute("scale", "0");
+      }
     };
 
-    updateFilter();
+    if (hovered || scaleVal.current > 0.05) {
+      animId = requestAnimationFrame(updateFilter);
+    }
+
     return () => cancelAnimationFrame(animId);
   }, [hovered, isDesktop, scrollYProgress]);
 
-  // Mouse move handler - Desktop only
+  // Mouse move handler - Desktop only (Direct DOM updates for silky 120fps with 0 React re-renders)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDesktop || scrollYProgress.get() > 0.005) return;
     if (!containerRef.current) return;
@@ -150,16 +158,23 @@ export default function PosterHero() {
     const px = Math.min(100, Math.max(0, (x / rect.width) * 100));
     const py = Math.min(100, Math.max(0, (y / rect.height) * 100));
 
-    setMousePos({ x: px, y: py });
+    // Update radial gradient mask directly for 0ms lag
+    const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800"><defs><radialGradient id="g" cx="${px.toFixed(1)}%" cy="${py.toFixed(1)}%" r="35%"><stop offset="0%" stop-color="#ffffff"/><stop offset="50%" stop-color="#888888"/><stop offset="100%" stop-color="#000000"/></radialGradient></defs><rect width="800" height="800" fill="url(#g)"/></svg>`;
+    const dataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
+    if (feImageRef.current) {
+      feImageRef.current.setAttribute("href", dataUrl);
+    }
     
     const rotateX = -((y - rect.height / 2) / rect.height) * 8;
     const rotateY = ((x - rect.width / 2) / rect.width) * 8;
-    setTilt({ x: rotateX, y: rotateY });
+    containerRef.current.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
   };
 
   const handleMouseLeave = () => {
     setHovered(false);
-    setTilt({ x: 0, y: 0 });
+    if (containerRef.current) {
+      containerRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+    }
   };
 
   // On Mobile: locked static values & no filter. On Desktop: dynamic scroll transforms & cloth wave filter.

@@ -370,7 +370,7 @@ export default function SandPlayground() {
     const render = (now: number) => {
       if (!isVisible) {
         lastFrameTime = now;
-        animationFrameId = requestAnimationFrame(render);
+        animationFrameId = 0;
         return;
       }
 
@@ -430,6 +430,10 @@ export default function SandPlayground() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         isVisible = entry.isIntersecting;
+        if (isVisible && !animationFrameId) {
+          lastFrameTime = performance.now();
+          animationFrameId = requestAnimationFrame(render);
+        }
       },
       { threshold: 0.05 }
     );
@@ -438,8 +442,10 @@ export default function SandPlayground() {
       observer.observe(containerRef.current);
     }
 
-    lastFrameTime = performance.now();
-    animationFrameId = requestAnimationFrame(render);
+    if (isVisible) {
+      lastFrameTime = performance.now();
+      animationFrameId = requestAnimationFrame(render);
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
