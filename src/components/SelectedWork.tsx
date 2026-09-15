@@ -91,7 +91,7 @@ function CardMedia({
         alt={name}
         fill
         sizes="(max-width: 768px) 85vw, 40vw"
-        className={`object-cover w-full h-full transition-opacity duration-300 ${
+        className={`object-contain w-full h-full transition-opacity duration-300 ${
           shouldPlayVideo ? "opacity-0" : "opacity-100"
         }`}
       />
@@ -104,7 +104,7 @@ function CardMedia({
           muted
           playsInline
           preload="auto"
-          className={`w-full h-full object-cover transition-opacity duration-300 ${
+          className={`w-full h-full object-contain transition-opacity duration-300 ${
             shouldPlayVideo ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         />
