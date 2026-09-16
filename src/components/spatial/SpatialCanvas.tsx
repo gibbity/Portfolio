@@ -17,8 +17,8 @@ const SpatialCanvas: React.FC = () => {
   const isProjectMode = !!selectedProject;
 
   const [dimensions, setDimensions] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
-    height: typeof window !== 'undefined' ? window.innerHeight : 800,
+    width: 1200,
+    height: 800,
   });
 
   const [isMobile, setIsMobile] = useState(false);

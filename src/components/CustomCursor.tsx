@@ -33,9 +33,11 @@ const CustomCursor = () => {
   const cursorY = useSpring(mouseY, { stiffness: 150, damping: 22, mass: 0.5 });
 
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -108,7 +110,7 @@ const CustomCursor = () => {
 
   const hasMedia = !!mediaData;
 
-  if (isMobile) return null;
+  if (!mounted || isMobile) return null;
 
   return (
     <>

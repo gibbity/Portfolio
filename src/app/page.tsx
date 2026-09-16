@@ -10,6 +10,11 @@ const SelectedWork = dynamic(() => import("@/components/SelectedWork"), {
   loading: () => <div className="min-h-[600px] w-full bg-white" />
 });
 
+const CurrentlyWorkingOn = dynamic(() => import("@/components/CurrentlyWorkingOn"), {
+  ssr: true,
+  loading: () => <div className="min-h-[300px] w-full bg-[#0663FF]" />
+});
+
 const Waves = dynamic(() => import("@/components/Waves"), {
   ssr: false,
   loading: () => <div className="min-h-[400px] w-full bg-black" />
@@ -43,6 +48,11 @@ export default function Home() {
       {/* Selected Work Section */}
       <section id="work" className="relative z-10 bg-white">
         <SelectedWork />
+      </section>
+
+      {/* Currently Working On (TSOT) Section */}
+      <section id="currently-working" className="relative z-10">
+        <CurrentlyWorkingOn />
       </section>
 
       {/* Waves Playground Section */}

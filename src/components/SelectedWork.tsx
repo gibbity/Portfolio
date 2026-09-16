@@ -10,7 +10,7 @@ const projects = [
     id: "scribe",
     name: "Scribe",
     description: "Non-linear strategic intelligence platform for dissolving context-collapse through hierarchical spatialization.",
-    thumbnail: "/projects/scribe/thumbnail.webp",
+    thumbnail: "/projects/scribe/thumbnail-v3.webp",
     video: "/projects/scribe/preview.mp4",
     liveUrl: "https://scribe-neon.vercel.app/landing"
   },

@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scribe — Case Study | Shresth Kushwaha</title>
+
+  <!-- External Stylesheet Fallback (Tailwind CSS) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  
+  <!-- Google Fonts: Newsreader (Serif), DM Sans (Sans), JetBrains Mono (Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+
+  <!-- Complete Standalone Embedded CSS (Guaranteed to render in any HTML viewer with or without JS/External CDNs) -->
+  <style>
+    /* ==========================================================================
+       RESET & CORE TYPOGRAPHY
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #FCFCFC;
+    }
+    
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #FCFCFC;
+      color: #171717;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background-color: #171717;
+      color: #FFFFFF;
+    }
+
+    .font-serif {
+      font-family: 'Newsreader', Georgia, Cambria, "Times New Roman", Times, serif;
+    }
+
+    .font-sans {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    /* ==========================================================================
+       CONTAINERS & LAYOUT UTILITIES
+       ========================================================================== */
+    .container-custom {
+      width: 100%;
+      max-width: 1152px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      .container-custom {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .container-custom {
+        padding-left: 96px;
+        padding-right: 96px;
+      }
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (min-width: 768px) {
+      .grid-layout {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 56px;
+      }
+      .col-span-5 {
+        grid-column: span 5 / span 5;
+      }
+      .col-span-7 {
+        grid-column: span 7 / span 7;
+      }
+    }
+
+    /* ==========================================================================
+       TYPOGRAPHY STYLES
+       ========================================================================== */
+    .hero-heading {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 42px;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      font-weight: 400;
+      color: #171717;
+    }
+    @media (min-width: 640px) {
+      .hero-heading {
+        font-size: 58px;
+      }
+    }
+    @media (min-width: 768px) {
+      .hero-heading {
+        font-size: 74px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .hero-heading {
+        font-size: 86px;
+      }
+    }
+
+    .section-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 32px;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      font-weight: 400;
+      color: #171717;
+    }
+    @media (min-width: 640px) {
+      .section-title {
+        font-size: 40px;
+      }
+    }
+    @media (min-width: 768px) {
+      .section-title {
+        font-size: 46px;
+      }
+    }
+
+    .section-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: #A3A3A3;
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    .body-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #525252;
+    }
+    @media (min-width: 768px) {
+      .body-text {
+        font-size: 17px;
+      }
+    }
+
+    /* ==========================================================================
+       CARDS, BORDERS & SHADOWS
+       ========================================================================== */
+    .bento-card {
+      background-color: #FFFFFF;
+      border: 1px solid #E5E5E5;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .pill-tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid #E5E5E5;
+      background-color: #F5F5F5;
+      color: #404040;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 28px;
+      background-color: #171717;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      background-color: #000000;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 28px;
+      background-color: transparent;
+      border: 1px solid #D4D4D4;
+      color: #404040;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      border-color: #171717;
+      color: #171717;
+    }
+
+    /* ==========================================================================
+       MEDIA & ASPECT RATIOS
+       ========================================================================== */
+    .aspect-video-custom {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      background-color: #000000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .aspect-video-custom > img,
+    .aspect-video-custom > video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .img-showcase {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      border: 1px solid #E5E5E5;
+      background-color: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .full-width-banner {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 56px;
+      margin-bottom: 56px;
+    }
+    .full-width-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ==========================================================================
+       WAYFINDING & NAVIGATION
+       ========================================================================== */
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 32px;
+      z-index: 50;
+      mix-blend-difference: normal;
+      background: linear-gradient(to bottom, rgba(252,252,252,0.92) 0%, rgba(252,252,252,0) 100%);
+      pointer-events: none;
+    }
+    .nav-bar a, .nav-bar span {
+      pointer-events: auto;
+    }
+    @media (min-width: 768px) {
+      .nav-bar {
+        padding: 32px 48px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .nav-bar {
+        padding: 32px 80px;
+      }
+    }
+
+    .spine-rail {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      z-index: 40;
+    }
+    @media (min-width: 768px) {
+      .spine-rail {
+        display: flex;
+        right: 36px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .spine-rail {
+        right: 48px;
+      }
+    }
+
+    .spine-line {
+      width: 1.5px;
+      height: 180px;
+      background-color: #E5E5E5;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+
+    .spine-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #D4D4D4;
+      background-color: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+    .spine-dot.active {
+      background-color: #171717;
+      border-color: #171717;
+      transform: scale(1.3);
+    }
+    .spine-dot:hover:not(.active) {
+      border-color: #171717;
+    }
+
+    .section-border-top {
+      border-top: 1px solid rgba(229, 229, 229, 0.8);
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    @media (min-width: 768px) {
+      .section-border-top {
+        padding-top: 120px;
+        padding-bottom: 120px;
+      }
+    }
+  </style>
+</head>
+<body class="relative">
+
+  <!-- Scroll Progress Indicator Bar -->
+  <div id="scroll-progress-bar" style="position: fixed; top: 0; left: 0; height: 2px; background-color: #171717; z-index: 999; width: 0%; transition: width 0.08s linear;"></div>
+
+  <!-- Minimal Nav Header -->
+  <header class="nav-bar">
+    <a href="/" style="color: #171717; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; text-decoration: none;">
+      ← Home
+    </a>
+    <span style="color: #A3A3A3; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em;">
+      Scribe
+    </span>
+  </header>
+
+  <!-- Live Wayfinding Label (Desktop) -->
+  <div style="position: fixed; top: 96px; left: 48px; z-index: 40; pointer-events: none;" class="hidden md:block">
+    <span style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block;">
+      Current Section
+    </span>
+    <span id="current-section-label" class="font-serif" style="font-size: 15px; font-style: italic; color: #262626; font-weight: 500; display: block; margin-top: 2px;">
+      Overview
+    </span>
+  </div>
+
+  <!-- Side Wayfinding Spine Dots -->
+  <aside class="spine-rail">
+    <div class="spine-line">
+      <button onclick="scrollToSection('intro')" id="dot-intro" title="Overview" class="spine-dot active"></button>
+      <button onclick="scrollToSection('origin')" id="dot-origin" title="Origin & MVPs" class="spine-dot"></button>
+      <button onclick="scrollToSection('context')" id="dot-context" title="Context" class="spine-dot"></button>
+      <button onclick="scrollToSection('problem')" id="dot-problem" title="The Problem" class="spine-dot"></button>
+      <button onclick="scrollToSection('decisions')" id="dot-decisions" title="Key Decisions" class="spine-dot"></button>
+      <button onclick="scrollToSection('workbench')" id="dot-workbench" title="System Interface" class="spine-dot"></button>
+      <button onclick="scrollToSection('friction')" id="dot-friction" title="What Didn't Work" class="spine-dot"></button>
+      <button onclick="scrollToSection('reflections')" id="dot-reflections" title="Reflections" class="spine-dot"></button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       1. HERO / OVERVIEW SECTION
+       ========================================================================= -->
+  <section id="intro" class="container-custom" style="padding-top: 140px; padding-bottom: 80px;">
+    
+    <!-- Title -->
+    <h1 class="hero-heading">
+      Empowering product teams to resolve multi-dimensional complexity 
+      <span class="italic" style="color: #525252;">without flat document blindspots</span>
+    </h1>
+
+    <!-- Metadata Pill Chips -->
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px;">
+      <span style="font-size: 12px; font-weight: 600; color: #525252; text-transform: uppercase; letter-spacing: 0.1em;">
+        0 to 1 Product Strategy
+      </span>
+      <span style="color: #D4D4D4;">•</span>
+      <span style="font-size: 12px; font-weight: 600; color: #525252; text-transform: uppercase; letter-spacing: 0.1em;">
+        Spatial Systems
+      </span>
+      <span style="color: #D4D4D4;">•</span>
+      <span style="font-size: 12px; font-weight: 600; color: #525252; text-transform: uppercase; letter-spacing: 0.1em;">
+        Shipped
+      </span>
+    </div>
+
+    <!-- Hero Showcase Media Card -->
+    <div style="margin-top: 48px;" class="bento-card">
+      <div class="aspect-video-custom">
+        <img 
+          src="/projects/scribe/thumbnail.webp" 
+          alt="Scribe System Overview" 
+          onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/thumbnail.webp'"
+        />
+      </div>
+    </div>
+
+    <!-- Actions & Metadata Row -->
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; margin-top: 40px; padding-top: 32px; border-top: 1px solid #E5E5E5;">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px;">
+        <a 
+          href="https://scribe-neon.vercel.app/landing" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="btn-primary"
+        >
+          Visit Live App
+        </a>
+        <button 
+          onclick="scrollToSection('reflections')"
+          style="background: none; border: none; font-size: 13px; font-weight: 500; color: #525252; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;"
+        >
+          Skip to outcome →
+        </button>
+      </div>
+      <span style="font-size: 12px; color: #A3A3A3;">
+        3 min read • 45 sec skim
+      </span>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       2. ORIGIN & 3 MVP ITERATIONS
+       ========================================================================= -->
+  <section id="origin" class="container-custom section-border-top">
+    
+    <span class="section-tag">01 / ORIGIN</span>
+
+    <div class="grid-layout" style="margin-bottom: 64px;">
+      <div class="col-span-5">
+        <h2 class="section-title">
+          The Evolution of Scribe: <span class="italic">3 MVP iterations before context</span>
+        </h2>
+      </div>
+      <div class="col-span-7">
+        <p class="body-text">
+          Before landing on rigid hierarchical columns, Scribe underwent three distinct prototypes. Each iteration tested a different mental model—from unconstrained AI connection graphs to qualitative storytelling, before narrowing into rigid strategic hierarchy for decision-makers.
+        </p>
+      </div>
+    </div>
+
+    <!-- ITERATIONS BENTO STACK -->
+    <div style="display: flex; flex-direction: column; gap: 80px;">
+      
+      <!-- MVP 1 -->
+      <div style="display: flex; flex-direction: column; gap: 32px;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px;">
+          <div>
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block; margin-bottom: 6px;">
+              Iteration 01
+            </span>
+            <h3 class="font-serif" style="font-size: 28px; font-weight: 400; color: #171717;">
+              MVP 1 — AI Connection Map Generator
+            </h3>
+          </div>
+          <span class="font-mono" style="font-size: 12px; color: #737373;">
+            Unconstrained Force Graph
+          </span>
+        </div>
+
+        <p class="body-text" style="max-width: 900px;">
+          The initial concept allowed users to input raw notes and let an automated AI engine construct a force-directed graph based on word co-occurrences and semantic links.
+        </p>
+
+        <!-- 2-Image Bento Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          <div class="bento-card" style="aspect-ratio: 4/3; position: relative;">
+            <img src="/projects/scribe/origin/mvp1-1.webp" alt="MVP 1 Light Theme Graph" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp1-1.webp'">
+          </div>
+          <div class="bento-card" style="aspect-ratio: 4/3; position: relative;">
+            <img src="/projects/scribe/origin/mvp1-2.webp" alt="MVP 1 Dark Theme Graph" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp1-2.webp'">
+          </div>
+        </div>
+
+        <!-- Feedback Quotes -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #A3A3A3;">
+            User Feedback &amp; Initial Reactions
+          </span>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span class="pill-tag">"What do I use it for?"</span>
+            <span class="pill-tag">"Looks cool, but how do I read it?"</span>
+            <span class="pill-tag">"Can I try it?"</span>
+            <span class="pill-tag">"Okay... (confusion personifies)"</span>
+          </div>
+        </div>
+
+        <!-- Conclusions Row -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; padding-top: 16px;">
+          <div style="border-left: 2px solid #F87171; padding-left: 20px;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #DC2626; display: block; margin-bottom: 6px;">Conclusion</span>
+            <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+              The map looked visually impressive, but failed to serve a practical purpose. The UI provided no direction, turning navigation into an exhausting game of detective.
+            </p>
+          </div>
+          <div style="border-left: 2px solid #10B981; padding-left: 20px;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #059669; display: block; margin-bottom: 6px;">New Direction</span>
+            <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+              The tool needed a specific purpose. The UI must drastically reduce cognitive load rather than increase it.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MVP 2 -->
+      <div style="display: flex; flex-direction: column; gap: 32px; padding-top: 64px; border-top: 1px solid #E5E5E5;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px;">
+          <div>
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block; margin-bottom: 6px;">
+              Iteration 02
+            </span>
+            <h3 class="font-serif" style="font-size: 28px; font-weight: 400; color: #171717;">
+              MVP 2 — Storytelling &amp; Qualitative Journey Maps
+            </h3>
+          </div>
+          <span class="font-mono" style="font-size: 12px; color: #737373;">
+            Story of the Little Match Girl
+          </span>
+        </div>
+
+        <p class="body-text" style="max-width: 900px;">
+          Chose storytelling as the core direction—taking complex qualitative data (like stories, user interview transcripts, and narrative arcs) and representing them as interactive cluster journey maps.
+        </p>
+
+        <!-- 4-Image Bento Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px;">
+          <div class="bento-card" style="aspect-ratio: 4/3;"><img src="/projects/scribe/origin/mvp2-1.webp" alt="MVP 2" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp2-1.webp'"></div>
+          <div class="bento-card" style="aspect-ratio: 4/3;"><img src="/projects/scribe/origin/mvp2-2.webp" alt="MVP 2" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp2-2.webp'"></div>
+          <div class="bento-card" style="aspect-ratio: 4/3;"><img src="/projects/scribe/origin/mvp2-3.webp" alt="MVP 2" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp2-3.webp'"></div>
+          <div class="bento-card" style="aspect-ratio: 4/3;"><img src="/projects/scribe/origin/mvp2-4.webp" alt="MVP 2" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp2-4.webp'"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #A3A3A3;">
+            User Feedback
+          </span>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span class="pill-tag">"I am putting in more effort..."</span>
+            <span class="pill-tag">"Looks cool"</span>
+            <span class="pill-tag">"What are you using it for?"</span>
+            <span class="pill-tag">"Can I try it?"</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; padding-top: 16px;">
+          <div style="border-left: 2px solid #F87171; padding-left: 20px;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #DC2626; display: block; margin-bottom: 6px;">Conclusion</span>
+            <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+              Slightly more useful than MVP 1, but as a tool it still lacked a clear, indispensable purpose. Users felt they were putting in excessive effort decoding visual layouts.
+            </p>
+          </div>
+          <div style="border-left: 2px solid #10B981; padding-left: 20px;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #059669; display: block; margin-bottom: 6px;">New Direction</span>
+            <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+              Scrap visual gimmicks entirely. Focus on a specific niche problem for users who need to make high-stakes decisions from dense data.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MVP 3 -->
+      <div style="display: flex; flex-direction: column; gap: 32px; padding-top: 64px; border-top: 1px solid #E5E5E5;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px;">
+          <div>
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block; margin-bottom: 6px;">
+              Iteration 03
+            </span>
+            <h3 class="font-serif" style="font-size: 28px; font-weight: 400; color: #171717;">
+              MVP 3 — Multi-Data Link &amp; Connection Analyzer
+            </h3>
+          </div>
+          <span class="font-mono" style="font-size: 12px; color: #737373;">
+            Targeting Thinkers &amp; PMs
+          </span>
+        </div>
+
+        <p class="body-text" style="max-width: 900px;">
+          Pivoted away from creative writers toward thinkers, product managers, and researchers—synthesizing complex data inputs, 50-page research papers, and technical requirements into linked analytical graphs.
+        </p>
+
+        <!-- 2-Image Bento Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          <div class="bento-card" style="aspect-ratio: 16/9;"><img src="/projects/scribe/origin/mvp3-1.webp" alt="MVP 3" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp3-1.webp'"></div>
+          <div class="bento-card" style="aspect-ratio: 16/9;"><img src="/projects/scribe/origin/mvp3-4.webp" alt="MVP 3" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/origin/mvp3-4.webp'"></div>
+        </div>
+
+        <!-- Stakeholder Insights Bento Cards -->
+        <div style="display: flex; flex-direction: column; gap: 16px; padding-top: 12px;">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #A3A3A3;">
+            In-Depth Stakeholder Interview Insights
+          </span>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+            <div style="padding: 18px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 8px;">
+              <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #171717; display: block; margin-bottom: 6px;">UX Professor</span>
+              <p style="font-size: 13px; color: #525252; font-style: italic; line-height: 1.6;">
+                "This looks useful enough but you still need to find a better use case for it. Write a research paper on this..."
+              </p>
+            </div>
+            <div style="padding: 18px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 8px;">
+              <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #171717; display: block; margin-bottom: 6px;">IBM Product Manager</span>
+              <p style="font-size: 13px; color: #525252; font-style: italic; line-height: 1.6;">
+                "I will use it if it reduces my effort and saves me time. I don't understand the specific context... I'd rather use normal AI."
+              </p>
+            </div>
+            <div style="padding: 18px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 8px;">
+              <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #171717; display: block; margin-bottom: 6px;">Automobile Designer</span>
+              <p style="font-size: 13px; color: #525252; font-style: italic; line-height: 1.6;">
+                "I don't want to read all that and either way I don't feel like it helped me."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; padding-top: 16px;">
+          <div style="border-left: 2px solid #F87171; padding-left: 20px;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #DC2626; display: block; margin-bottom: 6px;">Conclusion</span>
+            <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+              It was significantly better than previous iterations, but unconstrained graphs still lacked a singular focus to replace traditional AI chat windows in daily workflows.
+            </p>
+          </div>
+          <div style="border-left: 2px solid #10B981; padding-left: 20px;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #059669; display: block; margin-bottom: 6px;">Final Breakthrough to Scribe</span>
+            <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+              Scrap free-form physics graphs entirely. Constrain D3 to snap nodes into fixed 300px hierarchical columns (Pillars → Clusters → Leaves) tailored specifically for strategic roadmap stress-testing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       3. CONTEXT SECTION
+       ========================================================================= -->
+  <section id="context" class="section-border-top" style="padding-bottom: 0;">
+    <div class="container-custom">
+      <span class="section-tag">02 / CONTEXT</span>
+      
+      <div class="grid-layout">
+        <div class="col-span-5">
+          <p class="font-serif" style="font-size: 32px; line-height: 1.18; color: #171717; font-weight: 400;">
+            Scribe is a local-first, visual note-taking environment <span class="italic" style="color: #525252;">designed to solve this specific problem.</span>
+          </p>
+        </div>
+        <div class="col-span-7">
+          <p class="body-text">
+            It was built as a solo project, meaning I needed a stack that allowed for rapid prototyping without heavy backend infrastructure (Next.js, Tailwind, D3.js, and local IndexedDB).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edge-to-Edge Full Screen Showcase Image -->
+    <div class="full-width-banner">
+      <img 
+        src="/projects/scribe/scribe-after-context.webp" 
+        alt="Scribe System Overview" 
+        onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/scribe-after-context.webp'"
+      />
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       4. THE REAL PROBLEM SECTION
+       ========================================================================= -->
+  <section id="problem" class="container-custom section-border-top">
+    <span class="section-tag">03 / THE REAL PROBLEM</span>
+
+    <div class="grid-layout">
+      <div class="col-span-5">
+        <h3 class="section-title">
+          Linear documents hide <span class="italic">cross-phase interdependencies.</span>
+        </h3>
+      </div>
+      <div class="col-span-7" style="display: flex; flex-direction: column; gap: 16px;">
+        <p class="body-text">
+          I was trying to reconcile a product roadmap across 30 different user interviews, technical constraints, and design requirements. I kept losing track of how a feature in Phase 2 would break a constraint we discovered in Phase 1.
+        </p>
+        <p class="body-text">
+          Linear documents (like Notion or Google Docs) hide interdependencies. You can link pages, but you cannot <em>see</em> the structural connections. I needed a way to map out complex logic visually without it turning into an unreadable mess.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px;" class="bento-card">
+      <img 
+        src="/projects/scribe/The problem.webp" 
+        alt="The Problem: Linear Docs vs Multi-Dimensional Dependencies" 
+        style="width: 100%; height: auto; display: block;"
+        onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/The%20problem.webp'"
+      />
+    </div>
+  </section>
+
+  <!-- System Walkthrough Video Section -->
+  <section class="container-custom section-border-top" style="padding-top: 64px; padding-bottom: 64px;">
+    <div style="margin-bottom: 32px;">
+      <span class="section-tag" style="margin-bottom: 8px;">System Walkthrough</span>
+      <h3 class="font-serif" style="font-size: 32px; color: #171717; font-weight: 400; line-height: 1.2;">
+        See Scribe in Action: <span class="italic">Spatial note synthesis &amp; graph traversal</span>
+      </h3>
+      <p class="body-text" style="margin-top: 8px; max-width: 750px;">
+        Watch how raw unstructured thoughts transform into structured knowledge pillars, interactive clusters, and linked decision maps in real time.
+      </p>
+    </div>
+
+    <div class="bento-card" style="background-color: #000000; aspect-ratio: 16/9; position: relative;">
+      <video 
+        src="/projects/scribe/preview.mp4" 
+        poster="/projects/scribe/thumbnail.webp"
+        controls 
+        playsinline
+        style="width: 100%; height: 100%; object-fit: cover;"
+      ></video>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       5. KEY DECISIONS
+       ========================================================================= -->
+  <section id="decisions" class="container-custom section-border-top">
+    <span class="section-tag">04 / KEY DECISIONS</span>
+
+    <div style="display: flex; flex-direction: column; gap: 80px;">
+      
+      <!-- Decision 1 -->
+      <div style="display: flex; flex-direction: column; gap: 32px;">
+        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block;">
+          DESIGN 1/3
+        </span>
+        
+        <div class="grid-layout">
+          <div class="col-span-5">
+            <h4 class="font-serif" style="font-size: 32px; line-height: 1.15; color: #171717; font-weight: 400;">
+              Forcing hierarchical columns over free-form graphs
+              <span class="italic" style="display: block; font-size: 22px; color: #525252; margin-top: 6px;">
+                eliminating unnavigable graph hairballs
+              </span>
+            </h4>
+          </div>
+          
+          <div class="col-span-7" style="display: flex; flex-direction: column; gap: 16px;">
+            <p class="body-text">
+              Most note-taking apps with graphs (like Obsidian) use force-directed layouts. They look cool, but they turn into useless 'hairballs' once you have more than 50 notes.
+            </p>
+            <div style="border-left: 2px solid #E5E5E5; padding-left: 20px;">
+              <span style="font-size: 11px; font-weight: 700; color: #A3A3A3; text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 4px;">
+                Rationale &amp; Trade-off
+              </span>
+              <p style="font-size: 14px; color: #404040; line-height: 1.6;">
+                Decision: I constrained the D3 physics engine to snap nodes into fixed 300px columns based on their hierarchy (Pillars -> Clusters -> Leaves). Trade-off: Users lose the ability to place notes anywhere they want on an infinite canvas, but the structure remains legible and organized even with hundreds of nodes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento-card" style="margin-top: 16px;">
+          <img 
+            src="/projects/scribe/ai-generated-graph.webp" 
+            alt="Hierarchical columns graph" 
+            style="width: 100%; height: auto; display: block;"
+            onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/ai-generated-graph.webp'"
+          />
+        </div>
+      </div>
+
+      <!-- Decision 2 -->
+      <div style="display: flex; flex-direction: column; gap: 32px; padding-top: 56px; border-top: 1px solid #E5E5E5;">
+        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block;">
+          DESIGN 2/3
+        </span>
+        
+        <div class="grid-layout">
+          <div class="col-span-5">
+            <h4 class="font-serif" style="font-size: 32px; line-height: 1.15; color: #171717; font-weight: 400;">
+              Client-side storage over cloud databases
+              <span class="italic" style="display: block; font-size: 22px; color: #525252; margin-top: 6px;">
+                zero-latency storage &amp; complete data privacy across desktop &amp; mobile
+              </span>
+            </h4>
+          </div>
+          
+          <div class="col-span-7" style="display: flex; flex-direction: column; gap: 16px;">
+            <p class="body-text">
+              Scribe stores all data in the browser using IndexedDB.
+            </p>
+            <div style="border-left: 2px solid #E5E5E5; padding-left: 20px;">
+              <span style="font-size: 11px; font-weight: 700; color: #A3A3A3; text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 4px;">
+                Rationale &amp; Trade-off
+              </span>
+              <p style="font-size: 14px; color: #404040; line-height: 1.6;">
+                Trade-off: It prevents easy multi-device syncing out of the box, but it allowed me to bypass complex authentication flows, ship faster, and guarantee 100% privacy for users working with sensitive strategic data.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento-card" style="margin-top: 16px;">
+          <img 
+            src="/projects/scribe/mobile-view.webp" 
+            alt="Client side storage mobile view" 
+            style="width: 100%; height: auto; display: block;"
+            onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/mobile-view.webp'"
+          />
+        </div>
+      </div>
+
+      <!-- Decision 3 -->
+      <div style="display: flex; flex-direction: column; gap: 32px; padding-top: 56px; border-top: 1px solid #E5E5E5;">
+        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block;">
+          DESIGN 3/3
+        </span>
+        
+        <div class="grid-layout">
+          <div class="col-span-5">
+            <h4 class="font-serif" style="font-size: 32px; line-height: 1.15; color: #171717; font-weight: 400;">
+              Bring-Your-Own-Key (BYOK) for AI features
+              <span class="italic" style="display: block; font-size: 22px; color: #525252; margin-top: 6px;">
+                two-pass semantic extraction with zero vendor lock-in
+              </span>
+            </h4>
+          </div>
+          
+          <div class="col-span-7" style="display: flex; flex-direction: column; gap: 16px;">
+            <p class="body-text">
+              Instead of charging a subscription for AI credits, users paste in their own OpenAI or Claude keys, or connect to a local Ollama instance.
+            </p>
+            <div style="border-left: 2px solid #E5E5E5; padding-left: 20px;">
+              <span style="font-size: 11px; font-weight: 700; color: #A3A3A3; text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 4px;">
+                Rationale &amp; Trade-off
+              </span>
+              <p style="font-size: 14px; color: #404040; line-height: 1.6;">
+                Trade-off: It adds friction to the onboarding process, but it keeps the app free to host and ensures user data isn't being silently scraped by a middleman server.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento-card" style="margin-top: 16px;">
+          <img 
+            src="/projects/scribe/api-config-settings.webp" 
+            alt="BYOK settings modal" 
+            style="width: 100%; height: auto; display: block;"
+            onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/api-config-settings.webp'"
+          />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       6. SYSTEM INTERFACE
+       ========================================================================= -->
+  <section id="workbench" class="container-custom section-border-top">
+    <span class="section-tag">05 / SYSTEM INTERFACE</span>
+
+    <div class="grid-layout" style="margin-bottom: 64px;">
+      <div class="col-span-5">
+        <h2 class="section-title">
+          The Dual-Pane Environment: <span class="italic">From linear notes to spatial graphs</span>
+        </h2>
+      </div>
+      <div class="col-span-7">
+        <p class="body-text">
+          Scribe pairs a distraction-free note editor with an automated graph construction engine and conversational AI copilot. Users write structured thought streams on the left, while the right-hand canvas visualizes emerging dependencies across projects, phases, and entities in real time.
+        </p>
+      </div>
+    </div>
+
+    <!-- Interface 1 -->
+    <div style="display: flex; flex-direction: column; gap: 24px; padding-top: 32px; border-top: 1px solid #E5E5E5;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;">
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block; margin-bottom: 4px;">
+            Interface 01
+          </span>
+          <h3 class="font-serif" style="font-size: 26px; color: #171717; font-weight: 400;">
+            Hierarchical Note Authoring &amp; Build-a-Graph Engine
+          </h3>
+        </div>
+        <span class="font-mono" style="font-size: 12px; color: #737373;">
+          Structured Editor &bull; Metadata Extraction
+        </span>
+      </div>
+
+      <p class="body-text" style="max-width: 900px;">
+        A minimalist Markdown workspace paired with a tree hierarchy sidebar. The "Build-a-Graph" modal extracts nested entities, pillars, and cross-document links directly from note prose without requiring manual node placement.
+      </p>
+
+      <div class="bento-card">
+        <img 
+          src="/projects/scribe/notes-sidebar-buildagraph.webp" 
+          alt="Scribe Note Editor, Hierarchy Sidebar, and Build-a-Graph Engine" 
+          style="width: 100%; height: auto; display: block;"
+          onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/notes-sidebar-buildagraph.webp'"
+        />
+      </div>
+    </div>
+
+    <!-- Interface 2 -->
+    <div style="display: flex; flex-direction: column; gap: 24px; padding-top: 64px; border-top: 1px solid #E5E5E5; margin-top: 64px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;">
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block; margin-bottom: 4px;">
+            Interface 02
+          </span>
+          <h3 class="font-serif" style="font-size: 26px; color: #171717; font-weight: 400;">
+            Multi-Dimensional Graph Workbench &amp; AI Copilot
+          </h3>
+        </div>
+        <span class="font-mono" style="font-size: 12px; color: #737373;">
+          Spatial Canvas &bull; Contextual AI Chat
+        </span>
+      </div>
+
+      <p class="body-text" style="max-width: 900px;">
+        The spatial graph canvas lays out structural pillars and clusters in high-legibility columns, allowing teams to zoom into specific nodes while querying the embedded AI assistant with full graph context.
+      </p>
+
+      <div class="bento-card">
+        <img 
+          src="/projects/scribe/workbench-and-chat.webp" 
+          alt="Scribe Graph Workbench & AI Chat Assistant" 
+          style="width: 100%; height: auto; display: block;"
+          onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/workbench-and-chat.webp'"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Screen Graphic Break -->
+  <div class="full-width-banner">
+    <img 
+      src="/projects/scribe/before-what-didnt-work.webp" 
+      alt="Scribe System Iteration" 
+      onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/before-what-didnt-work.webp'"
+    />
+  </div>
+
+  <!-- =========================================================================
+       7. WHAT DIDN'T WORK SECTION
+       ========================================================================= -->
+  <section id="friction" class="container-custom section-border-top">
+    <span class="section-tag">06 / WHAT DIDN'T WORK</span>
+
+    <div class="grid-layout">
+      <div class="col-span-5">
+        <h3 class="section-title">
+          Continuous physics caused distracting canvas jitter. <span class="italic" style="color: #525252;">We replaced live simulation with discrete drop snapping.</span>
+        </h3>
+      </div>
+      <div class="col-span-7" style="display: flex; flex-direction: column; gap: 16px;">
+        <p class="body-text">
+          My first attempt at the "Oracle" view used a standard physics simulation where notes repelled each other. When users tried to drag notes to group them, the physics engine fought back, causing the entire map to constantly jiggle and re-adjust. It was incredibly distracting.
+        </p>
+        <p class="body-text" style="border-left: 2px solid #E5E5E5; padding-left: 16px; font-style: italic; color: #404040;">
+          I had to rip out the continuous simulation and write a custom collision-detection script that only calculates physics when a node is actively dropped, snapping it to a strict 40px grid.
+        </p>
+      </div>
+    </div>
+
+    <!-- 8 Prototype Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 48px;">
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-1.webp" alt="Prototype 1" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-1.webp'"></div>
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-2.webp" alt="Prototype 2" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-2.webp'"></div>
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-3.webp" alt="Prototype 3" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-3.webp'"></div>
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-4.webp" alt="Prototype 4" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-4.webp'"></div>
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-5.webp" alt="Prototype 5" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-5.webp'"></div>
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-6.webp" alt="Prototype 6" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-6.webp'"></div>
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-7.webp" alt="Prototype 7" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-7.webp'"></div>
+      <div class="bento-card" style="aspect-ratio: 16/10;"><img src="/projects/scribe/what-didnt-work-8.webp" alt="Prototype 8" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/what-didnt-work-8.webp'"></div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       8. REFLECTIONS
+       ========================================================================= -->
+  <section id="reflections" class="container-custom section-border-top">
+    <span class="section-tag">07 / REFLECTIONS</span>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <h4 style="font-size: 16px; font-weight: 700; color: #171717;">
+          Need for Deep Domain Understanding
+        </h4>
+        <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+          Designing for strategic thinkers required deep immersion in PRDs, roadmap friction, and non-linear thinking patterns rather than superficial templates.
+        </p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <h4 style="font-size: 16px; font-weight: 700; color: #171717;">
+          Learning the Art of Prioritization
+        </h4>
+        <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+          As a solo builder, enforcing rigid columns and local IndexedDB eliminated months of backend complexity while delivering instant performance and complete privacy.
+        </p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <h4 style="font-size: 16px; font-weight: 700; color: #171717;">
+          Designing to Reduce Cognitive Load
+        </h4>
+        <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+          "Ease of Use" shouldn't eliminate constructive friction. Scribe has a learning curve, but that friction acts as a forcing function for clearer architectural thought.
+        </p>
+      </div>
+    </div>
+
+    <!-- Future Technical Considerations -->
+    <div style="margin-top: 64px; padding-top: 40px; border-top: 1px solid #E5E5E5; display: flex; flex-direction: column; gap: 24px;">
+      <span style="font-size: 11px; font-weight: 700; color: #A3A3A3; text-transform: uppercase; letter-spacing: 0.15em;">
+        Future Technical Considerations
+      </span>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+        <div style="padding: 20px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 12px;">
+          <span style="font-size: 13px; font-weight: 700; color: #171717; display: block; margin-bottom: 6px;">01. Progressive Spatial Disclosure</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6;">
+            Implementing level-of-detail (LOD) zoom to display macro strategy clusters at wide viewports and reveal leaf cards only as the user zooms into specific clusters.
+          </p>
+        </div>
+        <div style="padding: 20px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 12px;">
+          <span style="font-size: 13px; font-weight: 700; color: #171717; display: block; margin-bottom: 6px;">02. WebGL Canvas Scalability</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6;">
+            Transitioning the D3 DOM rendering pipeline to a WebGL/Pixi.js layer to guarantee silky 60fps interaction during large-scale dataset navigation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       9. COLLAPSIBLE ENGINEERING APPENDIX
+       ========================================================================= -->
+  <section class="container-custom" style="padding-top: 40px; padding-bottom: 80px; display: flex; flex-direction: column; align-items: center;">
+    <button
+      id="appendix-toggle-btn"
+      onclick="toggleAppendix()"
+      class="btn-outline"
+    >
+      View engineering &amp; architecture appendix
+    </button>
+
+    <div id="appendix-content" style="display: none; width: 100%; margin-top: 48px; padding-top: 48px; border-top: 1px solid #E5E5E5;">
+      
+      <!-- Architecture -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <span style="font-size: 11px; font-weight: 700; color: #A3A3A3; text-transform: uppercase; letter-spacing: 0.15em;">01 / ARCHITECTURE</span>
+        <h3 class="font-serif" style="font-size: 26px; color: #171717; font-weight: 400;">Two-Pass Extraction Engine</h3>
+        <p class="body-text" style="max-width: 750px;">
+          Scribe runs entirely client-side. The LLM extraction pipeline is executed in two deterministic passes to preserve layout coordinates before populating leaves.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 20px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 12px; text-align: center;">
+          <div style="padding: 16px; background-color: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 8px;">
+            <span style="display: block; font-size: 10px; font-weight: 700; color: #A3A3A3; text-transform: uppercase;">Input</span>
+            <span style="font-size: 13px; font-weight: 600; color: #171717;">Raw PRD Document</span>
+          </div>
+          <div style="padding: 16px; background-color: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 8px;">
+            <span style="display: block; font-size: 10px; font-weight: 700; color: #A3A3A3; text-transform: uppercase;">Synthesizer</span>
+            <span style="font-size: 13px; font-weight: 600; color: #171717;">Two-Pass LLM</span>
+          </div>
+          <div style="padding: 16px; background-color: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 8px;">
+            <span style="display: block; font-size: 10px; font-weight: 700; color: #A3A3A3; text-transform: uppercase;">Storage</span>
+            <span style="font-size: 13px; font-weight: 600; color: #171717;">IndexedDB Client</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layout Math -->
+      <div style="display: flex; flex-direction: column; gap: 20px; padding-top: 32px; border-top: 1px solid #E5E5E5; margin-top: 32px;">
+        <span style="font-size: 11px; font-weight: 700; color: #A3A3A3; text-transform: uppercase; letter-spacing: 0.15em;">02 / SPATIAL MATHEMATICS</span>
+        <h3 class="font-serif" style="font-size: 26px; color: #171717; font-weight: 400;">Layout Math Constants</h3>
+        
+        <div class="font-mono" style="padding: 20px; background-color: #0A0A0A; border-radius: 12px; color: #D4D4D4; font-size: 12px; line-height: 1.8; max-width: 500px;">
+          <div style="color: #737373;">// Layout engine configuration constants</div>
+          <div><span style="color: #F87171;">const</span> PILLAR_COL_WIDTH = <span style="color: #22D3EE;">300</span>;</div>
+          <div><span style="color: #F87171;">const</span> PILLAR_GAP       = <span style="color: #22D3EE;">320</span>;</div>
+          <div><span style="color: #F87171;">const</span> CLUSTER_GAP      = <span style="color: #22D3EE;">32</span>;</div>
+          <div><span style="color: #F87171;">const</span> LEAF_HEIGHT      = <span style="color: #22D3EE;">68</span>;</div>
+          <div><span style="color: #F87171;">const</span> LEAF_GAP         = <span style="color: #22D3EE;">10</span>;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       10. MINIMALIST FOOTER
+       ========================================================================= -->
+  <footer style="border-top: 1px solid #E5E5E5; background-color: #FFFFFF; padding-top: 64px; padding-bottom: 96px;">
+    <div class="container-custom">
+      <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; color: #A3A3A3; display: block; margin-bottom: 16px;">
+        Next Case Study
+      </span>
+      <a href="/projects/campus-trace" style="text-decoration: none; color: inherit; display: inline-block;">
+        <h2 class="font-serif" style="font-size: 48px; font-weight: 400; color: #171717; letter-spacing: -0.02em; line-height: 1.1;">
+          Campus Trace →
+        </h2>
+        <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: #A3A3A3; display: block; margin-top: 8px;">
+          Spatial Hardware &amp; System Design
+        </span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Vanilla JavaScript Logic -->
+  <script>
+    const sections = [
+      { id: "intro", label: "Overview" },
+      { id: "origin", label: "Origin & MVPs" },
+      { id: "context", label: "Context" },
+      { id: "problem", label: "The Problem" },
+      { id: "decisions", label: "Key Decisions" },
+      { id: "workbench", label: "System Interface" },
+      { id: "friction", label: "What Didn't Work" },
+      { id: "reflections", label: "Reflections" },
+    ];
+
+    function handleScroll() {
+      const scrollY = window.scrollY;
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = totalHeight > 0 ? (scrollY / totalHeight) * 100 : 0;
+      
+      const bar = document.getElementById("scroll-progress-bar");
+      if (bar) bar.style.width = progress + "%";
+
+      let current = sections[0];
+      for (let sec of sections) {
+        const el = document.getElementById(sec.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.4) {
+            current = sec;
+          }
+        }
+      }
+
+      const labelEl = document.getElementById("current-section-label");
+      if (labelEl) labelEl.innerText = current.label;
+
+      sections.forEach(sec => {
+        const dot = document.getElementById("dot-" + sec.id);
+        if (dot) {
+          if (sec.id === current.id) {
+            dot.className = "spine-dot active";
+          } else {
+            dot.className = "spine-dot";
+          }
+        }
+      });
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+
+    let isAppendixOpen = false;
+    function toggleAppendix() {
+      isAppendixOpen = !isAppendixOpen;
+      const content = document.getElementById("appendix-content");
+      const btn = document.getElementById("appendix-toggle-btn");
+      if (content && btn) {
+        if (isAppendixOpen) {
+          content.style.display = "block";
+          btn.innerText = "Hide engineering appendix";
+        } else {
+          content.style.display = "none";
+          btn.innerText = "View engineering & architecture appendix";
+        }
+      }
+    }
+  </script>
+</body>
+</html>

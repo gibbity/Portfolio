@@ -80,16 +80,10 @@ export default function Preloader() {
   const router = useRouter();
   const isHomepage = pathname === "/";
 
+  const [mounted, setMounted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentLog, setCurrentLog] = useState(0);
-  const [phase, setPhase] = useState<"loading" | "curtain" | "done">(() => {
-    if (typeof window !== "undefined") {
-      if (sessionStorage.getItem("portfolio_has_seen_preloader") === "1" || !isHomepage) {
-        return "done";
-      }
-    }
-    return isHomepage ? "loading" : "done";
-  });
+  const [phase, setPhase] = useState<"loading" | "curtain" | "done">("done");
   const pathRef = useRef<SVGPathElement>(null);
 
   // Background Route Prefetching (non-blocking)
@@ -102,12 +96,21 @@ export default function Preloader() {
 
   // Snappy entrance progress (sub-400ms completion for high Core Web Vitals score)
   useEffect(() => {
-    if (!isHomepage || phase === "done") return;
+    setMounted(true);
 
-    if (sessionStorage.getItem("portfolio_has_seen_preloader") === "1") {
+    if (!isHomepage) {
       setPhase("done");
       return;
     }
+
+    try {
+      if (sessionStorage.getItem("portfolio_has_seen_preloader") === "1") {
+        setPhase("done");
+        return;
+      }
+    } catch {}
+
+    setPhase("loading");
 
     const startTime = performance.now();
     const duration = 380; // 380ms total snappy intro
@@ -137,7 +140,7 @@ export default function Preloader() {
       cancelAnimationFrame(frameId);
       clearInterval(logInterval);
     };
-  }, [isHomepage, phase]);
+  }, [isHomepage]);
 
   useEffect(() => {
     if (phase === "curtain" && pathRef.current) {
@@ -168,7 +171,7 @@ export default function Preloader() {
     }
   }, [phase]);
 
-  if (phase === "done") return null;
+  if (!mounted || phase === "done") return null;
 
   return (
     <>

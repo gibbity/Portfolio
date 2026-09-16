@@ -136,7 +136,7 @@ export default function ScribePage() {
         {/* Hero Visual Thumbnail & Hover Video (Clean, no gutter borders, no mouse reaction) */}
         <div className="w-full rounded-xl overflow-hidden border border-neutral-200 mt-12 relative shadow-xs">
           <HoverVideoThumbnail 
-            thumbnailSrc="/projects/scribe/thumbnail.webp"
+            thumbnailSrc="/projects/scribe/thumbnail-v3.webp"
             videoSrc="/projects/scribe/preview.mp4"
             alt="Scribe System Overview"
             aspectRatioClass="aspect-video"
