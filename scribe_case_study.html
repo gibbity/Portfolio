@@ -420,8 +420,8 @@
     
     <!-- Title -->
     <h1 class="hero-heading">
-      Empowering product teams to resolve multi-dimensional complexity 
-      <span class="italic" style="color: #525252;">without flat document blindspots</span>
+      Reconciling product roadmaps across 30 user interviews
+      <span class="italic" style="color: #525252;">without losing track of hidden dependencies</span>
     </h1>
 
     <!-- Metadata Pill Chips -->
@@ -747,26 +747,89 @@
     </div>
   </section>
 
-  <!-- System Walkthrough Video Section -->
-  <section class="container-custom section-border-top" style="padding-top: 64px; padding-bottom: 64px;">
-    <div style="margin-bottom: 32px;">
-      <span class="section-tag" style="margin-bottom: 8px;">System Walkthrough</span>
+  <!-- =========================================================================
+       4. THE WORKFLOW
+       ========================================================================= -->
+  <section id="workflow" class="container-custom section-border-top">
+    <span class="section-tag">04 / THE WORKFLOW</span>
+    <div style="margin-bottom: 48px;">
       <h3 class="font-serif" style="font-size: 32px; color: #171717; font-weight: 400; line-height: 1.2;">
-        See Scribe in Action: <span class="italic">Spatial note synthesis &amp; graph traversal</span>
+        See Scribe in Action: <span class="italic">From raw data to spatial synthesis</span>
       </h3>
       <p class="body-text" style="margin-top: 8px; max-width: 750px;">
-        Watch how raw unstructured thoughts transform into structured knowledge pillars, interactive clusters, and linked decision maps in real time.
+        A step-by-step walkthrough of how unstructured thoughts are transformed into structured, interactive decision maps.
       </p>
     </div>
 
-    <div class="bento-card" style="background-color: #000000; aspect-ratio: 16/9; position: relative;">
-      <video 
-        src="/projects/scribe/preview.mp4" 
-        poster="/projects/scribe/thumbnail.webp"
-        controls 
-        playsinline
-        style="width: 100%; height: 100%; object-fit: cover;"
-      ></video>
+    <!-- 6-Video Bento Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
+      
+      <!-- Step 1 -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="bento-card" style="aspect-ratio: 16/9; background-color: #000;">
+          <video src="/projects/scribe/workflow/1-api-setup.mp4" preload="metadata" muted playsinline loop controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #171717;">01. API Setup (BYOK)</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6; margin-top: 4px;">Friction by design. Users bring their own API keys to guarantee absolute data privacy and zero vendor lock-in.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="bento-card" style="aspect-ratio: 16/9; background-color: #000;">
+          <video src="/projects/scribe/workflow/2-upload.mp4" preload="metadata" muted playsinline loop controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #171717;">02. Document Upload</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6; margin-top: 4px;">Ingesting unstructured data, PRDs, and user interviews to prepare for multi-document synthesis.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="bento-card" style="aspect-ratio: 16/9; background-color: #000;">
+          <video src="/projects/scribe/workflow/3-select-files.mp4" preload="metadata" muted playsinline loop controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #171717;">03. Graph Generation</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6; margin-top: 4px;">Selecting multiple sources to generate a unified graph, surfacing hidden cross-document interdependencies.</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="bento-card" style="aspect-ratio: 16/9; background-color: #000;">
+          <video src="/projects/scribe/workflow/4-workbench.mp4" preload="metadata" muted playsinline loop controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #171717;">04. Spatial Workbench</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6; margin-top: 4px;">Automated spatial arrangement snaps nodes into rigid hierarchical columns, removing manual drag-and-drop fatigue.</p>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="bento-card" style="aspect-ratio: 16/9; background-color: #000;">
+          <video src="/projects/scribe/workflow/5-intelligence-chat.mp4" preload="metadata" muted playsinline loop controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #171717;">05. Intelligence Copilot</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6; margin-top: 4px;">Conversing with the data logically while maintaining visual context of the entire graph structure.</p>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="bento-card" style="aspect-ratio: 16/9; background-color: #000;">
+          <video src="/projects/scribe/workflow/6-export.mp4" preload="metadata" muted playsinline loop controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+        <div>
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #171717;">06. Export & Handoff</span>
+          <p style="font-size: 13px; color: #525252; line-height: 1.6; margin-top: 4px;">Packaging insights into portable, linear markdown formats for easy distribution to wider teams.</p>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -774,7 +837,7 @@
        5. KEY DECISIONS
        ========================================================================= -->
   <section id="decisions" class="container-custom section-border-top">
-    <span class="section-tag">04 / KEY DECISIONS</span>
+    <span class="section-tag">05 / KEY DECISIONS</span>
 
     <div style="display: flex; flex-direction: column; gap: 80px;">
       
@@ -905,81 +968,65 @@
   </section>
 
   <!-- =========================================================================
-       6. SYSTEM INTERFACE
+       6. DESIGN SYSTEM & ARCHITECTURE
        ========================================================================= -->
-  <section id="workbench" class="container-custom section-border-top">
-    <span class="section-tag">05 / SYSTEM INTERFACE</span>
+  <section id="design-system" class="container-custom section-border-top">
+    <span class="section-tag">06 / DESIGN SYSTEM & ARCHITECTURE</span>
 
     <div class="grid-layout" style="margin-bottom: 64px;">
       <div class="col-span-5">
         <h2 class="section-title">
-          The Dual-Pane Environment: <span class="italic">From linear notes to spatial graphs</span>
+          Engineering-Grade System: <span class="italic">Tactical Noir &amp; 3-Tier Tokens</span>
         </h2>
       </div>
       <div class="col-span-7">
         <p class="body-text">
-          Scribe pairs a distraction-free note editor with an automated graph construction engine and conversational AI copilot. Users write structured thought streams on the left, while the right-hand canvas visualizes emerging dependencies across projects, phases, and entities in real time.
+          Scribe is powered by a fully documented, standalone Design System. To ensure seamless developer handoff, the UI is built on a strict 3-tier token architecture with a 7-State machine testing protocol (Hover, Active, Disabled, Loading, Error, etc.), moving beyond Figma mockups into production-ready schemas.
         </p>
       </div>
     </div>
 
-    <!-- Interface 1 -->
-    <div style="display: flex; flex-direction: column; gap: 24px; padding-top: 32px; border-top: 1px solid #E5E5E5;">
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;">
-        <div>
-          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block; margin-bottom: 4px;">
-            Interface 01
-          </span>
-          <h3 class="font-serif" style="font-size: 26px; color: #171717; font-weight: 400;">
-            Hierarchical Note Authoring &amp; Build-a-Graph Engine
-          </h3>
+    <!-- Design System Bento -->
+    <div style="display: flex; flex-direction: column; gap: 32px;">
+      
+      <!-- Component Specs -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
+        <div style="padding: 32px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 12px;">
+          <h4 style="font-size: 16px; font-weight: 700; color: #171717; margin-bottom: 12px;">Tactical Noir Aesthetic</h4>
+          <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+            A deep inky canvas (<code>#07080a</code>) paired with high-chroma signals (Orange, Mint, Violet). Accents are strictly functional, signifying live execution or critical warnings rather than decoration.
+          </p>
         </div>
-        <span class="font-mono" style="font-size: 12px; color: #737373;">
-          Structured Editor &bull; Metadata Extraction
-        </span>
-      </div>
-
-      <p class="body-text" style="max-width: 900px;">
-        A minimalist Markdown workspace paired with a tree hierarchy sidebar. The "Build-a-Graph" modal extracts nested entities, pillars, and cross-document links directly from note prose without requiring manual node placement.
-      </p>
-
-      <div class="bento-card">
-        <img 
-          src="/projects/scribe/notes-sidebar-buildagraph.webp" 
-          alt="Scribe Note Editor, Hierarchy Sidebar, and Build-a-Graph Engine" 
-          style="width: 100%; height: auto; display: block;"
-          onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/notes-sidebar-buildagraph.webp'"
-        />
-      </div>
-    </div>
-
-    <!-- Interface 2 -->
-    <div style="display: flex; flex-direction: column; gap: 24px; padding-top: 64px; border-top: 1px solid #E5E5E5; margin-top: 64px;">
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;">
-        <div>
-          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; color: #A3A3A3; display: block; margin-bottom: 4px;">
-            Interface 02
-          </span>
-          <h3 class="font-serif" style="font-size: 26px; color: #171717; font-weight: 400;">
-            Multi-Dimensional Graph Workbench &amp; AI Copilot
-          </h3>
+        <div style="padding: 32px; background-color: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 12px;">
+          <h4 style="font-size: 16px; font-weight: 700; color: #171717; margin-bottom: 12px;">Edge-Case Resilience</h4>
+          <p style="font-size: 14px; color: #525252; line-height: 1.6;">
+            Every component is stress-tested for text overflow, multiline constraints, and missing data schemas, ensuring the UI doesn't break when hit with unpredictable LLM outputs.
+          </p>
         </div>
-        <span class="font-mono" style="font-size: 12px; color: #737373;">
-          Spatial Canvas &bull; Contextual AI Chat
-        </span>
       </div>
 
-      <p class="body-text" style="max-width: 900px;">
-        The spatial graph canvas lays out structural pillars and clusters in high-legibility columns, allowing teams to zoom into specific nodes while querying the embedded AI assistant with full graph context.
-      </p>
-
-      <div class="bento-card">
-        <img 
-          src="/projects/scribe/workbench-and-chat.webp" 
-          alt="Scribe Graph Workbench & AI Chat Assistant" 
-          style="width: 100%; height: auto; display: block;"
-          onerror="this.src='https://raw.githubusercontent.com/gibbity/Portfolio/main/public/projects/scribe/workbench-and-chat.webp'"
-        />
+      <!-- Token Code Snippet -->
+      <div style="padding: 32px; background-color: #0A0A0A; border-radius: 12px; border: 1px solid #262626; margin-top: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <span style="font-size: 11px; font-weight: 700; color: #A3A3A3; text-transform: uppercase; letter-spacing: 0.15em;">tokens.ts (Snippet)</span>
+          <span class="pill-tag" style="background-color: #171717; border-color: #404040; color: #D4D4D4;">Developer Handoff Ready</span>
+        </div>
+        <div class="font-mono" style="color: #D4D4D4; font-size: 13px; line-height: 1.8; overflow-x: auto;">
+          <div style="color: #737373;">// 3-Tier Token Architecture mapping semantic intent</div>
+          <div><span style="color: #F87171;">export const</span> TOKENS = {</div>
+          <div style="padding-left: 16px;">color: {</div>
+          <div style="padding-left: 32px;">surface: {</div>
+          <div style="padding-left: 48px;">canvas: <span style="color: #22D3EE;">'var(--bg-canvas)'</span>,</div>
+          <div style="padding-left: 48px;">card: <span style="color: #22D3EE;">'var(--bg-card)'</span>,</div>
+          <div style="padding-left: 32px;">},</div>
+          <div style="padding-left: 32px;">signal: {</div>
+          <div style="padding-left: 48px;">warning: <span style="color: #22D3EE;">'var(--signal-warning)'</span>, <span style="color: #737373;">// #f97316</span></div>
+          <div style="padding-left: 48px;">success: <span style="color: #22D3EE;">'var(--signal-success)'</span>, <span style="color: #737373;">// #22c55e</span></div>
+          <div style="padding-left: 32px;">}</div>
+          <div style="padding-left: 16px;">},</div>
+          <div style="padding-left: 16px;">radius: { md: <span style="color: #22D3EE;">'8px'</span>, lg: <span style="color: #22D3EE;">'12px'</span> }</div>
+          <div>};</div>
+        </div>
       </div>
     </div>
   </section>
@@ -997,7 +1044,7 @@
        7. WHAT DIDN'T WORK SECTION
        ========================================================================= -->
   <section id="friction" class="container-custom section-border-top">
-    <span class="section-tag">06 / WHAT DIDN'T WORK</span>
+    <span class="section-tag">07 / WHAT DIDN'T WORK</span>
 
     <div class="grid-layout">
       <div class="col-span-5">
@@ -1029,10 +1076,49 @@
   </section>
 
   <!-- =========================================================================
-       8. REFLECTIONS
+       8. OUTCOMES
+       ========================================================================= -->
+  <section id="outcomes" class="container-custom section-border-top">
+    <span class="section-tag">08 / OUTCOMES</span>
+
+    <div class="grid-layout" style="margin-bottom: 64px;">
+      <div class="col-span-5">
+        <h2 class="section-title">
+          Beta Launch: <span class="italic">Organic traction & adoption</span>
+        </h2>
+      </div>
+      <div class="col-span-7">
+        <p class="body-text">
+          Scribe was launched as a private beta to validate the core assumption: that users prefer structural friction over generative fluff when dealing with complex system design. The response validated this hypothesis entirely.
+        </p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; padding: 48px 0;">
+      
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'Times New Roman', Times, serif; font-size: 64px; color: #171717; line-height: 1;">350+</span>
+        <span style="font-size: 13px; font-weight: 700; color: #525252; text-transform: uppercase; letter-spacing: 0.15em;">Active Beta Users</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'Times New Roman', Times, serif; font-size: 64px; color: #171717; line-height: 1;">173</span>
+        <span style="font-size: 13px; font-weight: 700; color: #525252; text-transform: uppercase; letter-spacing: 0.15em;">Waitlist Signups</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'Times New Roman', Times, serif; font-size: 64px; color: #171717; line-height: 1;">Daily</span>
+        <span style="font-size: 13px; font-weight: 700; color: #525252; text-transform: uppercase; letter-spacing: 0.15em;">Personal Usage</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       9. REFLECTIONS
        ========================================================================= -->
   <section id="reflections" class="container-custom section-border-top">
-    <span class="section-tag">07 / REFLECTIONS</span>
+    <span class="section-tag">09 / REFLECTIONS</span>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px;">
       <div style="display: flex; flex-direction: column; gap: 12px;">

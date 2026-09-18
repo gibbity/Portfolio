@@ -14,9 +14,13 @@ const sections = [
   { id: "origin", label: "Origin & MVPs" },
   { id: "context", label: "Context" },
   { id: "problem", label: "The Problem" },
+  { id: "workflow", label: "The Workflow" },
   { id: "decisions", label: "Key Decisions" },
-  { id: "workbench", label: "System Interface" },
+  { id: "design-system", label: "Design System & Architecture" },
+  { id: "ui-components", label: "UI Components" },
+  { id: "compliance", label: "Components & Compliance" },
   { id: "friction", label: "What Didn't Work" },
+  { id: "outcomes", label: "Outcomes" },
   { id: "reflections", label: "Reflections" },
 ];
 
@@ -114,8 +118,8 @@ export default function ScribePage() {
         
         {/* Title */}
         <h1 className="font-serif text-[44px] sm:text-[60px] md:text-[76px] lg:text-[88px] leading-[1.08] tracking-tight text-neutral-900 font-normal">
-          Empowering product teams to resolve multi-dimensional complexity{" "}
-          <span className="italic font-serif text-neutral-700">without flat document blindspots</span>
+          Reconciling product roadmaps across 30 user interviews{" "}
+          <span className="italic font-serif text-neutral-700">without losing track of hidden dependencies</span>
         </h1>
 
         {/* Metadata Pill Chips */}
@@ -469,26 +473,40 @@ export default function ScribePage() {
         </div>
       </section>
 
-      {/* Interactive Video Showcase (Placed before Key Decisions) */}
-      <section className="py-12 md:py-20 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
-        <div className="mb-8">
+      {/* 4. THE WORKFLOW */}
+      <section id="workflow" className="py-12 md:py-20 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
+        <div className="mb-12">
           <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400 block mb-2">
-            System Walkthrough
+            04 / THE WORKFLOW
           </span>
           <h3 className="font-serif text-[28px] sm:text-[36px] text-neutral-900 font-normal leading-tight">
-            See Scribe in Action: <span className="italic">Spatial note synthesis &amp; graph traversal</span>
+            See Scribe in Action: <span className="italic">From raw data to spatial synthesis</span>
           </h3>
           <p className="font-sans text-[15px] md:text-[16px] text-neutral-600 leading-relaxed max-w-3xl mt-2">
-            Watch how raw unstructured thoughts transform into structured knowledge pillars, interactive clusters, and linked decision maps in real time.
+            A step-by-step walkthrough of how unstructured thoughts are transformed into structured, interactive decision maps.
           </p>
         </div>
 
-        <div className="w-full rounded-xl overflow-hidden shadow-xs border border-neutral-200/90 bg-black">
-          <MuxVideo 
-            videoSrc="/projects/scribe/preview.mp4"
-            poster="/projects/scribe/thumbnail.webp"
-            aspectRatio={16 / 9.2}
-          />
+        {/* 6-Video Bento Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8">
+          {[
+            { id: 1, title: "01. API Setup (BYOK)", src: "/projects/scribe/workflow/1-api-setup.mp4", desc: "Friction by design. Users bring their own API keys to guarantee absolute data privacy and zero vendor lock-in." },
+            { id: 2, title: "02. Document Upload", src: "/projects/scribe/workflow/2-upload.mp4", desc: "Ingesting unstructured data, PRDs, and user interviews to prepare for multi-document synthesis." },
+            { id: 3, title: "03. Graph Generation", src: "/projects/scribe/workflow/3-select-files.mp4", desc: "Selecting multiple sources to generate a unified graph, surfacing hidden cross-document interdependencies." },
+            { id: 4, title: "04. Spatial Workbench", src: "/projects/scribe/workflow/4-workbench.mp4", desc: "Automated spatial arrangement snaps nodes into rigid hierarchical columns, removing manual drag-and-drop fatigue." },
+            { id: 5, title: "05. Intelligence Copilot", src: "/projects/scribe/workflow/5-intelligence-chat.mp4", desc: "Conversing with the data logically while maintaining visual context of the entire graph structure." },
+            { id: 6, title: "06. Export & Handoff", src: "/projects/scribe/workflow/6-export.mp4", desc: "Packaging insights into portable, linear markdown formats for easy distribution to wider teams." },
+          ].map((v) => (
+            <div key={v.id} className="flex flex-col gap-3">
+              <div className="w-full aspect-video rounded-xl overflow-hidden shadow-xs border border-neutral-200/90 bg-black">
+                <video src={v.src} preload="metadata" muted playsInline loop autoPlay className="w-full h-full object-cover"></video>
+              </div>
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-neutral-900">{v.title}</span>
+                <p className="text-[13px] text-neutral-500 leading-[1.6] mt-1">{v.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -496,7 +514,7 @@ export default function ScribePage() {
       <section id="decisions" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
         <div className="mb-14">
           <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400">
-            04 / KEY DECISIONS
+            05 / KEY DECISIONS
           </span>
         </div>
 
@@ -580,88 +598,117 @@ export default function ScribePage() {
         </div>
       </section>
 
-      {/* 5. CORE WORKBENCH & INTERFACE (Dedicated High-Resolution Showcase) */}
-      <section id="workbench" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
+      {/* 6. DESIGN SYSTEM & ARCHITECTURE */}
+      <section id="design-system" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
         <div className="mb-8">
           <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400">
-            05 / SYSTEM INTERFACE
+            06 / DESIGN SYSTEM & ARCHITECTURE
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-start mb-16">
           <div className="md:col-span-5">
             <h2 className="font-serif text-[32px] sm:text-[42px] md:text-[48px] leading-[1.15] text-neutral-900 tracking-tight font-normal">
-              The Dual-Pane Environment: <span className="italic">From linear notes to spatial graphs</span>
+              Engineering-Grade System: <span className="italic">Tactical Noir &amp; 3-Tier Tokens</span>
             </h2>
           </div>
           <div className="md:col-span-7 font-sans text-[16px] md:text-[17px] leading-[1.7] text-neutral-600">
             <p>
-              Scribe pairs a distraction-free note editor with an automated graph construction engine and conversational AI copilot. Users write structured thought streams on the left, while the right-hand canvas visualizes emerging dependencies across projects, phases, and entities in real time.
+              Scribe is powered by a fully documented, standalone Design System. To ensure seamless developer handoff, the UI is built on a strict 3-tier token architecture with a 7-State machine testing protocol (Hover, Active, Disabled, Loading, Error, etc.), moving beyond Figma mockups into production-ready schemas.
             </p>
           </div>
         </div>
 
-        {/* Big Showcase 1: Notes Editor & Build-a-Graph */}
-        <div className="space-y-6 pt-10 border-t border-neutral-200/80">
-          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-neutral-400 block mb-1 font-sans">
-                Interface 01
-              </span>
-              <h3 className="font-serif text-[24px] sm:text-[30px] text-neutral-900 font-normal">
-                Hierarchical Note Authoring &amp; Build-a-Graph Engine
-              </h3>
+        {/* Design System Bento */}
+        <div className="flex flex-col gap-12 mt-8">
+          
+          {/* Color Palette */}
+          <div>
+            <div className="flex justify-between items-end mb-6 border-b border-neutral-200 pb-3">
+              <div>
+                <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest block mb-1">FOUNDATIONS</span>
+                <h3 className="font-sans text-[18px] font-bold text-neutral-900">Color Palette & Contrast Hierarchy</h3>
+              </div>
+              <span className="px-3 py-1 bg-green-50 border border-green-200 text-green-700 text-[10px] uppercase font-bold tracking-wider rounded-full">WCAG 2.1 AA / AAA</span>
             </div>
-            <span className="text-[12px] font-mono text-neutral-500">
-              Structured Editor &bull; Metadata Extraction
-            </span>
-          </div>
-
-          <p className="font-sans text-[15px] md:text-[16px] text-neutral-600 leading-relaxed max-w-4xl">
-            A minimalist Markdown workspace paired with a tree hierarchy sidebar. The &quot;Build-a-Graph&quot; modal extracts nested entities, pillars, and cross-document links directly from note prose without requiring manual node placement.
-          </p>
-
-          <div className="w-full rounded-xl overflow-hidden border border-neutral-200/90 bg-white shadow-xs">
-            <Image 
-              src="/projects/scribe/notes-sidebar-buildagraph.webp" 
-              alt="Scribe Note Editor, Hierarchy Sidebar, and Build-a-Graph Engine" 
-              width={2560} 
-              height={1440} 
-              className="w-full h-auto object-contain block" 
-              priority
-            />
-          </div>
-        </div>
-
-        {/* Big Showcase 2: Graph Workbench & AI Chat */}
-        <div className="space-y-6 pt-16 border-t border-neutral-200/80 mt-16">
-          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-neutral-400 block mb-1 font-sans">
-                Interface 02
-              </span>
-              <h3 className="font-serif text-[24px] sm:text-[30px] text-neutral-900 font-normal">
-                Multi-Dimensional Graph Workbench &amp; AI Copilot
-              </h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              <div className="flex flex-col rounded-xl border border-neutral-200 overflow-hidden bg-white hover:border-orange-500 transition-colors cursor-pointer group shadow-sm">
+                <div className="h-16 bg-[#ff4d00] flex items-center justify-center font-mono text-[11px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">#ff4d00</div>
+                <div className="p-3 bg-white border-t border-neutral-100">
+                  <div className="text-[12px] font-bold text-neutral-900 mb-0.5">Scribe Flame</div>
+                  <div className="text-[10px] text-neutral-500 leading-tight">Primary Action / Focus</div>
+                </div>
+              </div>
+              <div className="flex flex-col rounded-xl border border-neutral-200 overflow-hidden bg-white hover:border-emerald-500 transition-colors cursor-pointer group shadow-sm">
+                <div className="h-16 bg-[#32d74b] flex items-center justify-center font-mono text-[11px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">#32d74b</div>
+                <div className="p-3 bg-white border-t border-neutral-100">
+                  <div className="text-[12px] font-bold text-neutral-900 mb-0.5">Bauhaus Mint</div>
+                  <div className="text-[10px] text-neutral-500 leading-tight">Verified Flow / Success</div>
+                </div>
+              </div>
+              <div className="flex flex-col rounded-xl border border-neutral-200 overflow-hidden bg-white hover:border-red-500 transition-colors cursor-pointer group shadow-sm">
+                <div className="h-16 bg-[#ff453a] flex items-center justify-center font-mono text-[11px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">#ff453a</div>
+                <div className="p-3 bg-white border-t border-neutral-100">
+                  <div className="text-[12px] font-bold text-neutral-900 mb-0.5">Red Team Crimson</div>
+                  <div className="text-[10px] text-neutral-500 leading-tight">Adversarial / Error</div>
+                </div>
+              </div>
+              <div className="flex flex-col rounded-xl border border-neutral-200 overflow-hidden bg-white hover:border-blue-500 transition-colors cursor-pointer group shadow-sm">
+                <div className="h-16 bg-[#0a84ff] flex items-center justify-center font-mono text-[11px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">#0a84ff</div>
+                <div className="p-3 bg-white border-t border-neutral-100">
+                  <div className="text-[12px] font-bold text-neutral-900 mb-0.5">Market Blue</div>
+                  <div className="text-[10px] text-neutral-500 leading-tight">External / Ingest</div>
+                </div>
+              </div>
+              <div className="flex flex-col rounded-xl border border-neutral-200 overflow-hidden bg-white hover:border-purple-500 transition-colors cursor-pointer group shadow-sm">
+                <div className="h-16 bg-[#bf5af2] flex items-center justify-center font-mono text-[11px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">#bf5af2</div>
+                <div className="p-3 bg-white border-t border-neutral-100">
+                  <div className="text-[12px] font-bold text-neutral-900 mb-0.5">Deep Violet</div>
+                  <div className="text-[10px] text-neutral-500 leading-tight">Neural Lenses / Ethics</div>
+                </div>
+              </div>
+              <div className="flex flex-col rounded-xl border border-neutral-200 overflow-hidden bg-white hover:border-amber-400 transition-colors cursor-pointer group shadow-sm">
+                <div className="h-16 bg-[#fbbf24] flex items-center justify-center font-mono text-[11px] text-black font-bold opacity-0 group-hover:opacity-100 transition-opacity">#fbbf24</div>
+                <div className="p-3 bg-white border-t border-neutral-100">
+                  <div className="text-[12px] font-bold text-neutral-900 mb-0.5">Oracle Amber</div>
+                  <div className="text-[10px] text-neutral-500 leading-tight">AI Heuristics / Insights</div>
+                </div>
+              </div>
             </div>
-            <span className="text-[12px] font-mono text-neutral-500">
-              Spatial Canvas &bull; Contextual AI Chat
-            </span>
           </div>
 
-          <p className="font-sans text-[15px] md:text-[16px] text-neutral-600 leading-relaxed max-w-4xl">
-            The spatial graph canvas lays out structural pillars and clusters in high-legibility columns, allowing teams to zoom into specific nodes while querying the embedded AI assistant with full graph context.
-          </p>
-
-          <div className="w-full rounded-xl overflow-hidden border border-neutral-200/90 bg-white shadow-xs">
-            <Image 
-              src="/projects/scribe/workbench-and-chat.webp" 
-              alt="Scribe Graph Workbench & AI Chat Assistant" 
-              width={2560} 
-              height={1440} 
-              className="w-full h-auto object-contain block" 
-            />
+          {/* Typography Ladder */}
+          <div>
+            <div className="flex justify-between items-end mb-6 border-b border-neutral-200 pb-3">
+              <div>
+                <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest block mb-1">FOUNDATIONS</span>
+                <h3 className="font-sans text-[18px] font-bold text-neutral-900">Typography Ladder</h3>
+              </div>
+            </div>
+            
+            <div className="p-8 bg-neutral-50 border border-neutral-200 rounded-xl space-y-8">
+              <div className="border-b border-neutral-200 pb-6">
+                <span className="font-mono text-[10px] font-bold tracking-widest text-orange-500 uppercase">DISPLAY // PLAYFAIR 32PX / 900</span>
+                <h1 className="font-serif text-[32px] font-black tracking-tight text-neutral-900 mt-2">Spatial Intelligence for Complex Systems</h1>
+              </div>
+              <div className="border-b border-neutral-200 pb-6">
+                <span className="font-mono text-[10px] font-bold tracking-widest text-emerald-500 uppercase">HEADING // DM SANS 20PX / 700</span>
+                <h2 className="font-sans text-[20px] font-bold text-neutral-900 mt-2">Micro Workbench & D3 Dynamic Cable Routing</h2>
+              </div>
+              <div className="border-b border-neutral-200 pb-6">
+                <span className="font-mono text-[10px] font-bold tracking-widest text-blue-500 uppercase">BODY // DM SANS 14PX / 400</span>
+                <p className="font-sans text-[14px] text-neutral-600 mt-2 max-w-2xl">Unhappy paths, logic gaps, and systemic friction revealed spatially. Run adversarial personas across 30 simulated agents.</p>
+              </div>
+              <div>
+                <span className="font-mono text-[10px] font-bold tracking-widest text-purple-500 uppercase">TELEMETRY BADGE // JETBRAINS MONO 10PX / 900</span>
+                <div className="mt-4">
+                  <span className="font-mono text-[10px] font-black tracking-wider px-2 py-1 bg-neutral-900 text-white rounded">TSOT-COMP-3012 // VERIFIED</span>
+                </div>
+              </div>
+            </div>
           </div>
+
         </div>
       </section>
 
@@ -677,11 +724,353 @@ export default function ScribePage() {
         />
       </section>
 
-      {/* 6. WHAT DIDN'T WORK SECTION (Bento Grid of 8 Prototypes) */}
+      {/* 7. UI COMPONENTS */}
+      <section id="ui-components" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
+        <div className="mb-14">
+          <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400">
+            07 / UI COMPONENTS
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-start mb-16">
+          <div className="md:col-span-5">
+            <h2 className="font-serif text-[32px] sm:text-[42px] md:text-[48px] leading-[1.15] text-neutral-900 tracking-tight font-normal">
+              High-Fidelity Interaction: <span className="italic">Beyond Standard Patterns</span>
+            </h2>
+          </div>
+          <div className="md:col-span-7 font-sans text-[16px] md:text-[17px] leading-[1.7] text-neutral-600 space-y-4">
+            <p>
+              To support the complexity of algorithmic spatial synthesis, Scribe demanded bespoke UI components. From live telemetry HUDs to interactive docks, the interface merges technical density with tactile, low-latency ergonomics.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-24">
+          
+          {/* Sub-section 1: Cartridge Dock */}
+          <div>
+            <div className="flex items-center gap-4 mb-6 border-b border-neutral-200 pb-2">
+              <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest">07.1 // System Cartridge Dock</span>
+            </div>
+            <p className="font-sans text-[14px] text-neutral-600 mb-8 max-w-3xl">
+              The primary instrument dock for adding lenses, connecting datasets, and managing workspace snapshots. It uses a horizontal sliding model with dynamic active states.
+            </p>
+            <div className="p-8 bg-neutral-900 rounded-xl border border-neutral-800 flex justify-center overflow-x-auto">
+              <div className="flex gap-2 p-1.5 bg-black/60 backdrop-blur-md rounded-[18px] border border-white/10 shadow-2xl items-center">
+                {/* Brand Zone */}
+                <div className="flex items-center gap-3 pr-4 border-r border-white/10 pl-2">
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[8px] font-black tracking-[0.2em] text-white/40 uppercase">System</span>
+                    <span className="font-mono text-[10px] font-bold tracking-[0.15em] text-orange-500 uppercase">Dock</span>
+                  </div>
+                  <button className="p-1 hover:bg-white/5 rounded text-white/50 transition-colors">⤓</button>
+                </div>
+                {/* Cartridges */}
+                <div className="flex items-center gap-2 pl-2">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 cursor-pointer">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    <span className="text-[12px] font-bold">Oracle Lens</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/5 text-neutral-400 cursor-pointer transition-colors">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9"/><path d="M9 10h.01M15 10h.01"/><path d="M9.5 15a3.5 3.5 0 0 0 5 0"/></svg>
+                    <span className="text-[12px] font-medium">Swamp Lens</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/5 text-neutral-400 cursor-pointer transition-colors">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></svg>
+                    <span className="text-[12px] font-medium">Strategist</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/5 text-neutral-400 cursor-pointer transition-colors">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                    <span className="text-[12px] font-medium">Local Store</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 2: Swarm Persona Matrix */}
+          <div>
+            <div className="flex items-center gap-4 mb-6 border-b border-neutral-200 pb-2">
+              <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest">07.2 // Swarm Persona Matrix</span>
+            </div>
+            <p className="font-sans text-[14px] text-neutral-600 mb-8 max-w-3xl">
+              Adversarial simulation packages for stress-testing product ideas. Each package uses a distinct color identity mapped to specific system behaviors.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-5 bg-white border-2 border-red-500 rounded-xl shadow-[0_4px_20px_rgba(239,68,68,0.15)] relative cursor-pointer">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-8 h-8 rounded-full bg-red-500/15 flex items-center justify-center text-red-500">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-500">10 AI PERSONAS</span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-orange-500/10 text-orange-500">ACTIVE</span>
+                  </div>
+                </div>
+                <h4 className="text-[14px] font-bold text-neutral-900 mb-1">The Red Team</h4>
+                <p className="text-[12px] text-neutral-500 leading-relaxed">Critical analysis, edge-case vulnerability discovery, and systemic friction resistance.</p>
+              </div>
+
+              <div className="p-5 bg-neutral-50 border border-neutral-200 rounded-xl hover:border-emerald-500 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500/15 flex items-center justify-center text-emerald-500">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.6-6.2 4.6 2.3-7.3-6.1-4.5h7.6z"/></svg>
+                  </div>
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-500">8 AI PERSONAS</span>
+                </div>
+                <h4 className="text-[14px] font-bold text-neutral-900 mb-1">The Bauhaus Council</h4>
+                <p className="text-[12px] text-neutral-500 leading-relaxed">Utility, essentialism, and industrial ergonomics without decoration waste.</p>
+              </div>
+
+              <div className="p-5 bg-neutral-50 border border-neutral-200 rounded-xl hover:border-blue-500 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-8 h-8 rounded-full bg-blue-500/15 flex items-center justify-center text-blue-500">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                  </div>
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-500">6 AI PERSONAS</span>
+                </div>
+                <h4 className="text-[14px] font-bold text-neutral-900 mb-1">The Market Movers</h4>
+                <p className="text-[12px] text-neutral-500 leading-relaxed">Business economics, distribution flywheels, and monetization sovereignty.</p>
+              </div>
+
+              <div className="p-5 bg-neutral-50 border border-neutral-200 rounded-xl hover:border-purple-500 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-8 h-8 rounded-full bg-purple-500/15 flex items-center justify-center text-purple-500">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                  </div>
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-500">6 AI PERSONAS</span>
+                </div>
+                <h4 className="text-[14px] font-bold text-neutral-900 mb-1">The Deep Thinkers</h4>
+                <p className="text-[12px] text-neutral-500 leading-relaxed">Ethics, epistemic humility, and long-term societal resilience models.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 3: GigaMap HUD & Strategist AI */}
+          <div>
+            <div className="flex items-center gap-4 mb-6 border-b border-neutral-200 pb-2">
+              <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest">07.3 // Spatial Telemetry & Strategist</span>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* GigaMap HUD */}
+              <div className="flex flex-col">
+                <p className="font-sans text-[13px] text-neutral-600 mb-4">
+                  Tactical floating HUD overlays, camera controls, coordinate readouts, and spatial resonance indexes mapped over the infinite canvas.
+                </p>
+                <div className="relative h-64 bg-[#060709] border border-neutral-800 rounded-xl overflow-hidden flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[length:24px_24px] opacity-60"></div>
+                  
+                  {/* Nodes */}
+                  <div className="absolute flex gap-12 items-center">
+                    <div className="px-3.5 py-2 bg-[#141414] border border-white/10 border-l-[3px] border-l-[#ff4d00] rounded-lg shadow-2xl z-10">
+                      <div className="font-mono text-[8px] font-black text-[#ff4d00] uppercase">ROOT CONCEPT</div>
+                      <div className="text-[11px] font-bold text-white mt-0.5">Market Liquidity Protocol</div>
+                    </div>
+                    <div className="px-3.5 py-2 bg-[#141414] border border-white/10 border-l-[3px] border-l-[#32d74b] rounded-lg shadow-2xl z-10">
+                      <div className="font-mono text-[8px] font-black text-[#32d74b] uppercase">VERIFIED OUTCOME</div>
+                      <div className="text-[11px] font-bold text-white mt-0.5">Zero-Knowledge Settlement</div>
+                    </div>
+                  </div>
+
+                  {/* Telemetry Pill */}
+                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-[#121417]/80 backdrop-blur-md border border-white/10 rounded-full z-20">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#32d74b]"></div>
+                    <span className="font-mono text-[9px] font-bold text-[#f2f2f7] tracking-wide">1,248 NODES INDEXED</span>
+                  </div>
+
+                  {/* Controls */}
+                  <div className="absolute bottom-4 right-4 flex items-center gap-1 p-1 bg-[#121417]/80 backdrop-blur-md border border-white/10 rounded-lg z-20">
+                    <button className="px-2 py-1 text-[11px] font-bold text-white hover:bg-white/10 rounded">+</button>
+                    <button className="px-2 py-1 text-[11px] font-bold text-white hover:bg-white/10 rounded">-</button>
+                    <button className="px-2 py-1 text-[9px] font-mono font-bold text-white hover:bg-white/10 rounded">FIT</button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Strategist AI */}
+              <div className="flex flex-col">
+                <p className="font-sans text-[13px] text-neutral-600 mb-4">
+                  Heuristic recommendation feed with expandable empirical rationale and 2-step verified canvas mutation.
+                </p>
+                <div className="bg-[#0a0a0c] border border-neutral-800 rounded-xl p-5 shadow-2xl h-64 flex flex-col justify-center">
+                  <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="text-white"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></svg></div>
+                      <div>
+                        <div className="text-[12px] font-bold text-white">Strategic Recommendation</div>
+                        <div className="text-[9px] font-mono text-[#32d74b]">EU Art. 14 // Human-in-the-Loop</div>
+                      </div>
+                    </div>
+                    <span className="text-[9px] font-bold text-[#ff4d00] bg-[#ff4d00]/10 px-1.5 py-0.5 rounded">94% CONFIDENCE</span>
+                  </div>
+
+                  <p className="text-[12px] text-white/80 leading-relaxed mb-4">
+                    Cluster 4 exhibits high adversarial resistance. Recommend splitting into two decoupled micro-workbenches to isolate failure modes.
+                  </p>
+
+                  <div className="bg-black/40 border border-white/10 rounded-lg p-3 mb-4">
+                    <div className="text-[10px] font-bold text-yellow-500 flex items-center gap-1.5 mb-1.5">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      Empirical Rationale Ledger
+                    </div>
+                    <p className="text-[10px] text-neutral-400 leading-relaxed">Evaluated against Red Team personas. 4/5 models flagged single-point-of-failure in current node wiring.</p>
+                  </div>
+
+                  <button className="w-full py-2 bg-[#ff4d00] hover:bg-[#ff4d00]/90 text-white text-[11px] font-bold rounded-lg transition-colors">
+                    Review Mutation Proposal
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 8. COMPONENTS & COMPLIANCE */}
+      <section id="compliance" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
+        <div className="mb-14">
+          <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400">
+            08 / COMPONENTS & COMPLIANCE
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-start mb-16">
+          <div className="md:col-span-5">
+            <h2 className="font-serif text-[32px] sm:text-[42px] md:text-[48px] leading-[1.15] text-neutral-900 tracking-tight font-normal">
+              Production-Ready UI: <span className="italic">From Atoms to EU Regulation</span>
+            </h2>
+          </div>
+          <div className="md:col-span-7 font-sans text-[16px] md:text-[17px] leading-[1.7] text-neutral-600 space-y-4">
+            <p>
+              A robust design system isn&apos;t just about aesthetics; it&apos;s about handling unpredictable edge cases and strict legal requirements. Scribe&apos;s UI kit was built to gracefully manage missing data, text overflows, and mandatory statutory metadata required for AI products.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-24">
+          
+          {/* Sub-section 1: Component Atoms */}
+          <div>
+            <div className="flex items-center gap-4 mb-6 border-b border-neutral-200 pb-2">
+              <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest">07.1 // Component Set (Atoms)</span>
+            </div>
+            <div className="p-8 bg-neutral-50 rounded-xl border border-neutral-200 flex flex-col items-center justify-center">
+              <div className="w-full max-w-sm space-y-5">
+                <div>
+                  <label className="block text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1.5">Document Title</label>
+                  <input type="text" placeholder="e.g. 'Q4 Strategy Analysis'" defaultValue="Enterprise Architecture v2" className="w-full px-4 py-2.5 bg-white border border-neutral-200 rounded-lg text-[13px] text-neutral-900 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1.5">Notes Content</label>
+                  <textarea placeholder="Paste your research notes here..." rows={3} className="w-full px-4 py-2.5 bg-white border border-neutral-200 rounded-lg text-[13px] text-neutral-900 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all resize-none"></textarea>
+                </div>
+                <div className="flex items-center justify-between p-3.5 bg-white border border-neutral-200 rounded-xl">
+                  <div>
+                    <div className="text-[13px] font-bold text-neutral-900">Step-Gate Mode</div>
+                    <div className="text-[11px] text-neutral-500 mt-0.5">Require human confirmation before mutations</div>
+                  </div>
+                  <div className="w-11 h-6 rounded-full bg-orange-500 relative cursor-pointer shadow-inner">
+                    <div className="absolute top-[3px] right-[3px] w-[18px] h-[18px] rounded-full bg-white shadow-sm"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 2: Edge Cases */}
+          <div>
+            <div className="flex items-center gap-4 mb-6 border-b border-neutral-200 pb-2">
+              <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest">07.2 // Edge Cases & Resilience</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="p-6 bg-neutral-100/50 rounded-xl border border-neutral-200">
+                <h4 className="font-sans text-[14px] font-bold text-neutral-900 mb-2">7-State Component Machine</h4>
+                <p className="font-sans text-[13px] text-neutral-600 leading-relaxed">
+                  Every interactive atom (buttons, nodes, inputs) is mapped across 7 distinct states: Default, Hover, Active, Disabled, Loading, Error, and Success, preventing broken interactions.
+                </p>
+              </div>
+              <div className="p-6 bg-neutral-100/50 rounded-xl border border-neutral-200">
+                <h4 className="font-sans text-[14px] font-bold text-neutral-900 mb-2">Unpredictable LLM Outputs</h4>
+                <p className="font-sans text-[13px] text-neutral-600 leading-relaxed">
+                  Strict multiline truncation (line-clamp) and flex-wrap policies ensure that overly verbose AI-generated titles or missing schemas never break the structural grid.
+                </p>
+              </div>
+              <div className="p-6 bg-neutral-100/50 rounded-xl border border-neutral-200">
+                <h4 className="font-sans text-[14px] font-bold text-neutral-900 mb-2">Zero-Data Graceful Fallbacks</h4>
+                <p className="font-sans text-[13px] text-neutral-600 leading-relaxed">
+                  When the user has no API key or the local IndexedDB is wiped, the UI gracefully downgrades into an empty state providing clear wayfinding instead of fatal errors.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 3: EU AI Act */}
+          <div>
+            <div className="flex items-center gap-4 mb-6 border-b border-neutral-200 pb-2">
+              <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest">07.3 // EU AI Act Compliance</span>
+            </div>
+            <p className="font-sans text-[15px] text-neutral-600 mb-8 max-w-3xl">
+              Every AI-generated output is wrapped in statutory transparency metadata. Scribe implements Articles 13, 14, and 50 of the EU AI Act directly at the component level to ensure TSOT compliance.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {/* Art 50 */}
+              <div className="p-6 bg-neutral-900 rounded-xl border border-neutral-800">
+                <h4 className="font-sans text-[13px] font-bold text-white mb-4">Art. 50 — Algorithmic Transparency Badges</h4>
+                <div className="flex flex-col gap-3 items-start">
+                  <div className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-orange-500/10 border border-orange-500/30">
+                    <span className="font-mono text-[9px] font-bold text-orange-500 uppercase tracking-[0.15em]">EU AI Act Art. 50 // Algorithmic Spatial Synthesis</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                    <span className="font-mono text-[9px] font-bold text-emerald-500 uppercase tracking-[0.15em]">Art. 14 // Human-in-the-Loop Verified</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Art 14 */}
+              <div className="p-6 bg-neutral-900 rounded-xl border border-neutral-800">
+                <h4 className="font-sans text-[13px] font-bold text-white mb-4">Art. 14 — Step-Gate Confirmation</h4>
+                <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                  <p className="text-[12px] text-emerald-100/70 mb-3"><strong className="text-emerald-400">Step 1 of 2:</strong> Review the AI&apos;s proposed action before confirming execution. You retain full override authority.</p>
+                  <button className="flex items-center justify-center w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 transition-colors text-black text-[12px] font-bold rounded-lg cursor-pointer">
+                    Confirm &amp; Mutate Canvas
+                  </button>
+                </div>
+              </div>
+              
+              {/* Art 13 */}
+              <div className="p-6 bg-neutral-900 rounded-xl border border-neutral-800 sm:col-span-2">
+                <h4 className="font-sans text-[13px] font-bold text-white mb-4">Art. 13 — Spatial Epistemic Ledger (Provenance Audit)</h4>
+                <div className="p-5 bg-black border border-neutral-800 rounded-xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[13px] font-bold text-white">Spatial Epistemic Ledger</span>
+                    <span className="font-mono text-[9px] px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold">96% Confidence</span>
+                  </div>
+                  <p className="text-[12px] text-neutral-400 leading-relaxed mb-4">
+                    Synthesized via deterministic 2-pass pillar-cluster hierarchy. Zero external telemetry custody. Full BYOK client-side execution.
+                  </p>
+                  <div className="flex flex-wrap gap-4 pt-3 border-t border-neutral-800 font-mono text-[10px] text-neutral-500">
+                    <span>Latency: Damped (90%)</span>
+                    <span>&bull;</span>
+                    <span>EU Risk Class: Limited</span>
+                    <span>&bull;</span>
+                    <span>Human Override: VERIFIED</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 9. WHAT DIDN'T WORK SECTION (Bento Grid of 8 Prototypes) */}
       <section id="friction" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
         <div className="mb-8">
           <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400">
-            06 / WHAT DIDN&apos;T WORK
+            09 / WHAT DIDN&apos;T WORK
           </span>
         </div>
 
@@ -716,11 +1105,48 @@ export default function ScribePage() {
         </div>
       </section>
 
-      {/* 7. REFLECTIONS (Larger Scale & Bento Style) */}
+      {/* 10. OUTCOMES */}
+      <section id="outcomes" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
+        <div className="mb-8">
+          <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400">
+            10 / OUTCOMES
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-14 items-start mb-16">
+          <div className="md:col-span-5">
+            <h2 className="font-serif text-[32px] sm:text-[42px] md:text-[48px] leading-[1.15] text-neutral-900 tracking-tight font-normal">
+              Beta Launch: <span className="italic">Organic traction &amp; adoption</span>
+            </h2>
+          </div>
+          <div className="md:col-span-7 font-sans text-[16px] md:text-[17px] leading-[1.7] text-neutral-600">
+            <p>
+              Scribe was launched as a private beta to validate the core assumption: that users prefer structural friction over generative fluff when dealing with complex system design. The response validated this hypothesis entirely.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 py-12">
+          <div className="flex flex-col gap-2">
+            <span className="font-serif text-[56px] sm:text-[64px] text-neutral-900 leading-none">350+</span>
+            <span className="text-[12px] font-bold text-neutral-500 uppercase tracking-[0.15em]">Active Beta Users</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-serif text-[56px] sm:text-[64px] text-neutral-900 leading-none">173</span>
+            <span className="text-[12px] font-bold text-neutral-500 uppercase tracking-[0.15em]">Waitlist Signups</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-serif text-[56px] sm:text-[64px] text-neutral-900 leading-none">Daily</span>
+            <span className="text-[12px] font-bold text-neutral-500 uppercase tracking-[0.15em]">Personal Usage</span>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. REFLECTIONS (Larger Scale & Bento Style) */}
       <section id="reflections" className="py-20 md:py-32 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto border-t border-neutral-200/80 text-left">
         <div className="mb-10">
           <span className="text-[12px] font-sans font-bold uppercase tracking-[0.25em] text-neutral-400">
-            07 / REFLECTIONS
+            11 / REFLECTIONS
           </span>
         </div>
 
