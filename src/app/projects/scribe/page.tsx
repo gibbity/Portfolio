@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import CaseStudyNav from "@/components/case-study/CaseStudyNav";
 import CaseStudyFooter from "@/components/case-study/CaseStudyFooter";
@@ -1011,8 +1012,8 @@ export default function ScribePage() {
             <div className="flex items-center gap-4 mb-6 border-b border-neutral-200 pb-2">
               <span className="font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-widest">07.3 // EU AI Act Compliance</span>
             </div>
-            <p className="font-sans text-[15px] text-neutral-600 mb-8 max-w-3xl">
-              Every AI-generated output is wrapped in statutory transparency metadata. Scribe implements Articles 13, 14, and 50 of the EU AI Act directly at the component level to ensure TSOT compliance.
+            <p className="font-sans text-[15px] text-neutral-600 mb-8 max-w-3xl leading-relaxed">
+              Every AI-generated output is wrapped in statutory transparency metadata. These Article 13, 14, and 50 protections were added after I ran Scribe through <Link href="/projects/tsot" className="text-neutral-900 font-medium underline underline-offset-4 hover:text-black">TSOT</Link>, my own AI compliance and HCI audit engine, which flagged the gaps.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
