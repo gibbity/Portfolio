@@ -36,9 +36,9 @@ body {
   --profile-width: 25.85%;
   --profile-height: 16.7%;
   --desc-left: 10.22%;
-  --desc-top: 77.5%;
-  --desc-width: 42%;
-  --desc-font: 11px;
+  --desc-top: 76%;
+  --desc-width: 60%;
+  --desc-font: 11.5px;
   --label-font: 11px;
   --card-shadow: none;
 }
@@ -56,8 +56,8 @@ body {
     --profile-width: 30.26%;
     --profile-height: 21.97%;
     --desc-left: 43.62%;
-    --desc-top: 89.65%;
-    --desc-width: 44.84%;
+    --desc-top: 88.5%;
+    --desc-width: 50%;
     --desc-font: 2.43cqw;
     --label-font: 2.43cqw;
     --card-shadow: -3.5px -3.5px 13.93px rgba(0,0,0,0.46), 2.45px 2.45px 11.305px rgba(0,0,0,0.38);

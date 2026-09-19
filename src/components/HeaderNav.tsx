@@ -25,60 +25,62 @@ export default function HeaderNav() {
       </Link>
       
       {/* Desktop Navigation Links */}
-      <nav className="hidden md:flex items-center gap-10">
+      <nav className="hidden md:flex items-center gap-6">
         <Link 
           href="/#work" 
           onClick={(e) => handleScroll(e, "work")}
-          className="font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-black/60 hover:text-black transition-colors pl-[0.25em]"
+          className="font-sans font-medium text-[13px] md:text-[14px] text-black/60 hover:text-black transition-colors"
         >
           Work
         </Link>
         <Link 
           href="/archives" 
           prefetch={false}
-          className="font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-black/60 hover:text-black transition-colors pl-[0.25em]"
+          className="font-sans font-medium text-[13px] md:text-[14px] text-black/60 hover:text-black transition-colors"
         >
           Archives
         </Link>
         <Link 
           href="/#about" 
           onClick={(e) => handleScroll(e, "about")}
-          className="font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-black/60 hover:text-black transition-colors pl-[0.25em]"
+          className="font-sans font-medium text-[13px] md:text-[14px] text-black/60 hover:text-black transition-colors"
         >
           About
         </Link>
-        <Link 
-          href="/#contact" 
-          onClick={(e) => handleScroll(e, "contact")}
-          className="font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-black/60 hover:text-black transition-colors pl-[0.25em]"
+        <a 
+          href="https://drive.google.com/file/d/1vUPBpcYmhJ28-XG2RYTkuuyX84X2aCIc/view?usp=drive_link" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="font-sans font-medium text-[13px] md:text-[14px] text-black/60 hover:text-black transition-colors"
         >
-          Contact
-        </Link>
+          Resume
+        </a>
       </nav>
 
       {/* Mobile Navigation Links (Figma Layout) */}
-      <nav className="md:hidden flex items-center gap-5 ml-auto">
+      <nav className="md:hidden flex items-center gap-4 ml-auto">
         <Link 
           href="/#work" 
           onClick={(e) => handleScroll(e, "work")}
-          className="font-sans font-normal text-[11px] text-black hover:opacity-75 transition-opacity"
+          className="font-sans font-medium text-[12px] text-black/70 hover:text-black transition-colors"
         >
           Work
         </Link>
         <Link 
           href="/archives" 
           prefetch={false}
-          className="font-sans font-normal text-[11px] text-black hover:opacity-75 transition-opacity"
+          className="font-sans font-medium text-[12px] text-black/70 hover:text-black transition-colors"
         >
           Archives
         </Link>
-        <Link 
-          href="/#contact" 
-          onClick={(e) => handleScroll(e, "contact")}
-          className="font-sans font-normal text-[11px] text-black hover:opacity-75 transition-opacity"
+        <a 
+          href="https://drive.google.com/file/d/1vUPBpcYmhJ28-XG2RYTkuuyX84X2aCIc/view?usp=drive_link" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="font-sans font-medium text-[12px] text-black/70 hover:text-black transition-colors"
         >
-          Contact me
-        </Link>
+          Resume
+        </a>
       </nav>
     </header>
   );

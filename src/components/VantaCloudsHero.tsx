@@ -268,8 +268,8 @@ export default function VantaCloudsHero() {
         </div>
 
         {/* Subtitle Statement */}
-        <p className="font-google-sans text-[13px] sm:text-[14px] md:text-[16px] font-normal text-[#afafaf] max-w-[350px] md:max-w-[400px] leading-relaxed tracking-wide text-center drop-shadow-md">
-          AI Product Designer focused on stripping noise and shipping features and usable products
+        <p className="font-google-sans text-[13px] sm:text-[14px] md:text-[16px] font-normal text-[#afafaf] max-w-[350px] md:max-w-[420px] leading-relaxed tracking-wide text-center drop-shadow-md">
+          Product Designer &amp; Builder. I think in product first. AI just helps me ship it faster.
         </p>
       </div>
 

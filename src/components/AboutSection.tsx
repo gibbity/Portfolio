@@ -303,7 +303,7 @@ export default function AboutSection() {
                 </p>
 
                 <p className="bio-line">
-                  I am a product designer navigating the space between design, AI assisted workflows, and product management.
+                  I am a product designer &amp; builder navigating the space between design, AI assisted workflows, and product management.
                 </p>
 
                 <p className="bio-line">

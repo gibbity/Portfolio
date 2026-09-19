@@ -87,13 +87,24 @@ const rockSalt = Rock_Salt({
 });
 
 export const metadata: Metadata = {
-  title: "Shresth Kushwaha - AI Product Designer",
-  description: "AI Product Designer focused on stripping noise and shipping features and usable products.",
+  title: "Shresth Kushwaha - Product Designer & Builder",
+  description: "Product Designer & Builder. I think in product first. AI just helps me ship it faster.",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/logo-portfolio.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icons/180x180.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/icons/32x32.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Portfolio",
+    title: "Shresth Kushwaha",
   },
 };
 

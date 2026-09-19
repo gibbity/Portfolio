@@ -13,7 +13,6 @@ export default function PosterHero() {
 
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [calculatedScale, setCalculatedScale] = useState(2.2);
   const [isDesktop, setIsDesktop] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -99,16 +98,6 @@ export default function PosterHero() {
     return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
   }, [mousePos.x, mousePos.y]);
 
-  // Reactive listener to immediately clear 3D tilt when scrolling starts
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
-      if (latest > 0.005) {
-        setTilt({ x: 0, y: 0 });
-      }
-    });
-    return () => unsubscribe();
-  }, [scrollYProgress]);
-
   // Physics loop for mouse hover wave ripple / cloth waving effect (Desktop Only - Sleeps when idle)
   useEffect(() => {
     if (!isDesktop) return;
@@ -147,6 +136,16 @@ export default function PosterHero() {
     return () => cancelAnimationFrame(animId);
   }, [hovered, isDesktop, scrollYProgress]);
 
+  // Clear 3D tilt immediately when scrolling starts
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      if (latest > 0.005 && containerRef.current) {
+        containerRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+      }
+    });
+    return () => unsubscribe();
+  }, [scrollYProgress]);
+
   // Mouse move handler - Desktop only (Direct DOM updates for silky 120fps with 0 React re-renders)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDesktop || scrollYProgress.get() > 0.005) return;
@@ -164,7 +163,8 @@ export default function PosterHero() {
     if (feImageRef.current) {
       feImageRef.current.setAttribute("href", dataUrl);
     }
-    
+
+    // 3D gyroscopic tilt
     const rotateX = -((y - rect.height / 2) / rect.height) * 8;
     const rotateY = ((x - rect.width / 2) / rect.width) * 8;
     containerRef.current.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
@@ -232,7 +232,7 @@ export default function PosterHero() {
       {/* Sticky Viewport Frame */}
       <div className="relative lg:sticky lg:top-0 w-full h-screen min-h-screen min-h-[100dvh] bg-white flex flex-col justify-between items-center pt-16 pb-8 sm:pt-20 sm:pb-8 px-4 md:px-12 select-none overflow-hidden">
         
-        {/* Outer Poster Container */}
+        {/* Outer Poster Container (With Gyroscopic 3D Tilt) */}
         <div 
           ref={containerRef}
           onMouseEnter={() => { if (isDesktop) setHovered(true); }}
@@ -241,8 +241,9 @@ export default function PosterHero() {
           className="poster-card relative aspect-[352/450] lg:aspect-[988/1256] h-[75vh] sm:h-[80vh] lg:h-full max-h-[calc(100dvh-135px)] sm:max-h-[calc(100dvh-150px)] lg:max-h-[calc(100vh-140px)] w-auto max-w-[92vw] sm:max-w-[85vw] lg:max-w-[90vw] my-auto flex-shrink-0 cursor-pointer"
           style={{
             containerType: "inline-size",
-            transform: `perspective(1000px) rotateX(${tilt.x.toFixed(2)}deg) rotateY(${tilt.y.toFixed(2)}deg)`,
+            transform: "perspective(1000px) rotateX(0deg) rotateY(0deg)",
             transformStyle: "preserve-3d",
+            transition: hovered ? "transform 0.08s ease-out" : "transform 0.4s ease-out",
           }}
         >
 
@@ -313,7 +314,7 @@ export default function PosterHero() {
                 top: "var(--profile-top)",
                 width: "var(--profile-width)",
                 height: "var(--profile-height)",
-                transform: mounted && typeof window !== "undefined" && window.innerWidth >= 1024 ? "translateZ(45px)" : "none",
+                transform: mounted && typeof window !== "undefined" && window.innerWidth >= 1024 ? "translateZ(35px)" : "none",
               }}
             >
               <Image
@@ -338,13 +339,16 @@ export default function PosterHero() {
                 top: "var(--desc-top)",
                 width: "var(--desc-width)",
                 fontSize: "var(--desc-font)",
-                transform: mounted && typeof window !== "undefined" && window.innerWidth >= 1024 ? "translateZ(15px)" : "none",
+                transform: mounted && typeof window !== "undefined" && window.innerWidth >= 1024 ? "translateZ(12px)" : "none",
                 WebkitFontSmoothing: "antialiased",
                 textRendering: "optimizeLegibility",
               }}
             >
-              <p className="leading-[1.3] font-sans font-normal text-black select-none">
-                Building complex web applications, UI systems, and functional digital tools.
+              <p className="leading-[1.35] font-sans font-normal text-black select-none">
+                I think in product first. AI just helps me ship it faster.
+                <span className="block text-black font-medium text-[1em] mt-1 tracking-tight">
+                  Three AI-native products shipped
+                </span>
               </p>
             </motion.div>
 
@@ -380,7 +384,7 @@ export default function PosterHero() {
                 fontSize: "2.62cqw",
               }}
             >
-              <div>AI Product Designer</div>
+              <div>Product Designer &amp; Builder</div>
               <div>Available for 2026/2027 Roles</div>
             </div>
           </motion.div>
@@ -415,13 +419,12 @@ export default function PosterHero() {
 
           {/* UNFILTERED SIDE LABELS: Fades out cleanly on scroll */}
           
-          {/* 8. Left Side Label ("AI Product Designer") */}
+          {/* 8. Left Side Label ("Product Designer & Builder") */}
           <motion.div 
-            className="absolute hidden lg:block text-left font-sans font-normal text-black leading-normal z-30 pointer-events-none"
+            className="absolute hidden lg:block text-left font-sans font-normal text-black leading-normal z-30 pointer-events-none whitespace-nowrap"
             style={{
-              left: "-18%",
+              left: "-25%",
               top: "43.39%",
-              width: "15%",
               fontSize: "2.43cqw",
               opacity: activeSideLabelsOpacity,
             }}
@@ -430,19 +433,19 @@ export default function PosterHero() {
               initial={{ opacity: 0, x: 15 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
+              className="leading-snug"
             >
-              AI Product <br />
-              Designer
+              Product Designer <br />
+              &amp; Builder
             </motion.p>
           </motion.div>
 
           {/* 9. Right Side Label ("Available for 2026/2027 Roles") */}
           <motion.div 
-            className="absolute hidden lg:block text-left font-sans font-normal text-black leading-normal z-30 pointer-events-none"
+            className="absolute hidden lg:block text-left font-sans font-normal text-black leading-normal z-30 pointer-events-none whitespace-nowrap"
             style={{
               left: "103%",
               top: "42.11%",
-              width: "25%",
               fontSize: "2.43cqw",
               opacity: activeSideLabelsOpacity,
             }}
@@ -451,6 +454,7 @@ export default function PosterHero() {
               initial={{ opacity: 0, x: -15 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
+              className="leading-snug"
             >
               Available for <br />
               2026/2027 Roles
