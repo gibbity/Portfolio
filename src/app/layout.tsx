@@ -92,6 +92,9 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/512x512.png", sizes: "512x512", type: "image/png" },
       { url: "/icons/32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/icons/16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/logo-portfolio.svg", type: "image/svg+xml" },
@@ -99,7 +102,7 @@ export const metadata: Metadata = {
     apple: [
       { url: "/icons/180x180.png", sizes: "180x180", type: "image/png" },
     ],
-    shortcut: "/icons/32x32.png",
+    shortcut: "/favicon.ico",
   },
   appleWebApp: {
     capable: true,
